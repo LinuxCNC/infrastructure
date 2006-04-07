@@ -1,0 +1,1 @@
+while true ; do ./check_commit && ./run_farm ; sleep 300 ; done

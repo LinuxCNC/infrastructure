@@ -1,0 +1,251 @@
+#!/bin/bash
+# This script reads the file "trees" in the current directory.  It
+# cd's into each subdirectory listed there, does a cvs up, and if
+# any files have changed, it calls "build" in that directory, logging
+# its output to "build_log"
+
+# This function is used to log messages to farm_log
+function MSG {
+    if [ "$TREE" != "" ] ; then
+        date -u "+%F %T $TREE $1" >>$FARM_DIR/farm_log
+    else
+        date -u "+%F %T $1" >>$FARM_DIR/farm_log
+    fi
+}
+
+# This function attempts to do a "cvs up", saving the results in
+# cvs_log.  It does not interpret the results.  It returns 0 if
+# the cvs command completes successfully, and 1 if it fails or
+# times out.
+#
+function TRY_CVS {
+    # invoke the command in the background
+    if cvs -z3 -q up -dP 1>>cvs_log 2>>cvs_log; then
+        echo "CVS_SUCCESS" >>cvs_log
+    fi &
+    # save the PID of the "if" block above
+    BLKPID=$!
+    # find the PID of the actual command (not the entire block)
+    # (look for parent pid = BLKPID and command = "cvs" )
+    CMDPID=`ps o ppid,pid,cmd | awk -- "\\$1 ~ /$BLKPID/ && \\$3 ~ /cvs/ {print \\$2}"`
+    # loop until the command ends, if it takes too long, kill it
+    TIMEOUT=60
+    while ps -p $BLKPID &>/dev/null ; do
+	# check for timeout
+	if [ $TIMEOUT -eq 0 ] ; then
+	    # find pids of any children of the command
+	    CHILDPID=`ps -A o ppid,pid | awk -- "\\$1 ~ /\$CMDPID/ { print \\$2 }"`
+	    # stop the command
+	    kill $CMDPID &>/dev/null
+	    # stop any children
+	    for CHILDPID in $CHILDPID ; do
+		kill $CHILDPID &>/dev/null
+	    done
+	    # wait for the "if" block to finish
+	    wait $BLKPID &>/dev/null
+	    # log the timeout
+	    echo "CVS_TIMEOUT" >>cvs_log
+	else
+	    # wait a bit
+	    sleep 1
+	    # decrement TIMEOUT
+	    TIMEOUT=$((${TIMEOUT}-1))
+	fi
+    done
+    if grep -q CVS_SUCCESS cvs_log ; then return 0 ; else return 1 ; fi
+}
+
+# This function calls TRY_CVS, retrying several
+# times on timeouts or errors.
+#
+function DO_CVS {
+    MSG "cvs up"
+    # first remove any old cvs_log file that is laying around
+    rm -f cvs_log
+    # then try to do a cvs up
+    if TRY_CVS ; then
+        return 0
+    fi
+    RETRY=1
+    LIMIT=5
+    while [ $RETRY -lt $LIMIT ] ; do
+	MSG "cvs up retry $RETRY"
+	if TRY_CVS ; then
+	    return 0
+	fi
+	RETRY=$((${RETRY}+1))
+    done
+    MSG "cvs up failed ($LIMIT retries)"
+    return 1
+}
+
+# This function attempts to do "ftp -p linuxcnc.org <ftp_cmds",
+# saving the results in ftp_log.  It does not interpret the results.
+# It returns 0 if the ftp command completes successfully and 1 if it
+# times out or fails
+#
+function TRY_FTP {
+    # invoke the command in the background
+    if ftp -p -v -d linuxcnc.org <ftp_cmds 1>>ftp_log 2>>ftp_log; then
+        echo "FTP_SUCCESS" >>ftp_log
+    fi &
+    # save the PID of the "if" block above
+    BLKPID=$!
+    # find the PID of the actual command (not the entire block)
+    # (look for parent pid = BLKPID and command = "ftp" )
+    CMDPID=`ps o ppid,pid,cmd | awk -- "\\$1 ~ /$BLKPID/ && \\$3 ~ /ftp/ {print \\$2}"`
+    # loop until the command ends, if it takes too long, kill it
+    TIMEOUT=60
+    while ps -p $BLKPID &>/dev/null ; do
+	# check for timeout
+	if [ $TIMEOUT -eq 0 ] ; then
+	    # find pids of any children of the command
+	    CHILDPID=`ps -A o ppid,pid | awk -- "\\$1 ~ /\$CMDPID/ { print \\$2 }"`
+	    # stop the command
+	    kill $CMDPID &>/dev/null
+	    # stop any children
+	    for CHILDPID in $CHILDPID ; do
+		kill $CHILDPID &>/dev/null
+	    done
+	    # wait for the "if" block to finish
+	    wait $BLKPID &>/dev/null
+	    # log the timeout
+	    echo "FTP_TIMEOUT" >>ftp_log
+	else
+	    # wait a bit
+	    sleep 1
+	    # decrement TIMEOUT
+	    TIMEOUT=$((${TIMEOUT}-1))
+	fi
+    done
+    if grep -q FTP_SUCCESS ftp_log ; then return 0 ; else return 1 ; fi
+}
+
+# This function calls TRY_FTP, retrying several
+# times on timeouts or errors.
+#
+function DO_FTP {
+    MSG "FTP results to linuxcnc.org"
+    # first remove any old ftp_log file that is laying around
+    rm -f ftp_log
+    # then try to do a the ftp command
+    if TRY_FTP ; then
+        return 0
+    fi
+    RETRY=1
+    LIMIT=10
+    while [ $RETRY -lt $LIMIT ] ; do
+	MSG "FTP retry $RETRY"
+	if TRY_FTP ; then
+	    return 0
+	fi
+	RETRY=$((${RETRY}+1))
+    done
+    MSG "FTP failed ($LIMIT retries)"
+    return 1
+}
+
+
+# this function is given the name of a directory tree and
+# attempts to do a cvs up and if neccessary a build in that tree
+
+function TEST_TREE {
+    # attempt to do CVS update, if it fails, we're done
+    if ! DO_CVS ; then
+	# save the cvs logfile for troubleshooting
+	date -u +"%F %T" >cvs_log_fail
+	cat cvs_log >>cvs_log_fail
+	return 1
+    fi
+    # parse the file looking for "U" or "P" that indicates modified
+    # files.  also look for "A", "R", "M", or "C" that indicates local
+    # changes that shouldn't happen.
+    RESULT=`cat cvs_log | awk -- \
+        'BEGIN { errors=0 ; updates=0 } \
+        $1 ~ /^[ARMC]$/ { errors++ } \
+        $1 ~ /^[UP]$/ { updates++ } \
+        END { result="NOTHING" ; \
+              if ( updates > 0 ) { result="UPDATE" } ; \
+              if ( errors > 0 ) { result="ERROR" } ; \
+              printf ( "%s\n", result )
+            }'`
+
+    # decide what is do be done
+    if [ "$RESULT" = "ERROR" ] ; then
+        MSG "local repository has been modified, something is wrong"
+	# save cvs log file for troubleshooting
+	date -u +"%F %T" >cvs_log_fail
+	cat cvs_log >>cvs_log_fail
+        return 1
+    fi
+    if [ "$RESULT" = "NOTHING" ] ; then
+        MSG "no changes"
+        return 0
+    fi
+    # if we get here, we need to attempt a build
+    MSG "starting build"
+    # make a header for the build log
+    echo >build_log
+    echo "TREE:   $TREE" >>build_log
+    echo "SYSTEM: `cat $FARM_DIR/sysname ` `uname -r` (farm slot$SLOT)" >>build_log
+    echo >>build_log
+    date -u +"build started at %F %T" >>build_log
+    echo >>build_log
+    # do the build
+    if ./farm_build 1>>build_log 2>>build_log; then
+        # succeeded
+        echo >>build_log
+        date -u +"build completed successfully at %F %T" >>build_log
+        echo >>build_log
+        MSG "build succeeded"
+        STAMP=`date -u +" %F %T "`
+        STATUS=PASSED
+    else
+        # failed
+        echo >>build_log
+        date -u +"build failed at %F %T" >>build_log
+        echo >>build_log
+        MSG "build failed"
+        STAMP=`date -u +" %F %T "`
+        STATUS=FAILED
+    fi
+    # generate a SED command that will modify index.html
+    echo "s#<td>[^<>]*</td><td><a href=\"${TREE}_slot${SLOT}.txt\">[^<>]*</a></td>#<td>${STAMP}</td><td><a href=\"${TREE}_slot${SLOT}.txt\">${STATUS}</a></td>#" >>$FARM_DIR/sed_cmds
+    # generate a FTP command to copy up the log file
+    echo "put $TREE/build_log ${TREE}_slot${SLOT}.txt" >>$FARM_DIR/ftp_cmds
+    # append an entry to the history log
+    echo "`date -u +" %F %T "`${STATUS}" >>history_log
+    # generate a FTP command to copy up the history file
+    echo "put $TREE/history_log ${TREE}_slot${SLOT}_history.txt" >>$FARM_DIR/ftp_cmds
+    return 0
+}
+
+
+SLOT=`cat slot`
+FARM_DIR=`pwd`
+MSG "starting"
+rm -f sed_cmds
+rm -f ftp_cmds
+echo "cd compile_farm" >ftp_cmds
+echo "type image" >>ftp_cmds
+for TREE in `cat trees` ; do cd $TREE ; TEST_TREE ; cd $FARM_DIR ; done
+TREE=
+if [ -f sed_cmds ] ; then
+    echo "get index.html old.html" >>ftp_cmds
+    echo "! cat old.html | sed -f sed_cmds >index.html" >>ftp_cmds
+    echo "put index.html" >>ftp_cmds
+    echo "close" >>ftp_cmds
+    if DO_FTP ; then
+	MSG "FTP succeeded"
+    else
+	# save ftp log for troubleshooting
+	date -u +"%F %T" >ftp_log_fail
+	cat ftp_log >>ftp_log_fail
+    fi
+else
+    rm ftp_cmds
+fi
+MSG "done"
+
+
+
