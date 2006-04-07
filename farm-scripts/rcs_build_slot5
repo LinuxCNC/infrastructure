@@ -1,0 +1,50 @@
+# Compile farm build script for RCSLIB
+#
+echo
+echo "The realtime components of RCSLIB will not compile on a 2.6 kernel."
+echo "However, the user space library can still be used."
+echo
+#
+# platform specific info - hopefully this is all that changes
+#
+USRPLAT=linux
+#
+# the "echo" commands add whitespace and command info
+# to the log file to make the results easier to read 
+#
+# No need to set up environment variables...
+echo
+echo "changing to rcslib/src"
+cd src 
+#
+# all make commands are wrapped with "if" so that a
+# failed command will terminate the entire build
+#
+echo
+echo "running \"make clean PLAT=$USRPLAT\"" 
+echo
+if ! ( make clean PLAT=$USRPLAT ) ; then exit 1 ; fi
+echo
+echo
+echo "running \"make make_dirs PLAT=$USRPLAT\"" 
+echo
+if ! ( make make_dirs PLAT=$USRPLAT ) ; then exit 1 ; fi
+echo
+echo
+echo "running \"make headers PLAT=$USRPLAT\"" 
+echo
+if ! ( make headers PLAT=$USRPLAT ) ; then exit 1 ; fi
+echo
+echo "running \"make depend PLAT=$USRPLAT\"" 
+echo
+if ! ( make depend PLAT=$USRPLAT ) ; then exit 1 ; fi
+echo
+echo "running \"make all PLAT=$USRPLAT\"" 
+echo
+if ! ( make all PLAT=$USRPLAT ) ; then exit 1 ; fi
+echo
+echo
+echo "deleting ../emc/README to force rebuild of emc"
+rm -f ../../emc/README
+echo
+exit 0
