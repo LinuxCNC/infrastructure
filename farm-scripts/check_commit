@@ -1,0 +1,37 @@
+CHANGE=no
+# fetch latest commit file from cvs server
+rm -f last_commit
+wget -q -T 10 cvs.linuxcnc.org/last_commit
+# did we get a file?
+if [ -f last_commit ] ; then
+  # have new file, is there an old one? 
+  if [ -f last_commit_old ] ; then
+    # new and old exist, compare them
+    if ! `diff -q last_commit last_commit_old >/dev/null` ; then
+      cp last_commit last_commit_old
+      CHANGE=yes
+    fi
+  else
+    # have new file, no old one, treat as a change
+    cp last_commit last_commit_old
+    CHANGE=yes
+  fi
+fi
+# check time since last build attempt
+if [ ! -f last_build ] ; then
+  # no last build, force one
+  CHANGE=yes
+else
+  AGE=$(($(date +%s)-$(cat last_build)))
+  if [ $(($AGE>43200)) -eq 1 ] ; then
+    CHANGE=yes
+  fi
+fi
+if [ $CHANGE = yes ] ; then
+  # update last build timestamp
+  date +%s >last_build
+  # indicate a change to caller
+  exit 0
+else
+  exit -1
+fi
