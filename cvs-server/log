@@ -1,0 +1,79 @@
+#!/bin/sh -e
+url="http://cvs.linuxcnc.org/cvs"
+
+echo "From: EMC CVS server <cvs-adm@cvs.linuxcnc.org>"
+echo "To: emc-commit@lists.sourceforge.net"
+#echo "To: chris@timeguy.com"
+echo "Subject: $1"
+echo
+
+tag=HEAD
+
+while read i; do 
+  case "$i" in
+  Tag:*)
+    tag="${i#Tag: }"
+  ;;
+  esac
+done
+
+# split at spaces
+set -- $*
+
+if [ x$2 = x- ]; then
+  echo "New directory $1"
+  exit 0
+fi
+
+dir="$1"; shift
+
+rlog() {
+  now=no
+  echo
+  echo "Log:"
+  /bin/rlog -r"$1" /cvs/"$2",v |while read line; do
+    case "$line" in 
+    ==========*)
+    ;;
+    ----------*)
+      now=yes
+    ;;
+    *)
+      [ $now = yes ] && echo "$line"
+    esac
+  done
+}
+
+for i; do
+  file=${i%%,*}
+
+  before=${i%,*}
+  before=${before#*,}
+
+  after=${i##*,}
+
+  case "$i" in
+    *,NONE,*)
+      echo New file "$dir"/"$file"
+      echo
+      echo Full file:
+      echo "<$url/$dir/$file"'?rev='"$after>"
+      echo
+      echo Branch: "$tag"
+      rlog "$after" "$dir/$file"
+    ;;
+    *)
+      echo Modified file "$dir/$file"
+      echo
+      echo Full file:
+      echo "<$url/$dir/$file"'?rev='"$after>"
+      echo
+      echo Difference:
+      echo "<$url/$dir/$file"'.diff?r1='"$before"';r2='"$after>"
+      echo
+      echo Branch: "$tag"
+      rlog "$after" "$dir/$file"
+    ;;
+  esac
+  echo
+done
