@@ -1,0 +1,1613 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html><head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title></title>
+    
+    <link rel="Index" href="http://www.idealx.org/">
+    <link rel="icon" href="http://www.idealx.org/images/site_icon.png" type="image/png">
+    <link rel="Help" href="http://www.idealx.org/accessibility.en.html">
+    <link rel="stylesheet" type="text/css" href="chrooted-ssh-cvs-server.en_files/layout.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="chrooted-ssh-cvs-server.en_files/homepage.css" media="screen">
+    <script src="chrooted-ssh-cvs-server.en_files/navbar.js" type="text/javascript" charset="iso-8859-1">
+		  // 
+		  
+		  // 
+		</script></head>
+
+
+  <body onload="init()">
+    <div id="headerBox"><a href="http://www.idealx.org/" accesskey="1"><img src="chrooted-ssh-cvs-server.en_files/logo_IDEALX.png" alt="IDEALX S.A.S" height="65" width="140"></a>
+               www.IDEALX.org:  IDEALX's contributive site
+			  </div>
+    <div style="clear: both;">
+    <div id="rightmenu"><div class="menuTopItem"><a href="#content"><img src="chrooted-ssh-cvs-server.en_files/skip_to_content.png" alt="Content" height="9" width="95"></a></div><div class="menuTopItem"><a href="http://www.idealx.org/doc/chrooted-ssh-cvs-server.fr.html">
+						<img src="chrooted-ssh-cvs-server.en_files/francais_menu.png" alt="French version (VF)" height="9" width="60">
+						</a></div><div class="menuTopItem"><a href="http://www.idealx.org/"><img src="chrooted-ssh-cvs-server.en_files/home.png" alt="Home" height="9" width="38"></a></div>
+  
+    <div class="menuChap"><a href="http://www.idealx.org/prj/index.en.html" onclick="return toggleVisibility(0)"><img src="chrooted-ssh-cvs-server.en_files/menu-icon_plus.png" alt="+" class="menuIcon" height="9" width="9"></a><a href="http://www.idealx.org/prj/index.en.html">Projects</a><div class="menuSubChaps">
+	  <a href="http://idx-pki.idealx.org/index.en.html" class="menuSubChap">IDX-PKI</a>
+	  <a href="http://imc.sourceforge.net/" class="menuSubChap">IMC</a>
+	  <a href="http://www.idealx.org/prj/webmin/index.en.html" class="menuSubChap">Webmin Modules</a>
+	  <a href="http://cryptonit.org/" class="menuSubChap">Cryptonit</a>
+	  <a href="http://www.idealx.org/prj/samba/index.en.html" class="menuSubChap"> Samba Contributions</a>
+	  <a href="http://www.idealx.org/prj/jabber/index.en.html" class="menuSubChap">Jabber Contributions</a>
+	  <a href="http://www.idealx.org/prj/idx-tsunami/index.en.html" class="menuSubChap">IDX-Tsunami</a>
+	  <a href="http://www.idealx.org/DocBkXML2LaTeX/" class="menuSubChap">IDX-DocBookXML2LaTeX</a>
+	  <a href="http://idx-dfuse.idealx.org/" class="menuSubChap">IDX-Dfuse</a>
+	  <a href="http://idx-getox.idealx.org/" class="menuSubChap">IDX-Getox</a>
+	  <a href="http://www.openbsd.org/" class="menuSubChap">OpenBSD Contributions</a>
+
+          <a href="http://imc.sourceforge.net/" class="menuSubChap">IMC</a>
+
+
+	</div></div>
+    <div class="menuChapSelected"><a href="http://www.idealx.org/doc/index.en.html" onclick="return toggleVisibility(1)"><img src="chrooted-ssh-cvs-server.en_files/menu-icon_minus.png" alt="-" class="menuIcon" height="9" width="9"></a><a href="http://www.idealx.org/doc/index.en.html">Documentations</a><div class="menuSubChaps">
+	  <a href="http://www.idealx.org/doc/chrooted-ssh-cvs-server.en.html" class="menuSubChap menuSelected">IDX-chrooted-ssh-cvs Howto</a>
+	  <a href="http://www.idealx.org/prj/samba/index.en.html" class="menuSubChap">Samba LDAP PDC Howto</a>
+
+
+	</div></div>
+
+  
+  
+</div>
+    <div id="maincontent"><a id="content"></a><h1>
+
+
+
+</h1>
+
+<p><a id="content"><strong>Chrooted SSH CVS server HOW-TO - DRAFT
+version</strong></a></p>
+<a href="http://www.idealx.org/">IDEALX</a>Copyright&nbsp;©&nbsp;2001
+by <a href="http://www.idealx.org/">IDEALX</a>
+
+<p>Copyright © <a href="http://www.idealx.org/">IDEALX</a>.</p>
+<p>Permission is granted to copy, distribute and/or modify this
+document under the terms of the
+<a href="http://www.gnu.org/copyleft/fdl.html">GNU
+Free Documentation License</a>, Version 1.1 or any later version
+published by the Free Software Foundation; without any Invariant
+Sections, without any Front-Cover Texts, and without any Back-Cover
+Texts. A copy of the license is included in the section entitled
+"GNU Free Documentation License" (see <a href="#gfdl">Appendix
+Appendix B</a>).</p>
+Olivier Berger and Olivier Tharan
+
+
+
+<p><strong>Abstract.</strong> This document describes the steps necessary to
+setup a very network-secure CVS server, allowing SSH access to a
+CVS repository. It is then possible to have multiple repositories
+on the same server, each one in its own protected directory tree
+(chrooted). The use of SSH (with CVS_RSH) as
+a transport mechanism for CVS (instead of having a CVS pserver and
+SSH tunneling between client and server) allows much more secure
+and flexible use on the client side (provided SSH is installed, of
+course). The shell accounts necessary for SSH to run are disabled
+in order to allow only remote access to CVS. Both read-only (and
+even anonymous, i.e. with a known password or even no password at
+all) and read-write access can be granted, depending on the user
+accounts.</p>
+
+<p><strong>Version (CVS id.).</strong> DRAFT - $Revision$ - $Date:
+2001/08/10 18:54:43 $</p>
+
+<p><strong>Property.</strong> Copyright ©
+<a href="http://www.idealx.org/">IDEALX</a>.
+Permission is granted to copy, distribute and/or modify this
+document under the terms of the
+<a href="http://www.gnu.org/copyleft/fdl.html">GNU
+Free Documentation License</a>, Version 1.1 or any later version
+published by the Free Software Foundation; without any Invariant
+Sections, without any Front-Cover Texts, and without any Back-Cover
+Texts. A copy of the license is included in the section entitled
+"GNU Free Documentation License" (see <a href="#gfdl">Appendix
+Appendix B</a>).</p>
+
+<p><strong>Disclaimer.</strong> The elements described in this HOW-TO have
+been tested in order to ensure maximum safety. But as usual, we
+cannot guaranty that every aspects were sufficiently examined or
+tested. <em>YOU MAY FOLLOW THE GUIDELINES AND USE
+THE TOOLS DESCRIBED HERE ONLY AT YOUR OWN RISK</em>. Neither the
+authors nor their company should be liaible for any loss of data or
+other potential damage resulting from using the methods or tools
+described here. Due to the risks of misconfiguration resulting from
+the various manual configuration steps necessary to setup such a
+server, we recommand that you carefully test your installation
+before connecting the server to the Internet and let user store
+their data in the CVS repositories.</p>
+
+<br>
+
+<p>This document discusses the principles behind a network-secure
+CVS server based on SSH and chroot. It also describes the steps
+necessary to setup such an environment, allowing SSH access to a
+CVS repository.</p>
+<p>This guide is not targeted towards regular users, and requires
+some amount of understanding of Unix, CVS and network services
+machinery. It will be useful for CVS and/or system administrators
+wishing to secure their CVS servers.</p>
+<p>This method has been successfully used at IDEALX, and
+accompanying scripts were developped to help setting-up and
+administering such a server.</p>
+<p>The most up-to-date version of this document may be found on
+<a href="http://www.idealx.org/">IDEALX community web
+site</a>.</p>
+<p>We welcome any feedback concerning this document and associated
+tools; see <a href="#conclusion">Section 8</a>.</p>
+
+<br>
+<h2><a id="AEN57"></a>1.1.
+Acknowledgments</h2>
+<p>We must thank Anton Berezin
+&lt;<a href="mailto:tobez@tobez.org">tobez@tobez.org</a>&gt;,
+for his
+<em><a href="http://www.prima.eu.org/tobez/cvs-howto.html">Chrooted tunneled read-write CVS server</a></em>
+   document, and Joey Hess, for his
+   <em><a href="http://www.kitenet.net/programs/sshcvs/">Anonymous CVS access via SSH</a></em> document.</p>
+<p>Their analysis of the same kind of problems and some scripts or
+tools they developped were most useful when trying to elaborate our
+solution.</p>
+
+<br>
+<h2><a id="AEN66"></a>1.2.
+Rationale</h2>
+<p>This HOW-TO was written in order to summarize information
+gathered while trying to setup a secure CVS server solution for
+IDEALX.</p>
+<p>The company needed to offer access to some CVS repositories to
+different people or organizations. These users are working on
+resources in CVS repositories all located on the same machine,
+located in the DMZ, according to the security policy.</p>
+<p>As an example, repositories may be in the following two
+categories:</p>
+<ul>
+<li>
+Open Source projects. These must grant access to the following
+types of users:
+<ul>
+<li>
+anonymous read-only access must be granted to the general
+public</li>
+<li>
+authentified write access for specific developers (both external
+and internal to the company)</li></ul>
+
+</li>
+<li>
+Specific partnership projects. These must grant access to the
+following types of users:
+<ul>
+<li>
+read-only access possibly granted to certain people (e.g.
+managers)</li>
+<li>
+authentified write access for specific developers (both external
+and internal to the company)</li></ul>
+
+</li></ul>
+
+
+<br>
+<h2><a id="AEN86"></a>1.3. Structure of the
+document</h2>
+<p>The first (ans present) chapter (<a href="#introduction">Section
+1</a>) describes the context which led to the redaction of this
+document.</p>
+<p>The next chapter (<a href="#background">Section 2</a>) describes
+some elements of comprehension of the various approaches to
+securing a CVS repository via SSH and chroot, and explains our
+choices.</p>
+<p>The next chapters (<a href="#requirements">Section 3</a>,
+<a href="#serversetup">Section 4</a> and
+<a href="#clientsetup">Section 5</a>) describe necessary steps to
+setup a working environment.</p>
+<p>The last chapters (<a href="#administering">Section 6</a> and
+<a href="#troubleshooting">Section 7</a>) describe useful
+information for the CVS/system administrator.</p>
+
+<br>
+
+<p>This section aims at explaining the different solutions existing
+for a public secured CVS repository installation, and the choices
+we made.</p>
+
+<br>
+<h2><a id="AEN102"></a>2.1. Securing CVS
+communication over the Internet</h2>
+<p>We reprint here some paragraphs from Anton Berezin's
+document.</p>
+<p>CVS is the most popular version control system in the free
+software community, used by Netscape, *BSD, many GNU/Linux
+projects, and others.</p>
+<p>Initially, CVS was designed to provide version control for a
+group of developers working on a single machine. There was a CVS
+repository somewhere on the file system, and every developer
+working on a project had to have read-write access to the
+repository files, including auxiliary files used by the
+<strong>cvs</strong> program itself.</p>
+<p>With the advent of the Internet the need for accessing remote
+repositories arose.</p>
+<p>Currently, CVS has several methods of doing this:</p>
+
+<ul>
+<li><em><strong>:ext:</strong> and
+<strong>:server:</strong> methods:</em></li>
+
+<p>These access methods make use of a remote shell RSH or
+(<strong>:ext:</strong> method only) a replacement, such as
+the secure shell (SSH).</p>
+<p>The developer accessing the repository using this method must
+have a shell account on the machine where the repository is
+located.</p>
+<li><em><strong>:pserver:</strong>
+method.</em></li>
+
+<p>This access method allows a direct client connection to the
+server using password authentication. The inetd daemon on the
+server machine starts the cvs pserver command whenever a TCP
+connection is initiated on a specific port (usually port 2401). All
+communication between the client and the server uses the CVS
+protocol.</p>
+<p>This method does not require every developer to have an account
+on the server box (although the administrator still has to manage
+the list of read and write user access on the repository). No
+communication over the network is encrypted, including passwords
+which are sent as clear text (well, almost).</p>
+<li><em><strong>:gserver:</strong> and
+<strong>:kserver:</strong> methods.</em></li>
+
+<p>These methods allow secure direct client connection. The
+<strong>:gserver:</strong> uses GSSAPI, the generic interface
+to network security systems such as Kerberos 5. The
+<strong>:kserver:</strong> methods uses the Kerberos version
+4 network security system.</p></ul>
+
+
+<p>The <strong>:pserver:</strong> method is quite convenient
+for implementing remotely accessible CVS repositories, but its
+major drawback is that it is very insecure.</p>
+<p>Two ways to increase the security of :pserver: are
+suggested:</p>
+
+<ul>
+<li><em>Running CVS server in a chrooted
+jail.</em></li>
+
+<p>One of the main problems with cvs pserver is the fact that the
+developer accessing the repository can in fact gain access to any
+file on the server system. This situation gets worse if the
+developer has read-write access to the repository; in this case it
+is possible that he/she will be able to write any file owned by the
+user the <strong>pserver</strong> runs as. But anyway, even
+read access to your system can be bad enough!</p>
+<p>The standard solution for this type of services is to use an
+intermediate program that first carries out a
+chroot(2) UNIX syscall, then changes its
+own credentials to those of some unprivileged user, and execs
+<strong>cvs pserver</strong>.</p>
+<p>A method implementing this technique to set up a CVS server is
+described in Anton Berezin's
+<em><a href="http://www.prima.eu.org/tobez/cvs-howto.html">Chrooted tunneled read-write CVS server</a></em>
+   document.</p>
+<li><em>Using SSH tunneling feature.</em></li>
+
+<p>The second major problem with the cvs
+<strong>pserver</strong> is that all data transferred during
+the CVS remote session is unencrypted.</p>
+<p>Luckily, the popular secure replacement of RSH, SSH, has a
+feature called TCP port forwarding, also known as tunneling.</p>
+<p>The idea is that SSH client allocates a socket listening to the
+specified port on the local machine, and any connection made to
+this local port (normally from localhost) is automatically
+forwarded to the remote side over an encrypted channel. If you have
+never used this feature but you are a user of SSH, chances are that
+you have used it anyway without knowing it --- SSH, in its most
+typical configuration, automatically forwards all X11 connections
+this way.</p>
+<p>The combination of these two techniques is the subject of Anton
+Berezin's <a href="http://www.prima.eu.org/tobez/cvs-howto.html">HOW-TO</a>.</p></ul>
+
+
+<p>This approach of securing the pserver access with CVS still has
+some drawbacks:</p>
+<ul>
+<li>
+the <strong>pserver</strong> daemon running on the server
+is only able to serve one CVS repository, and you may need to serve
+several repositories on the same server, especially to be able to
+secure them by having one chroot for each repository. There might
+be ways to achieve this (hacking the chroot wrapper, using
+different pserver ports), but none is really easy to implement or
+administer.</li>
+<li>
+the SSH tunneling required on the user's side can be problematic
+if the user is working on a machine that features its own pserver
+CVS server (for instance for the local LAN), or if several
+developers have to use such tunneling, but in order to access
+different servers.</li></ul>
+
+
+<p>Considering this, we have decided to explore alternate ways, and
+choosed to base our experiments on the SSH access method for the
+CVS server (<strong>:ext:</strong> in the list above). We
+will describe here the details of this solution.</p>
+<p>This solution gives us the following benefits:</p>
+<ul>
+<li>
+several CVS repositories served on the same server</li>
+<li>
+chrooted access to (and only to) the different
+repositories</li>
+<li>
+full advantage of SSH security features (encryption,
+authentication)</li></ul>
+
+
+<br>
+<h2><a id="AEN179"></a>2.2. Restricted
+execution of CVS through SSH</h2>
+<p>When using CVS with SSH as described in the previous sections,
+the client executes the <strong>cvs server</strong> command
+on the server through SSH.</p>
+<p>Although only this command is executed, we still want to
+restrict the potential damage resulting from security flaws in
+<strong>cvs</strong> running the "server" protocol.</p>
+<p>In order to restrict remote execution of commands, or damage
+caused to files on the server made by the CVS command, we need to
+ensure that only this <strong>cvs server</strong> command
+will be executed by CVS. Only then can we trap calls to
+<strong>cvs</strong> by a chrooted wrapper, as discussed in
+the previous section.</p>
+<p>We will discuss here ways to restrict execution of the
+<strong>cvs server</strong> command with SSH:</p>
+<ul>
+<li>
+using <strong>smrsh</strong> as the user's login shell.
+<strong>smrsh</strong> restricts execution of the command
+passed as an argument to certain commands placed in a specific
+directory. Thus, placing <strong>smrsh</strong> as the login
+shell of a CVS user, we can control the commands executed by
+SSH.</li>
+<li>
+configuring ssh's command="cvs server"
+option in the .ssh/authorized_keys of the
+CVS user account lets us control which commands are executed
+whenever a user makes a <strong>ssh</strong>
+invocation.</li></ul>
+
+
+<p>The first option lets us make a global configuration of
+restricted commands for each specific user on the server. Each user
+specified as login with <strong>ssh</strong> on the server,
+when using CVS, is then configured in order to only be able to
+execute a limited number of commands. This means that the CVS
+chroot-wrapper invoked by
+<strong>ssh</strong> is the same for all the clients using
+the same CVS user.</p>
+<p>On the contrary, the second option lets us do client-based
+configuration, as we can customize the commands launched by
+<strong>cvs</strong> based on the SSH public keys of the
+clients trying to connect to the server by
+<strong>ssh</strong>, even if they all use the same user on
+the server.</p>
+
+<br>
+<h2><a id="AEN208"></a>2.3. Setting up
+several chrooted repositories in parallel</h2>
+<p>In the above sections, we discussed methods to secure access to
+CVS, but didn't address the necessary configuration strategies for
+access to several distinct and securely separated repositories on
+the same server.</p>
+<p>We explain below how to provide access to different repositories
+for different developers, still having these repositories secured
+by chroot and restricting execution on
+the server only to these chrooted <strong>cvs</strong> on
+different repositories (see above sections for details).</p>
+<p>Let's assume that we have two projects,
+project1 and
+project2, that use two different
+repositories. Access to the repositories is
+chroot-restricted: developers on one
+project cannot access the other repository.</p>
+<p>Actually, we kind of want to provide, on the same server, access
+to two separate virtual servers, each having a set of users and a
+repository.</p>
+<p>In order to use <strong>ssh</strong>,
+<strong>smrsh</strong>, a chroot
+wrapper, and <strong>cvs</strong>, as described earlier, we
+need to separate users of the different projects.</p>
+<p>Each repository/project has its own <strong>cvs</strong>
+wrapper, which sets a different chroot
+path.</p>
+<p>Each <strong>cvs</strong> wrapper must also be called
+exactly "<strong>cvs</strong>", because that's the command
+name that is invoked by <strong>ssh</strong> via
+<strong>smrsh</strong>. Thus they cannot all reside in the
+same directory.</p>
+<p>In each user's entry in /etc/passwd,
+we need to define <strong>smrsh</strong> as the login shell,
+but <strong>smrsh</strong> does not differentiate its allowed
+commands directory based on the user executing
+<strong>smrsh</strong>. So, two different
+"<strong>cvs</strong>" commands (the
+chroot wrappers) couldn't be executed by
+the same <strong>smrsh</strong> command and at the same time
+reside in different directories.</p>
+<p>We then need to have different pairs of
+<strong>smrsh</strong> and cvs-wrapper programs for each
+project.</p>
+<p>One supplemental difficulty resides in the fact that
+chroot cannot be executed by an
+unprivileged user. Then our cvs-wrappers need to be set-uid
+root.</p>
+<p>When the wrapper finally launches the real
+<strong>cvs</strong> command, it must restore the uid and gid
+to those of the specific developer. The <strong>cvs</strong>
+command can then behave differently for different users, to allow
+us to give privileges for the developers inside the repository, in
+certain directories (read/write group permissions, for
+example).</p>
+<p>As a conclusion, we need to implement a file hierarchy that
+looks like the following:</p>
+
+<pre>
+.../home/dev1/                                "real" home of developer 1 on project 1
+.../home/dev2/                                "real" home of developer 2 on project 1 (or any other project)
+.../proj1/                                    "home" of project 1
+.../proj1/bin/                                binary dir
+.../proj1/smrsh                               project-specific shell
+.../proj1/smrsh.bin/                          directory for the allowed commands
+.../proj1/smrsh.bin/cvs                       the CVS wrapper
+.../proj1/chrooted-cvs/                       chrooted sub-system for cvs on proj1
+.../proj1/chrooted-cvs/bin/                   commands available : only cvs
+.../proj1/chrooted-cvs/bin/cvs                regular statically compiled cvs
+.../proj1/chrooted-cvs/dev/                   
+.../proj1/chrooted-cvs/dev/null               necessary for proper operation
+.../proj1/chrooted-cvs/etc/
+.../proj1/chrooted-cvs/etc/passwd             partial passwd file with groups used in cvs repo
+.../proj1/chrooted-cvs/etc/group              partial group file with groups used in cvs repo
+.../proj1/chrooted-cvs/cvs/proj1              cvs repository base [1]
+.../proj1/chrooted-cvs/cvs/proj1/CVSROOT/     cvs repository's configuration
+.../proj1/chrooted-cvs/cvs/proj1/module1/     module 1 for project 1
+.../proj1/chrooted-cvs/cvs/proj1/module2/     module 2 for project 1
+.../proj1/chrooted-cvs/cvs-locks/             contains locks of the cvs repo
+.../proj1/chrooted-cvs/tmp/                   temporary directory
+
+.../proj2/                                    next project, independent from proj1
+  ...
+
+[1] thus, users do 'cvs -d :ext:dev1@cvs.myproject.org:/cvs/proj1 co module'
+</pre>
+<p>In the above example, the upper CVS structure consists in:</p>
+<ul>
+<li>
+home directories for the developers working on any project (they
+need not be separated, and are here only to calm down ssh which
+looks for a home directory; the developers normally don't have
+shell accounts on the server, but the home directories are here
+nevertheless);</li>
+<li>
+a chroot sub-directory which
+holds:
+<ul>
+<li>
+the cvs repository of the project ;</li>
+<li>
+the necessary files for chrooted execution of
+<strong>cvs</strong>.</li></ul>
+
+</li></ul>
+
+
+<br>
+<h2><a id="AEN263"></a>2.4. Protecting CVS
+configuration files under CVSROOT</h2>
+<p>The following discussion is generic to any type of CVS
+repository and is independent of the fact that CVS is chrooted of
+accessed with <strong>ssh</strong>.</p>
+<p>Some elements put under CVS control may need to be protected
+against modification from certain groups of users. This is
+especially true for the CVSROOT's set of
+administrative files located in the repository.</p>
+<p>Several reasons can lead us to protect elements in the
+repository :</p>
+<ul>
+<li>
+protection of administrative files to be sure that only the
+administrator, or a group of administrators will be allowed to
+modify them</li>
+<li>
+protection of a module or submodule against access or
+modification by certain users</li></ul>
+
+
+<p>In CVS, individual repository files (actually the RCS
+",v" files) cannot be protected
+individually and with restrictions for a single user, due to the
+way that CVS updates them at commit time. The only solution is to
+control access and/or modification rights on a directory basis, by
+using Unix groups rights.</p>
+<p>The basic configuration of a CVS repository (after a cvs init)
+does not protect CVSROOT content's
+modification by regular users (at the time we write this HOW-TO).
+This is necessary since CVS lock files are created under the
+CVSROOT directory each time a developer
+accesses the repository (lock files and directories are created by
+the <strong>cvs</strong> command running with the developer's
+uid). As this is clearly insecure, we use the LockDir CVS option
+(in CVSROOT/config file) to specify a
+different dedicated lock directory. Note that the locks directory
+must <em>NOT</em> be located under the CVS
+repository's root directory to avoid confusion with a CVS
+module.</p>
+<p>Thus, we can create a CVS-dedicated "administrative" Unix group
+(e.g. cvs-adm), and change
+CVSROOT's access rights so that files
+contained by CVSROOT can only be modified
+by some users belonging to that special group.</p>
+<p>When modifications are made in files under CVS repositories, and
+particularly when new files or directories are created, we must
+ensure that group protections are propagated along the subdirectory
+tree. This seems to be the standard mode for *BSD file-systems, so
+no special configuration is needed.</p>
+
+
+<p><strong>Note:</strong> The description we make here works under OpenBSD.
+On other Unix flavours (for instance on GNU/Linux with ext2fs), it
+may be necessary to use the setgid bit on the directories, since
+directories are created with the group of the running process
+instead of the one of the parent directory. But pay attention to
+the fact that different Unices handle setgid bits differently. On
+GNU/Linux, we have had to set the setgid bit on every directory of
+the repository, to force the creation of sub-directories with the
+same group as their parent directory. In case of doubt, one should
+test that the properties described here are indeed present on a
+particular Unix flavour.</p>
+<p>Anyway, the following Unix group policy will be chosen for
+access rights definition, for each repository:</p>
+<ul>
+<li>
+a group (e.g. cvs-adm) will contain the
+administrator(s) of the repository. This group is the only one to
+have group write access to the CVSROOT
+directory.</li>
+<li>
+a group (e.g. cvs-devel) will contain
+the "standard" developers (having at least read access on most of
+the repository's resources, not otherwise protected). Every user
+member of other CVS-related groups should also be member of this
+group. This group will have group write access over the CVS locks
+directory, and history and val-tags files under
+CVSROOT. Only members of this group will
+be allowed to read-access the root directory of the
+repository.</li>
+<li>
+for each part of the repository that requires specific read or
+write restrictions, users with privileged rights are placed in
+other specific groups, provided that all members of the group with
+write access are also placed in the group with read
+access.</li>
+<li>
+"other" access rights are never used with write
+authorization.</li>
+<li>
+"owner" access rights are always put to write allowed
+permission.</li>
+<li>
+for parts of the repository that require read/write
+restrictions, we use only the group write permission to restrict
+write access to some sub-directories.</li></ul>
+
+<br>
+
+<p>This HOW-TO assumes that the server will run OpenBSD version 2.8
+or later. It does not mean, of course, that it is not possible to
+setup a similarly configured server on a UNIX box running a
+different operating system. It simply means that the exact steps
+described below are for OpenBSD.</p>
+
+<br>
+<h2><a id="AEN311"></a>3.1. Requirements
+for the server</h2>
+<p>The computer should:</p>
+<ul>
+<li>
+be connected to the Internet;</li>
+<li>
+have an operational C compiler with standard libraries;</li>
+<li>
+have the secure shell server (sshd) up and running;</li>
+<li>
+have <strong>smrsh</strong> (part of the sendmail
+distribution) and its sources installed;</li>
+<li>
+have recent enough version of <strong>cvs</strong>
+installed (1.10 or later);</li>
+<li>
+ideally be running or able to run a firewall
+software.</li></ul>
+
+
+<br>
+<h2><a id="AEN329"></a>3.2. Requirements
+for the client</h2>
+<p>Any UNIX machine (or running another OS, but
+<strong>ssh</strong>/<strong>cvs</strong> should be a
+bit trickier to install there) with an Internet connection that
+has:</p>
+<ul>
+<li>
+the client part of <strong>cvs</strong>
+installed;</li>
+<li>
+a secure shell client (<strong>ssh</strong>)
+installed.</li></ul>
+
+
+<br>
+<h2><a id="AEN341"></a>3.3. Requirements
+for the administrator</h2>
+<p>The administrator should:</p>
+<ul>
+<li>
+have root privileges on the server machine;</li>
+<li>
+have basic understanding of CVS workings;</li>
+<li>
+be able to tweak hard-coded paths and host names in C
+code;</li>
+<li>
+be able to compile and install C programs;</li>
+<li>
+have a basic knowledge of Unix group
+privileges.</li></ul>
+
+<br>
+
+<p>The instructions below are fairly detailed to allow even a
+rather inexperienced sysadmin to setup the server.</p>
+<p>Here, we'll only discuss the creation of one single "project",
+i.e. only one CVS repository and associated configuration. Similar
+steps will be required when adding another repository.</p>
+
+<br>
+<h2><a id="AEN359"></a>4.1. Add the
+repositories administrator's user and group</h2>
+<p>Create a <em>BASE</em> directory,
+which will eventually hold every projects (e.g.,
+/opt/cvs).</p>
+<p>Create the CVS administrator user / group (e.g.
+cvs-adm/cvs-adm).
+Set his home directory to the root of all the CVS projects hosted
+(e.g., directly <em>BASE</em>). The
+cvs-adm user is just a means to assign an
+account to administrate CVS at an upper level.</p>
+<p>The <em>BASE</em> directory must be
+owned by the administrator. It may be below the
+cvs-adm home directory for convenience
+purposes, but it could be anywhere else.</p>
+
+
+<p><strong>Note:</strong> This user/group will be specific to the project.
+For several projects, create as many administrative CVS users as
+there are projects.</p>
+<p>The user will be first used in the regular environment of the
+machine, until the chrooted CVS configuration is complete. It will
+then be used as a privileged CVS user with the same
+<strong>smrsh</strong>/chroot
+mechanics as for other users of the
+repository.</p>
+
+<br>
+<h2><a id="AEN377"></a>4.2. Compile a
+static version of the CVS program</h2>
+<p>You will need a static version of the CVS program, because it
+executes in a chrooted environment where it cannot access its
+needed libraries. For OpenBSD, if you have installed the system
+sources, just go to
+/usr/src/gnu/usr.bin/cvs, do a
+<strong>./configure --disable-client; make</strong>. Then,
+watch the output messages of the compiler, and redo the last
+compilation line, adding -static to the
+command line. A <strong>file src/cvs</strong> command should
+display:</p>
+
+<pre>$ <strong>file src/cvs</strong>
+cvs: OpenBSD/i386 demand paged executable
+</pre>
+<p>Then place the compiled cvs in the project's binary
+directory:</p>
+
+<pre>$ <strong>cp /usr/src/gnu/usr.bin/cvs/src/cvs <em>&lt;BASE&gt;</em>/chrooted-cvs/bin/</strong>
+</pre>
+
+<br>
+<h2><a id="AEN394"></a>4.3. Create the
+chrooted repositories directory structure</h2>
+<p>For each project, you will need to perform the following steps.
+The CVS server will be chroot'd in each
+project directory. Create subdirectories necessary for the proper
+jail functioning :</p>
+
+<pre>
+# create the place where regular home-directories 
+# of standard CVS users will be (this step will be needed the first time
+# only, as all home dirs are in the same place)
+<strong>mkdir -p <em>&lt;BASE&gt;</em>/home 
+chown 0:0 <em>&lt;BASE&gt;</em>/home</strong>
+# create the chroot environment for &lt;project&gt;
+<strong>mkdir -p <em>&lt;BASE&gt;/&lt;project&gt;</em>/{bin,chrooted-cvs,smrsh.bin}</strong>
+<strong>mkdir -p <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/{bin,cvs,cvs-locks,dev,etc,tmp}</strong>
+<strong>chown 0:0 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/{bin,dev,etc,home,tmp}</strong>
+<strong>chmod 1777 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/tmp</strong>
+# the cvs administrator owns the CVS root
+<strong>chown cvs-adm.cvs-adm <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs</strong>
+<strong>chmod 770 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs</strong>
+<strong>chown 0:0 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs-locks</strong>
+<strong>chmod 666 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs-locks</strong>
+# create the /dev/null device under the chroot space
+# Warning: under Linux, the device is 'c 1 3'
+<strong>mknod <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/dev/null c 2 2</strong>
+<strong>chown 0:0 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/dev/null</strong>
+<strong>chmod 666 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/dev/null</strong>
+</pre>
+<p>Then, be sure to have the same administrator user
+(cvs-adm) created under the jail.</p>
+<p>You will need to create fake
+"/etc/passwd" and
+"/etc/group" files in your
+chroot setup. You will need to edit this
+file anytime you add any developer which will have access to the
+CVS repository. Be sure to give the user the same logname, uid and
+gid than those on the system.</p>
+
+
+<p><strong>Note:</strong> this setup is very BSD-centered, your mileage may
+vary on other systems.</p>
+<p>Edit
+<em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/etc/master.passwd
+with such lines as:</p>
+
+<pre>
+cvs-adm::1002:1002::0:0:CVS User:/home/cvs-adm:/usr/local/bin/bash
+dev1::1003:1003::0:0:Robert Developer:/home/dev1:/BASE/project/bin/smrsh
+</pre>
+<p>Then, perform these steps to create the appropriate files:</p>
+
+<pre># <strong>pwd_mkdb -d <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/etc <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/etc/master.passwd
+</strong>
+</pre>
+<p>Then, edit
+<em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/etc/group
+to contain such lines as:</p>
+
+<pre>
+cvs-adm:*:1002:
+project:*:10000:
+</pre>
+<p>Keep in mind that proper maintaining of the group file will
+ensure a good CVS access rights organization, as described earlier.
+In general, you will need one group per project hosted.</p>
+
+<br>
+<h2><a id="AEN451"></a>4.4. Compile and
+install special programs for each project</h2>
+<p>You need to compile two programs for each project hosted on the
+system. These are a modified version of
+<strong>smrsh</strong> (the
+Sendmail restricted shell), and
+<strong>run-cvs</strong>, a wrapper doing a
+chroot before launching the real
+<strong>cvs</strong> binary. These programs need to be
+compiled specifically because some values depending on the project
+are hard-coded in them.</p>
+<p>Note: smrsh does not necessarily need to be modified. It just
+needs to be compiled with a correct CMDDIR
+compilation variable. Our own modifications include a change in the
+default PATH, a minor bug fix in the option-parsing code, the
+exec and exit
+builtins are disabled, and the default error message has been
+changed.</p>
+<p>See <a href="#runcvs">Section Appendix A.1</a> for the
+<strong>run-cvs</strong> source code. You will find these
+programs here. To compile them, use the following commands,
+replacing the definitions by their actual values.</p>
+
+<pre><strong>
+cc -O2 -DCMDDIR=\"<em>&lt;BASE&gt;/&lt;project&gt;</em>/smrsh.bin\" -c smrsh.c
+cc -o smrsh smrsh.o
+
+cc -O2 -DBASE=\"<em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs\" run-cvs-idx.c -o run-cvs
+
+cp smrsh <em>&lt;BASE&gt;/&lt;project&gt;</em>/bin/
+chown 0:0 <em>&lt;BASE&gt;/&lt;project&gt;</em>/bin/smrsh
+cp run-cvs <em>&lt;BASE&gt;/&lt;project&gt;</em>/smrsh.bin/cvs
+chown 0:0 <em>&lt;BASE&gt;/&lt;project&gt;</em>/smrsh.bin/cvs
+chmod 4755 <em>&lt;BASE&gt;/&lt;project&gt;</em>/smrsh.bin/cvs
+</strong>
+</pre>
+<p><strong>run-cvs</strong> must be called
+<strong>cvs</strong> because the command requested by
+<strong>ssh</strong> is <strong>cvs server</strong>. A
+Makefile is provided to ease the
+compilation process.</p>
+<p>Note that a "debug" version of the wrapper is available by
+setting the -DTRACE flag at compile-time,
+which allows ktracing the <strong>cvs</strong> command on the
+server, in case of problems (see <a href="#troubleshooting">Section
+7</a> below).</p>
+<p>On the client side, a means to debug the connexion is to replace
+ssh with a small shell script which basically does a
+<strong>ssh -v $*</strong> and to call this script in the
+CVS_RSH environment variable.</p>
+
+<br>
+<h2><a id="AEN489"></a>4.5. Create the
+project's CVS repository</h2>
+
+<h3><a id="AEN491"></a>4.5.1. Create the
+CVS repository structure</h3>
+
+<pre>
+$ <strong>cd <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs</strong>
+$ <strong><em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/bin/cvs -d <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs init</strong>
+$ <strong>touch <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs/CVSROOT/val-tags
+
+</strong>
+</pre>
+<p>This should create an empty repository whose only content is the
+<em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs/CVSROOT
+directory. The val-tags file must be
+created manually to be able to fix its access rights from the
+beginning. Otherwise, the first use of a CVS tag branch in an
+"<strong>update -r</strong>" command by a user would trigger
+an error.</p>
+
+<br>
+<h3><a id="AEN510"></a>4.5.2. Configure CVS
+repository options</h3>
+<p>The LockDir option must be set to
+direct creation of CVS locks in a different directory than
+CVSROOT. This directory can then be made
+writable for everyone.</p>
+<p>This modification must be done using CVS (in "local" mode) so
+that the CVSROOT/config file will always
+be regenerated correctly.</p>
+<p>Go to some cvs administrator's
+(cvs-adm) private directory, and execute
+the following steps:</p>
+
+<pre>
+$ <strong><em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/bin/cvs -d <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs checkout CVSROOT</strong>
+$ <strong>cd CVSROOT</strong>
+</pre>
+
+
+<p>Then edit the "config" file, and add
+the following line to the contents of the file (the path is
+considered for future use only in chrooted environment):</p>
+
+<pre>
+  LockDir=/cvs-locks
+</pre>
+
+
+<p>Now, commit the changes:</p>
+
+<pre>
+$ <strong><em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/bin/cvs commit config</strong>
+</pre>
+
+
+
+
+<p><strong>Note:</strong> After setting LockDir this
+way (inside the chrooted hierarchy of "<strong>cvs
+server</strong>"), this repository can only be used by users on a remote
+basis and with a proper
+<strong>smrsh</strong>/chroot
+configuration (even for cvs-adm). If used
+in "local" mode (i.e. with <strong>cvs -d
+<em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs</strong>
+instead of <strong>cvs -d
+<em>user@host</em>:/cvs</strong>), there will
+be errors stating that the lock directory doesn't exist (no "real"
+/cvs-locks
+directory).</p>
+
+<br>
+<h3><a id="AEN549"></a>4.5.3. Setup proper
+rights</h3>
+<p>The rights of the CVS directories need to be changed in order to
+protect access to administrative files, and to ensure proper access
+rights for users.</p>
+<p>Type the following commands:</p>
+
+<pre><strong>
+  chown -R cvs-adm.cvs-adm <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs
+        chgrp cvs-devel <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs/CVSROOT/{history,val-tags}
+        chmod 775 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs/CVSROOT
+        chmod 444 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs/CVSROOT/*
+        chmod 775 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs/CVSROOT/Emptydir
+        chmod 664 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs/CVSROOT/{history,val-tags}
+        chown -R cvs-adm.cvs-devel <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs-locks
+        chmod -R 660 <em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs-locks
+</strong>
+</pre>
+
+<br>
+<h2><a id="AEN565"></a>4.6. Create accounts
+and groups for users</h2>
+<p>You should choose a login name for every developer who will be
+allowed an access to the repository. This name should not be longer
+than 8 characters on OpenBSD (due to a system limitation, which
+hopefully will be removed in future versions of this system). Be
+prepared to modify things by hand, by the way.</p>
+<p>The standard procedure for adding a user on OpenBSD is with the
+<strong>adduser</strong> command. <strong>vipw</strong>
+remains acceptable, but <em>do not</em> edit
+/etc/passwd (or
+/etc/master.passwd for that matter) by
+hand! Answer the questions asked; for the shell, enter
+nologin, you will modify it later. When it
+is over, launch <strong>chfn
+<em>&lt;logname&gt;</em></strong> to edit the
+user's information, particularly his home directory and login
+shell:</p>
+
+<pre>
+Home directory: <strong><em>&lt;BASE&gt;</em>/home/<em>&lt;logname&gt;</em></strong>
+Shell: <strong><em>&lt;BASE&gt;/&lt;project&gt;</em>/bin/smrsh</strong>
+</pre>
+<p>Now you have to do the same work for the fake password and group
+files inside the chroot directory. Edit
+<em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/etc/master.passwd
+and
+<em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/etc/group
+to add the same piece of information you did in the real
+master.passwd and
+group files, except that you have to take
+the chroot into account. An example is
+given below. Do not forget to regenerate your db files!</p>
+
+<pre>
+robert::50001:50001::0:0:Robert developer:/tmp:/BASE/project/bin/smrsh
+</pre>
+<p>Do not worry about the home directory, it is of no use once you
+are chrooted (anyway, if <strong>cvs</strong> needs to write
+something in the user's home directory, it can only do so in
+/tmp, so everything is all
+right).</p>
+
+<br>
+<h2><a id="AEN600"></a>4.7. Finalize the
+CVS administrator's account configuration</h2>
+<p>The cvs-adm account should now be
+configured so that CVS will be used for this user in the same way
+as it is used by other developers (through
+<strong>smrsh</strong> and chroot),
+and that the user still has the possibility to log on the machine
+using a interactive shell.</p>
+
+<br>
+<h2><a id="AEN606"></a>4.8. Configure
+"anonymous" account</h2>
+<p>The anonymous account is similar in configuration to any other
+developer's account, except that you generally do not want this
+account to have a write access to your repositories. Create the
+account like you would do for any other developer, but do not
+include him in a group which will have write access to a specific
+project.</p>
+<p>In general, you can have one group which has read access to
+every module in the chrooted repository you created, and inside
+this, you create as many Unix groups as you have different modules:
+you then grant write access to each module by allowing the
+developers in the proper groups. The anonymous account need not
+belong to any developer's group, except the general one which has
+only a read access to the repository.</p>
+
+<br>
+<h2><a id="AEN610"></a>4.9. Configure
+network security</h2>
+<p>You should only accept <strong>ssh</strong> calls from the
+outside into your secure CVS server. In fact, you only need to
+allow <strong>ssh</strong>, except if you have other services
+on your server.</p>
+
+<br>
+
+
+<h2><a id="AEN617"></a>5.1. On
+Unix</h2>
+<p>You need to set the environment variable
+CVS_RSH to ssh:</p>
+
+<pre>$ <strong>export CVS_RSH=ssh</strong>
+</pre>
+<p>To download the latest sources from the
+proj1 project, you may then use:</p>
+
+<pre>$ <strong>cvs -d :ext:<em>anoncvs@cvs.myproject.org</em>:/cvs checkout <em>mymodule</em></strong>
+</pre>
+
+<br>
+
+
+<h2><a id="AEN635"></a>6.1. Creating new
+modules</h2>
+<p>The root of the repository is protected against modification by
+the users. They will not be able to import new "top-level" modules
+in CVS, or create these modules from scratch without help from the
+CVS administrator.</p>
+<p>The administrator will create the particular module by manually
+creating a
+<em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/cvs/
+<em>&lt;module&gt;</em> directory, and change its rights to
+those of the user's group allowed to check-in files in it.</p>
+<p>Once these "top-level" modules have been created and made
+available to the users, they will be able to create sub-directories
+inside with the "<strong>add</strong>" or
+"<strong>import</strong>" CVS commands.</p>
+
+<br>
+<h2><a id="AEN645"></a>6.2. Adding access
+to CVS without systematic password entry</h2>
+<p>The regular developer will be interested in setting up his
+environment in such a way that he does not need to type in his
+password every time he updates, commits, or access the repository.
+A user can have his SSH public key stored in his home directory on
+the CVS server so that he does not need to type in his password or
+his passphrase, provided he also uses
+ssh-agent on the client side.</p>
+<p>The only drawback to this scheme is that the users do not have a
+shell access to the CVS server, and thus cannot easily upload their
+public keys there. One method, which is not developed here, would
+be to create a WWW-accessible CGI script (on an otherwise
+authenticated server) with which the user could upload his key.
+SourceForge already does such a thing.</p>
+
+<br>
+<h2><a id="AEN650"></a>6.3. Regular
+cleaning</h2>
+<p>Sometimes one wants to commit a file in a read-only directory
+(read-only for him; one may not have the necessary rights to
+commit). Then, some temporary files are left in the
+chroot's /tmp
+directory. It is your duty to clean up this directory on a regular
+basis (with a cron job, for instance). The temporary files are
+generally named cvs*.</p>
+
+<br>
+
+<p>You may run into problems (so did we!) when configuring this
+setup. Debugging is not an easy task as we run in a special
+environment, with different binary locations, and the CVS protocol
+does not allow a very verbose execution on the server side.</p>
+<p>Our <strong>cvs</strong> wrapper has been extended to be
+compiled with a -DTRACE option, allowing
+tracing the system calls of the cvs server command. This is
+invaluable information, as you can determine exactly, for example,
+which files are missing from the configuration, or if the password
+files are correct.</p>
+<p>Under OpenBSD, <strong>ktrace</strong> is used (it is the
+equivalent of Linux's <strong>strace</strong> or FreeBSD's
+<strong>ptrace</strong>). A statically compiled version is
+already available in /usr/bin, you just
+need to copy it in
+<em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/bin
+and compile your cvs wrapper with -DTRACE
+enabled. The trace output will be in
+<em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/tmp/ktrace.out,
+use the <strong>kdump(1)</strong> utility to view its
+contents.</p>
+<p>Here is a short list of common errors that may be
+encountered:</p>
+<ul>
+<li>
+"can't create temporary
+directory": the
+<em>&lt;BASE&gt;/&lt;project&gt;</em>/chrooted-cvs/tmp
+might not be drwxrwxrwt
+protected.</li>
+<li>
+"Sorry, you don't have read/write
+access to the history file /cvs/CVSROOT/history": the history
+file's group may not be the one of the standard cvs users
+(cvs-devel)</li>
+<li>
+"failed to create lock directory in
+repository `/cvs/CVSROOT': Permission denied": the LockDir
+option may not be activated in
+CVSROOT/config</li>
+<li>
+"Permission denied": verify that
+the <strong>cvs</strong> wrapper was compiled with proper
+chroot declaration.</li>
+<li>
+"cvs [checkout aborted]: end of file
+from server (consult above messages if any)": try to run
+<strong><em>&lt;BASE&gt;</em>/home/
+<em>&lt;logname&gt;</em>/smrsh.bin/cvs</strong>. After runing
+under root, If you have a prompt, check the dependencies of the
+binary "cvs" with the command line : <strong>ldd
+cvs</strong>. If there are dependencies, recompile cvs : add the option
+-static to the last (g)cc compile line.</li></ul>
+
+
+<br>
+
+<p>This document describes in detail a method which allows to setup
+a fairly secure CVS server.</p>
+<p>Even if we tried to test the procedures described here
+thoroughly, we don't pretend to have examined every security
+problem. We might even have "embedded" some problems in the various
+elements we describe here, so please, send us any comments about
+the proposed method.</p>
+<p>If you have any questions or suggestions, we'll be glad to get
+an e-mail sent to:<a href="mailto:idx-chrooted-ssh-cvs@lists.idealx.org">idx-chrooted-ssh-cvs@lists.idealx.org</a>.</p>
+
+<br>
+
+<h3><a id="AEN709"></a>Bibliography</h3>
+<a id="AEN710"></a>
+<p><em>Version Management with CVS</em><em>:</em> <em>for CVS
+1.10.7</em>, Per Cederqvist et al.</p>
+
+
+<p><a href="http://www.loria.fr/%7Emolli/cvs/doc/cvs_toc.html">http://www.loria.fr/~molli/cvs/doc/cvs_toc.html</a></p>
+<a id="AEN719"></a>
+<p><em>Chrooted tunneled read-write CVS server</em><em>:</em>
+<em>HOW-TO</em>, Anton Berezin.</p>
+
+
+<p><a href="http://www.prima.eu.org/tobez/cvs-howto.html">http://www.prima.eu.org/tobez/cvs-howto.html</a></p>
+<a id="AEN728"></a>
+<p><em>Anonymous CVS access via ssh</em>, Joey
+Hess.</p>
+
+
+<p><a href="http://www.kitenet.net/programs/sshcvs/">http://www.kitenet.net/programs/sshcvs/</a></p>
+
+<br>
+
+
+
+<p>Here is the source code for the <strong>run-cvs</strong>
+tool.</p>
+<pre>
+/* wrapper to run cvs chrooted */
+
+/* This program is based on code written by Anton Berezin
+   (http://www.prima.eu.org/tobez/sources/run-cvs.c), which was itself
+   based on code written by www.unixtools.org
+   (http://www.unixtools.org/cvs/run-cvs.c)
+
+   See http://www.idealx.org/prj/idx-chrooted-ssh-cvs/ for a HOWTO
+   describing this tool's use
+*/
+
+/* (c) 2001 IDEALX - http//www.idealx.org */
+
+/* Permission is granted to use, distribute and modify this code for
+   wichever purpose, AT YOUR OWN RISK */
+
+static char rcsid[] = "$Id$";
+
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;fcntl.h&gt; /* open */
+
+
+/* New Root of the chroot-ed wrapped process */
+#ifndef BASE
+# define BASE "/opt/cvs"
+#endif
+
+/* FIXME : Not useful anymore ? */
+#ifndef DEBUG_FILE
+#define DEBUG_FILE "/run-cvs.debug"
+#endif
+
+int debug = 0;
+
+int main(int argc, char *argv[])
+{
+        int res;
+        uid_t uid;
+        int fd;
+
+        /* FIXME : not useful anymore ? */
+        fd = open(DEBUG_FILE, O_RDONLY);
+        if (fd != -1) {
+                debug = 1;
+                close(fd);
+        }
+        /* we get the real uid from the caller */
+        uid = getuid();
+
+        res = chdir(BASE);
+        if ( res ) exit(1); 
+
+        res = chroot(BASE);
+        if ( res ) exit(2); 
+
+        res = setuid(uid);
+        if ( res ) exit(4); 
+
+        if (debug) {
+                execl("/bin/ktrace", "-tc", "-f", "/tmp/ktrace.out",
+                        "/bin/cvs",
+                        "server",
+                        NULL);
+        } else {
+                execl("/bin/cvs", "cvs", 
+                        "server",
+                        NULL);
+        }
+        exit(3);
+}
+
+</pre>
+
+<br>
+
+<p>Version 1.1, March 2000</p>
+
+<p>Copyright (C) 2000 Free Software Foundation, Inc. 59 Temple
+Place, Suite 330, Boston, MA 02111-1307 USA Everyone is permitted
+to copy and distribute verbatim copies of this license document,
+but changing it is not allowed.</p>
+
+<br>
+
+<p>The purpose of this License is to make a manual, textbook, or
+other written document "free" in the sense of freedom: to assure
+everyone the effective freedom to copy and redistribute it, with or
+without modifying it, either commercially or noncommercially.
+Secondarily, this License preserves for the author and publisher a
+way to get credit for their work, while not being considered
+responsible for modifications made by others.</p>
+<p>This License is a kind of "copyleft", which means that
+derivative works of the document must themselves be free in the
+same sense. It complements the GNU General Public License, which is
+a copyleft license designed for free software.</p>
+<p>We have designed this License in order to use it for manuals for
+free software, because free software needs free documentation: a
+free program should come with manuals providing the same freedoms
+that the software does. But this License is not limited to software
+manuals; it can be used for any textual work, regardless of subject
+matter or whether it is published as a printed book. We recommend
+this License principally for works whose purpose is instruction or
+reference.</p>
+
+<br>
+
+<p>This License applies to any manual or other work that contains a
+notice placed by the copyright holder saying it can be distributed
+under the terms of this License. The "Document", below, refers to
+any such manual or work. Any member of the public is a licensee,
+and is addressed as "you".</p>
+<p>A "Modified Version" of the Document means any work containing
+the Document or a portion of it, either copied verbatim, or with
+modifications and/or translated into another language.</p>
+<p>A "Secondary Section" is a named appendix or a front-matter
+section of the Document that deals exclusively with the
+relationship of the publishers or authors of the Document to the
+Document's overall subject (or to related matters) and contains
+nothing that could fall directly within that overall subject. (For
+example, if the Document is in part a textbook of mathematics, a
+Secondary Section may not explain any mathematics.) The
+relationship could be a matter of historical connection with the
+subject or with related matters, or of legal, commercial,
+philosophical, ethical or political position regarding them.</p>
+<p>The "Invariant Sections" are certain Secondary Sections whose
+titles are designated, as being those of Invariant Sections, in the
+notice that says that the Document is released under this
+License.</p>
+<p>The "Cover Texts" are certain short passages of text that are
+listed, as Front-Cover Texts or Back-Cover Texts, in the notice
+that says that the Document is released under this License.</p>
+<p>A "Transparent" copy of the Document means a machine-readable
+copy, represented in a format whose specification is available to
+the general public, whose contents can be viewed and edited
+directly and straightforwardly with generic text editors or (for
+images composed of pixels) generic paint programs or (for drawings)
+some widely available drawing editor, and that is suitable for
+input to text formatters or for automatic translation to a variety
+of formats suitable for input to text formatters. A copy made in an
+otherwise Transparent file format whose markup has been designed to
+thwart or discourage subsequent modification by readers is not
+Transparent. A copy that is not "Transparent" is called
+"Opaque".</p>
+<p>Examples of suitable formats for Transparent copies include
+plain ASCII without markup, Texinfo input format, LaTeX input
+format, SGML or XML using a publicly available DTD, and
+standard-conforming simple HTML designed for human modification.
+Opaque formats include PostScript, PDF, proprietary formats that
+can be read and edited only by proprietary word processors, SGML or
+XML for which the DTD and/or processing tools are not generally
+available, and the machine-generated HTML produced by some word
+processors for output purposes only.</p>
+<p>The "Title Page" means, for a printed book, the title page
+itself, plus such following pages as are needed to hold, legibly,
+the material this License requires to appear in the title page. For
+works in formats which do not have any title page as such, "Title
+Page" means the text near the most prominent appearance of the
+work's title, preceding the beginning of the body of the
+text.</p>
+
+<br>
+
+<p>You may copy and distribute the Document in any medium, either
+commercially or noncommercially, provided that this License, the
+copyright notices, and the license notice saying this License
+applies to the Document are reproduced in all copies, and that you
+add no other conditions whatsoever to those of this License. You
+may not use technical measures to obstruct or control the reading
+or further copying of the copies you make or distribute. However,
+you may accept compensation in exchange for copies. If you
+distribute a large enough number of copies you must also follow the
+conditions in section 3.</p>
+<p>You may also lend copies, under the same conditions stated
+above, and you may publicly display copies.</p>
+
+<br>
+
+<p>If you publish printed copies of the Document numbering more
+than 100, and the Document's license notice requires Cover Texts,
+you must enclose the copies in covers that carry, clearly and
+legibly, all these Cover Texts: Front-Cover Texts on the front
+cover, and Back-Cover Texts on the back cover. Both covers must
+also clearly and legibly identify you as the publisher of these
+copies. The front cover must present the full title with all words
+of the title equally prominent and visible. You may add other
+material on the covers in addition. Copying with changes limited to
+the covers, as long as they preserve the title of the Document and
+satisfy these conditions, can be treated as verbatim copying in
+other respects.</p>
+<p>If the required texts for either cover are too voluminous to fit
+legibly, you should put the first ones listed (as many as fit
+reasonably) on the actual cover, and continue the rest onto
+adjacent pages.</p>
+<p>If you publish or distribute Opaque copies of the Document
+numbering more than 100, you must either include a machine-readable
+Transparent copy along with each Opaque copy, or state in or with
+each Opaque copy a publicly-accessible computer-network location
+containing a complete Transparent copy of the Document, free of
+added material, which the general network-using public has access
+to download anonymously at no charge using public-standard network
+protocols. If you use the latter option, you must take reasonably
+prudent steps, when you begin distribution of Opaque copies in
+quantity, to ensure that this Transparent copy will remain thus
+accessible at the stated location until at least one year after the
+last time you distribute an Opaque copy (directly or through your
+agents or retailers) of that edition to the public.</p>
+<p>It is requested, but not required, that you contact the authors
+of the Document well before redistributing any large number of
+copies, to give them a chance to provide you with an updated
+version of the Document.</p>
+
+<br>
+
+<p>You may copy and distribute a Modified Version of the Document
+under the conditions of sections 2 and 3 above, provided that you
+release the Modified Version under precisely this License, with the
+Modified Version filling the role of the Document, thus licensing
+distribution and modification of the Modified Version to whoever
+possesses a copy of it. In addition, you must do these things in
+the Modified Version:</p>
+<ul>
+<li>
+Use in the Title Page (and on the covers, if any) a title
+distinct from that of the Document, and from those of previous
+versions (which should, if there were any, be listed in the History
+section of the Document). You may use the same title as a previous
+version if the original publisher of that version gives
+permission.</li>
+<li>
+List on the Title Page, as authors, one or more persons or
+entities responsible for authorship of the modifications in the
+Modified Version, together with at least five of the principal
+authors of the Document (all of its principal authors, if it has
+less than five).</li>
+<li>
+State on the Title page the name of the publisher of the
+Modified Version, as the publisher.</li>
+<li>
+Preserve all the copyright notices of the Document.</li>
+<li>
+Add an appropriate copyright notice for your modifications
+adjacent to the other copyright notices.</li>
+<li>
+Include, immediately after the copyright notices, a license
+notice giving the public permission to use the Modified Version
+under the terms of this License, in the form shown in the Addendum
+below.</li>
+<li>
+Preserve in that license notice the full lists of Invariant
+Sections and required Cover Texts given in the Document's license
+notice.</li>
+<li>
+Include an unaltered copy of this License.</li>
+<li>
+Preserve the section entitled "History", and its title, and add
+to it an item stating at least the title, year, new authors, and
+publisher of the Modified Version as given on the Title Page. If
+there is no section entitled "History" in the Document, create one
+stating the title, year, authors, and publisher of the Document as
+given on its Title Page, then add an item describing the Modified
+Version as stated in the previous sentence.</li>
+<li>
+Preserve the network location, if any, given in the Document for
+public access to a Transparent copy of the Document, and likewise
+the network locations given in the Document for previous versions
+it was based on. These may be placed in the "History" section. You
+may omit a network location for a work that was published at least
+four years before the Document itself, or if the original publisher
+of the version it refers to gives permission.</li>
+<li>
+In any section entitled "Acknowledgements" or "Dedications",
+preserve the section's title, and preserve in the section all the
+substance and tone of each of the contributor acknowledgements
+and/or dedications given therein.</li>
+<li>
+Preserve all the Invariant Sections of the Document, unaltered
+in their text and in their titles. Section numbers or the
+equivalent are not considered part of the section titles.</li>
+<li>
+Delete any section entitled "Endorsements". Such a section may
+not be included in the Modified Version.</li>
+<li>
+Do not retitle any existing section as "Endorsements" or to
+conflict in title with any Invariant Section.</li></ul>
+<p>If the Modified Version includes new front-matter sections or
+appendices that qualify as Secondary Sections and contain no
+material copied from the Document, you may at your option designate
+some or all of these sections as invariant. To do this, add their
+titles to the list of Invariant Sections in the Modified Version's
+license notice. These titles must be distinct from any other
+section titles.</p>
+<p>You may add a section entitled "Endorsements", provided it
+contains nothing but endorsements of your Modified Version by
+various parties--for example, statements of peer review or that the
+text has been approved by an organization as the authoritative
+definition of a standard.</p>
+<p>You may add a passage of up to five words as a Front-Cover Text,
+and a passage of up to 25 words as a Back-Cover Text, to the end of
+the list of Cover Texts in the Modified Version. Only one passage
+of Front-Cover Text and one of Back-Cover Text may be added by (or
+through arrangements made by) any one entity. If the Document
+already includes a cover text for the same cover, previously added
+by you or by arrangement made by the same entity you are acting on
+behalf of, you may not add another; but you may replace the old
+one, on explicit permission from the previous publisher that added
+the old one.</p>
+<p>The author(s) and publisher(s) of the Document do not by this
+License give permission to use their names for publicity for or to
+assert or imply endorsement of any Modified Version.</p>
+
+<br>
+
+<p>You may combine the Document with other documents released under
+this License, under the terms defined in section 4 above for
+modified versions, provided that you include in the combination all
+of the Invariant Sections of all of the original documents,
+unmodified, and list them all as Invariant Sections of your
+combined work in its license notice.</p>
+<p>The combined work need only contain one copy of this License,
+and multiple identical Invariant Sections may be replaced with a
+single copy. If there are multiple Invariant Sections with the same
+name but different contents, make the title of each such section
+unique by adding at the end of it, in parentheses, the name of the
+original author or publisher of that section if known, or else a
+unique number. Make the same adjustment to the section titles in
+the list of Invariant Sections in the license notice of the
+combined work.</p>
+<p>In the combination, you must combine any sections entitled
+"History" in the various original documents, forming one section
+entitled "History"; likewise combine any sections entitled
+"Acknowledgements", and any sections entitled "Dedications". You
+must delete all sections entitled "Endorsements."</p>
+
+<br>
+
+<p>You may make a collection consisting of the Document and other
+documents released under this License, and replace the individual
+copies of this License in the various documents with a single copy
+that is included in the collection, provided that you follow the
+rules of this License for verbatim copying of each of the documents
+in all other respects.</p>
+<p>You may extract a single document from such a collection, and
+distribute it individually under this License, provided you insert
+a copy of this License into the extracted document, and follow this
+License in all other respects regarding verbatim copying of that
+document.</p>
+
+<br>
+
+<p>A compilation of the Document or its derivatives with other
+separate and independent documents or works, in or on a volume of a
+storage or distribution medium, does not as a whole count as a
+Modified Version of the Document, provided no compilation copyright
+is claimed for the compilation. Such a compilation is called an
+"aggregate", and this License does not apply to the other
+self-contained works thus compiled with the Document, on account of
+their being thus compiled, if they are not themselves derivative
+works of the Document.</p>
+<p>If the Cover Text requirement of section 3 is applicable to
+these copies of the Document, then if the Document is less than one
+quarter of the entire aggregate, the Document's Cover Texts may be
+placed on covers that surround only the Document within the
+aggregate. Otherwise they must appear on covers around the whole
+aggregate.</p>
+
+<br>
+
+<p>Translation is considered a kind of modification, so you may
+distribute translations of the Document under the terms of section
+4. Replacing Invariant Sections with translations requires special
+permission from their copyright holders, but you may include
+translations of some or all Invariant Sections in addition to the
+original versions of these Invariant Sections. You may include a
+translation of this License provided that you also include the
+original English version of this License. In case of a disagreement
+between the translation and the original English version of this
+License, the original English version will prevail.</p>
+
+<br>
+
+<p>You may not copy, modify, sublicense, or distribute the Document
+except as expressly provided for under this License. Any other
+attempt to copy, modify, sublicense or distribute the Document is
+void, and will automatically terminate your rights under this
+License. However, parties who have received copies, or rights, from
+you under this License will not have their licenses terminated so
+long as such parties remain in full compliance.</p>
+
+<br>
+
+<p>The Free Software Foundation may publish new, revised versions
+of the GNU Free Documentation License from time to time. Such new
+versions will be similar in spirit to the present version, but may
+differ in detail to address new problems or concerns. See
+<a href="http://www.gnu.org/copyleft/">http://www.gnu.org/copyleft/</a>.</p>
+<p>Each version of the License is given a distinguishing version
+number. If the Document specifies that a particular numbered
+version of this License "or any later version" applies to it, you
+have the option of following the terms and conditions either of
+that specified version or of any later version that has been
+published (not as a draft) by the Free Software Foundation. If the
+Document does not specify a version number of this License, you may
+choose any version ever published (not as a draft) by the Free
+Software Foundation.</p>
+
+<br>
+
+<p>To use this License in a document you have written, include a
+copy of the License in the document and put the following copyright
+and license notices just after the title page:</p>
+
+<p>
+ Copyright (c) YEAR YOUR NAME. Permission is granted to
+copy, distribute and/or modify this document under the terms of the
+GNU Free Documentation License, Version 1.1 or any later version
+published by the Free Software Foundation; with the Invariant
+Sections being LIST THEIR TITLES, with the Front-Cover Texts being
+LIST, and with the Back-Cover Texts being LIST. A copy of the
+license is included in the section entitled "GNU Free Documentation
+License".</p>
+<p>If you have no Invariant Sections, write "with no Invariant
+Sections" instead of saying which ones are invariant. If you have
+no Front-Cover Texts, write "no Front-Cover Texts" instead of
+"Front-Cover Texts being LIST"; likewise for Back-Cover Texts.</p>
+<p>If your document contains nontrivial examples of program code,
+we recommend releasing these examples in parallel under your choice
+of free software license, such as the GNU General Public License,
+to permit their use in free software.</p>
+</div>
+    <div id="footer">
+          Copyright ©<a href="http://www.idealx.com/"> IDEALX S.A.S</a> 2005 - All rights reserved -
+		  <a href="http://www.idealx.com/search.en.html" accesskey="3">Search</a>&nbsp; -
+			  <a href="http://www.idealx.org/accessibility.en.html">Keyboard shortcuts and accessibility</a>&nbsp;<br><a href="http://validator.w3.org/check/referer" title="Markup validation for this page"><img src="chrooted-ssh-cvs-server.en_files/w3_xhtml11.png" alt="Standard-compliant XHTML" height="15" width="80"></a><a href="http://jigsaw.w3.org/css-validator/check/referer" title="Style Sheet validation for this page"><img src="chrooted-ssh-cvs-server.en_files/w3_css2.png" alt="Standard-compliant CSS 2" height="15" width="80"></a></div>
+  </div></body></html>
