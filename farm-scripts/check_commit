@@ -1,7 +1,18 @@
-CHANGE=no
+#!/bin/bash
+# This script checks to see if anything has been committed to the
+# cvs server.  It works by reading a small file that is updated
+# on every commit.  This reduces the network traffic, as compared
+# to simply doing a complete cvs update just to check for changes.
+# It is normally called every few minutes, and returns success if
+# something has been committed, or failure otherwise.  It will 
+# also return success if it has been more than 12 hours since the
+# last time it returned success.  This is a precaution to make sure
+# that no changes get missed.
+
 # fetch latest commit file from cvs server
 rm -f last_commit
 wget -q -T 10 cvs.linuxcnc.org/last_commit
+CHANGE=no
 # did we get a file?
 if [ -f last_commit ] ; then
   # have new file, is there an old one? 
@@ -17,21 +28,23 @@ if [ -f last_commit ] ; then
     CHANGE=yes
   fi
 fi
-# check time since last build attempt
-if [ ! -f last_build ] ; then
-  # no last build, force one
+# check time since we last reported a change
+if [ ! -f last_change ] ; then
+  # no record of last reported change, force one
   CHANGE=yes
 else
-  AGE=$(($(date +%s)-$(cat last_build)))
+  # AGE = time in seconds since last change
+  AGE=$(($(date +%s)-$(cat last_change)))
   if [ $(($AGE>43200)) -eq 1 ] ; then
     CHANGE=yes
   fi
 fi
 if [ $CHANGE = yes ] ; then
-  # update last build timestamp
-  date +%s >last_build
+  # update last change timestamp
+  date +%s >last_change
   # indicate a change to caller
   exit 0
 else
+  # no changes to report
   exit -1
 fi
