@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# usage: check_build <build_dir>
+# usage: build <build_dir>
 #
 # This script is passed the name of a directory that contains
 # a cvs checkout.  It switches to that directory and looks for a
@@ -14,10 +14,10 @@
 # Function to write a message to $LOGFILE or stdout
 
 function MSG {
-    if [ -z $LOGFILE ] ; then 
-        echo `date -u "+%F %T check_build: $BUILD_DIR : $1"`
+    if [ -z $LOGFILE ] ; then
+        echo `date -u "+%F %T build: $BUILD_DIR : $1"`
     else
-        date -u "+%F %T check_build: $BUILD_DIR : $1" >>$LOGFILE
+        date -u "+%F %T build: $BUILD_DIR : $1" >>$LOGFILE
     fi
 }
 
