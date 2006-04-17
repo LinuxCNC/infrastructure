@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>EMC Compile Farm</title>
+</head>
+<body>
+
+<!--#config errmsg="<!-- no results for this slot -->"-->
+
+<h2>Results of latest automated compile tests</h2>
+<h3>THIS IS A TEST PAGE ONLY</h3>
+<p>The real results are at index.html (for now)</p>
+
+<p>Clicking on the last build date in the tables below will take you to the 
+associated log file so you can see what happened.  Clicking on the system 
+name will show you a history of all builds on that system.</p>
+<h3>EMC2: HEAD</h3>
+<p>The EMC2 tree is the focus of new development.  The head of the tree is the mainstream
+version of EMC2.  Other branches are used for experimental work, things that will break the
+main tree, or variations that need to remain independent of the main tree for one reason
+or another.</p>
+
+<table border="1" cellpadding="10" cellspacing="0" >
+ <tbody>
+ <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
+ <tr align="center"><!--#include file="emc2head_slot2.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2head_slot3.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2head_slot4.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2head_slot5.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2head_slot6.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2head_slot7.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2head_slot8.ssi"--></tr>
+ </tbody>
+</table>
+
+<h3>EMC2: TESTING</h3>
+<p>The EMC2 TESTING tree is stable development version.  During the period prior to a
+release it is the release candidate (a tag on the release branch).  After the release
+the TESTING tag moves back to the trunk and becomes the release candidate for the next
+release.</p>
+
+<table border="1" cellpadding="10" cellspacing="0" >
+ <tbody>
+ <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
+ <tr align="center"><!--#include file="emc2testing_slot2.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2testing_slot3.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2testing_slot4.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2testing_slot5.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2testing_slot6.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2testing_slot7.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2testing_slot8.ssi"--></tr>
+ </tbody>
+</table>
+
+<h3>RCSLIB</h3>
+<p>The RCSLIB module is used by EMC1. No further development (except for minor
+bugfixes) is anticipated here. This module will remain in the compile farm for
+a while, but may eventualy be removed. Note that the realtime portions of RCSLIB
+do not (and will not) compile under kernel 2.6, so the results reported for 
+BDI-4 systems are for the user space parts of RCSLIB only.
+</p>
+
+<table border="1" cellpadding="10" cellspacing="0" >
+ <tbody>
+ <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
+ <tr align="center"><!--#include file="rcslib_slot2.ssi"--></tr>
+ <tr align="center"><!--#include file="rcslib_slot3.ssi"--></tr>
+ <tr align="center"><!--#include file="rcslib_slot4.ssi"--></tr>
+ <tr align="center"><!--#include file="rcslib_slot5.ssi"--></tr>
+ <tr align="center"><!--#include file="rcslib_slot6.ssi"--></tr>
+ <tr align="center"><!--#include file="rcslib_slot7.ssi"--></tr>
+ <tr align="center"><!--#include file="rcslib_slot8.ssi"--></tr>
+ </tbody>
+</table>
+
+<h3>EMC (aka EMC1)</h3>
+<p>The EMC module contains EMC1, the original version of EMC. No further
+development (except for minor bugfixes) is anticipated here. This module 
+will remain in the compile farm for a while, but may eventualy be removed.
+Note that the realtime portions of ECM1 do not (and will not) compile under
+kernel 2.6, so the results reported for BDI-4 systems are for the user space
+parts of EMC1 only.</p>
+
+<table border="1" cellpadding="10" cellspacing="0" >
+ <tbody>
+ <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
+ <tr align="center"><!--#include file="emc_slot2.ssi"--></tr>
+ <tr align="center"><!--#include file="emc_slot3.ssi"--></tr>
+ <tr align="center"><!--#include file="emc_slot4.ssi"--></tr>
+ <tr align="center"><!--#include file="emc_slot5.ssi"--></tr>
+ <tr align="center"><!--#include file="emc_slot6.ssi"--></tr>
+ <tr align="center"><!--#include file="emc_slot7.ssi"--></tr>
+ <tr align="center"><!--#include file="emc_slot8.ssi"--></tr>
+ </tbody>
+</table>
+
+</body></html>
