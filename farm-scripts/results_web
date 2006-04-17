@@ -75,8 +75,6 @@ if [ -z $1 ] ; then
 fi
 BUILD_DIR=$1
 BUILD_NAME=`echo $BUILD_DIR | sed s#^.*/##`
-echo "DIR is $BUILD_DIR"
-echo "NAME is $BUILD_NAME"
 if [ ! -f sysname  ] ; then
     MSG "sysname: file not found"
     exit -1
@@ -94,7 +92,6 @@ if [ -z $2 ] ; then
     exit -1
 fi
 RESULT=$2
-echo "RESULT is $RESULT"
 if [ "$RESULT" = "PASS" ] ; then
     IMAGE=pass.png
     ALTTEXT=PASSED

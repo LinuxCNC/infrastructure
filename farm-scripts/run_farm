@@ -22,7 +22,7 @@ function MSG {
 # main script starts here
 
 # comment out for results to stdout
-#export LOGFILE=`pwd`/farm_log
+export LOGFILE=`pwd`/farm_log
 
 # check requirements
 if [ ! -f sysname  ] ; then
