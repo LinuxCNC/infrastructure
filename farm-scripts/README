@@ -41,10 +41,24 @@ Command line HTTP client: wget
 CVS client: cvs
 
 EMAIL sender: esmtp
-  Use the sample esmtprc file from cvs.  Change USERNAME and PASSWORD to the
-  name and password of your email account on the linuxcnc.org server (contact
-  SWPadnos for an account).  Move the file to your home directory, rename it
-  to .esmtprc, and change its permissions to 600.
+
+  Install esmtp (and if needed, libesmtp).
+  Create .esmtprc in your home directory and add the following text:
+
+    # Compile farm configuration file for ESMTP.
+    #
+    # Set SMTP host and service (port)
+    hostname = mail.linuxcnc.org:587
+    #
+    # Set the user name
+    username = USERNAME
+    #
+    # Set the password
+    password = PASSWORD
+
+  Change USERNAME and PASSWORD to the name and password of your email
+  account on the linuxcnc.org server (contact SWPadnos for an account).
+  Change the permissions on .esmtprc to 600.
 
 
 Next, check out the farm scripts:
