@@ -1,0 +1,98 @@
+#!/bin/bash
+#
+# usage: check_cvs <cvs_dir>
+#
+# This script is passed the name of a directory that contains a
+# cvs checkout.  It does a cvs update in that directory, and if
+# any files have changed, it returns success.  If there are no
+# changes, or if the cvs update fails for some reason, it returns
+# failure.  The output of the cvs update is saved in cvs_log in
+# the checkout directory.  The log is overwritten each time the
+# script runs.
+#
+# The script prints some messages to $LOGFILE, or stdout if
+# $LOGFILE is undefined
+
+# Function to write a message to $LOGFILE or stdout
+
+function MSG {
+    if [ -z $LOGFILE ] ; then 
+        echo `date -u "+%F %T check_cvs: $CVS_DIR: $1"`
+    else
+        date -u "+%F %T check_cvs: $CVS_DIR: $1" >>$LOGFILE
+    fi
+}
+
+# main script starts here
+
+if [ -z $1 ] ; then
+    MSG "no directory specified"
+    exit -1
+fi
+CVS_DIR=$1
+if [ ! -d $CVS_DIR ] ; then
+    MSG "no such directory"
+    exit -1
+fi
+OLD_DIR=`pwd`
+cd $CVS_DIR
+# first remove any old cvs_log file that is laying around
+rm -f cvs_log
+# number of retries before giving up
+LOOP=3
+MSG "updating"
+while [ $LOOP -gt 0 ] ; do
+    # start a subshell, enable job control
+    ( set -m
+    # start a "watchdog timer" in the background, save its pid
+    sleep 120 & timerpid=$!
+    # start the cvs update, kill watchdog on completion, run in background
+    ( cvs -z5 -q up -dP 1>>cvs_log 2>>cvs_log && echo "CVS_SUCCESS" >>cvs_log ; kill $timerpid ) &
+    # wait for timeout (or for cvs to finish and kill the timer, which normally happens)
+    wait $timerpid
+    # if the cvs job is still going, kill it
+    kill %+
+    # end subshell, discard job completion notification messages
+    ) 2>/dev/null
+    # check log to see if cvs succeeded
+    if grep -q CVS_SUCCESS cvs_log ; then 
+        break
+    fi
+    LOOP=$((${LOOP}-1))
+    MSG retry
+done
+if [ $LOOP -eq 0 ] ; then
+    MSG "cvs update failed"
+    exit -1
+fi
+# parse the file looking for "U" or "P" that indicates modified
+# files.  also look for "A", "R", "M", or "C" that indicates local
+# changes that shouldn't happen.
+RESULT=`cat cvs_log | awk -- \
+        'BEGIN { errors=0 ; updates=0 } \
+        $1 ~ /^[ARMC]$/ { errors++ } \
+        $1 ~ /^[UP]$/ { updates++ } \
+        END { result="NOTHING" ; \
+              if ( updates > 0 ) { result="UPDATE" } ; \
+              if ( errors > 0 ) { result="ERROR" } ; \
+              printf ( "%s\n", result )
+            }'`
+# switch back to original directory
+cd $OLD_DIR
+# decide what is do be done
+if [ "$RESULT" = "ERROR" ] ; then
+    MSG "local repository has been modified"
+    exit -1
+fi
+if [ "$RESULT" = "NOTHING" ] ; then
+    MSG "no changes"
+    exit -1
+fi
+# if we get here, something in the checkout has changed
+MSG "change detected"
+exit 0
+
+
+
+
+

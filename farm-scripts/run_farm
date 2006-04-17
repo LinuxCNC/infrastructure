@@ -43,7 +43,7 @@ while true ; do
         TREES=`cat trees`
         for TREE in $TREES ; do
             if ./check_cvs $TREE ; then
-                if ./check_build $TREE ; then
+                if ./build $TREE ; then
                     ./results_web $TREE PASS
                 else
                     ./results_web $TREE FAIL
