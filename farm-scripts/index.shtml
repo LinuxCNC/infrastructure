@@ -7,8 +7,6 @@
 <!--#config errmsg="<!-- no results for this slot -->"-->
 
 <h2>Results of latest automated compile tests</h2>
-<h3>THIS IS A TEST PAGE ONLY</h3>
-<p>The real results are at index.html (for now)</p>
 
 <p>Clicking on the last build date in the tables below will take you to the 
 associated log file so you can see what happened.  Clicking on the system 
