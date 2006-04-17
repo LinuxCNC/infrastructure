@@ -1,13 +1,29 @@
 #!/bin/bash
+#
+# usage: check_commit
+#
 # This script checks to see if anything has been committed to the
 # cvs server.  It works by reading a small file that is updated
 # on every commit.  This reduces the network traffic, as compared
-# to simply doing a complete cvs update just to check for changes.
-# It is normally called every few minutes, and returns success if
-# something has been committed, or failure otherwise.  It will 
-# also return success if it has been more than 12 hours since the
-# last time it returned success.  This is a precaution to make sure
-# that no changes get missed.
+# to simply doing a complete cvs update on several checkouts just
+# to check for changes.  It is normally called every few minutes,
+# and returns success if something has been committed, or failure
+# otherwise.  It will also return success if it has been more than
+# 12 hours since the last time it returned success.  This is a 
+# precaution to make sure that no changes get missed.
+#
+# The script prints some messages to $LOGFILE, or stdout if
+# $LOGFILE is undefined
+
+# Function to write a message to $LOGFILE or stdout
+
+function MSG {
+    if [ -z $LOGFILE ] ; then 
+        echo `date -u "+%F %T check_commit: $1"`
+    else
+        date -u "+%F %T check_commit: $1" >>$LOGFILE
+    fi
+}
 
 # fetch latest commit file from cvs server
 rm -f last_commit
@@ -21,22 +37,26 @@ if [ -f last_commit ] ; then
     if ! `diff -q last_commit last_commit_old >/dev/null` ; then
       cp last_commit last_commit_old
       CHANGE=yes
+      MSG "new commit detected"
     fi
   else
     # have new file, no old one, treat as a change
     cp last_commit last_commit_old
     CHANGE=yes
+    MSG "last_commit missing"
   fi
 fi
 # check time since we last reported a change
 if [ ! -f last_change ] ; then
   # no record of last reported change, force one
   CHANGE=yes
+  MSG "last_change missing"
 else
   # AGE = time in seconds since last change
   AGE=$(($(date +%s)-$(cat last_change)))
   if [ $(($AGE>43200)) -eq 1 ] ; then
     CHANGE=yes
+    MSG "12 hours since last change"
   fi
 fi
 if [ $CHANGE = yes ] ; then
