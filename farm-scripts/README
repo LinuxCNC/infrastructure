@@ -1,0 +1,117 @@
+Compile farm setup notes
+
+I hope to eventually make it possible for anyone to host a compile farm "slot".
+(I use the term slot because thats how the blades in the current compile farm
+are labeled, but any ordinary PC could serve as a "slot".)
+
+Security issues:
+
+The farm should be run by a normal user.  It can be either your normal account on
+the box, or an account dedicated to farm operations (the latter is more secure).
+
+An unavoidable function of the farm is to download a configure script from CVS
+and run it on the local machine without human intervention.  If someone commits
+a trojan configure script to CVS, it will run on the farm machine within 5 to
+10 minutes of the commit.  So you do _NOT_ want to be running the farm as root.
+In addition, the farm user should not be able to use passwordless sudo or any
+other trick to escalate privliges.  (NOTE: a number of BDI distros come with
+passwordless sudo by default, which is very insecure.  I solved this on my farm
+slots by completely disabling sudo - I changed the permissions (as root) on
+the sudo binary making it impossible to execute.  If I need to be root for
+admin on the box I use su and give the root password.
+
+
+First, install all needed applications:
+
+SSH client: openssh
+  Need to be able to ssh into jmkasunich@linuxcnc.org without entering
+  a password.  I did that by copying my private key to all the farm slots,
+  so they would all be "me", then logging in (with a password) and appending
+  my public key "id_rsa.pub" to "~/.ssh/authorized_keys".  (Note, .ssh 
+  should have permissions 700, files in it, 600.)  If other people are
+  going to set up farm slots, this will need changed.  One possibility
+  is for them to send me their key and I add it to authorized_keys, but
+  that gives them total access to my shell account on linuxcnc.org.  Better
+  would be to set up a user account dedicated to the farm.  It might also
+  be possible to use ssh configuration to limit them to doing specific 
+  things.
+
+Command line HTTP client: wget
+
+CVS client: cvs
+
+EMAIL sender: esmtp
+  Use the sample esmtprc file from cvs.  Change USERNAME and PASSWORD to the
+  name and password of your email account on the linuxcnc.org server (contact
+  SWPadnos for an account).  Move the file to your home directory, rename it
+  to .esmtprc, and change its permissions to 600.
+
+
+Next, check out the farm scripts:
+
+  $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d farm infrastructure/farm-scripts
+
+Switch to farm directory
+
+  $ cd farm
+
+Check out the build trees
+
+  $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2head emc2
+  $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2testing -r TESTING emc2
+  $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co emc
+  $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co rcslib
+
+For some reason, if you are in a cvs directory (the farm directory) and do
+a checkout, CVS wants to add the newly checked out tree to the top level
+(making it part of the farm checkout).  This would cause a cvs update in
+the top level farm directory to start recursing down into the individual 
+checkouts, which is NOT good.  Fortunately we can deal with it.  When you
+do the checkout, CVS doesn't actually add it right away, it just places
+some cvs add commands in CVS/Entries.Log:
+
+  $ cat CVS/Entries.Log
+  A D/emc2head////
+  A D/emc2testing////
+  A D/emc////
+  A D/rcslib////
+
+The cure is very easy - delete CVS/Entries.Log
+
+  $ rm CVS/Entries.Log
+
+Create files with the system name and slot number:
+
+  $ echo "Ubuntu 5.10" >sysname
+  $ echo "6" >slot
+
+Create a file telling the system what trees to build:
+
+  $ cat emc2head >trees
+  $ cat emc2testing >>trees
+  $ cat rcslib >>trees
+  $ cat emc >>trees
+
+(the last two can be left out on systems with 2.6 kernels)
+
+Copy build scripts into the checkout directories:
+
+  $ cp rcs_build_slot2 rcslib/farm_build
+  $ cp emc_build_slot2 emc/farm_build
+  $ cp emc2_build emc2head/farm_build
+  $ cp emc2_build emc2testing/farm_build
+
+Note that rcslib and emc(1) have slot specific build scripts, while EMC2
+uses the same script for all slots (to date).  If you find that a system
+needs special build options (passed to ./configure for example), make a
+slot specific build script, and commit it to the infrastructure/farm-scripts
+tree.  (Note that the need for such a script might be considered a bug, and
+it would be better to solve the problem in a way that lets the same build
+instructions be used for all systems.)
+
+Start the scripts:
+
+  $ ./run_farm
+
+That's it!
+
