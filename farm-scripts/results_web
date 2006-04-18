@@ -79,7 +79,7 @@ if [ ! -f sysname  ] ; then
     MSG "sysname: file not found"
     exit -1
 else
-    SYSNAME=`cat sysname`
+    SYSNAME="`cat sysname` (`uname -r`)"
 fi
 if [ ! -f slot  ] ; then
     MSG "slot: file not found"
@@ -116,7 +116,7 @@ if [ ! -f $BUILD_DIR/history_log ] ; then
 fi
 BUILD_DATE=`tail -n 1 $BUILD_DIR/history_log | sed s/PASSED// | sed s/FAILED//`
 # create SSI file (to be included in main webpage)
-echo "<td>$SLOT</td><td><a href=\"${BUILD_NAME}_slot${SLOT}_history.txt\">${SYSNAME} (`uname -r`)</a></td><td><a href=\"${BUILD_NAME}_slot${SLOT}_log.txt\">$BUILD_DATE</a></td><td><img src=\"${IMAGE}\" alt=\"${ALTTEXT}\"></td>" >temp.ssi
+echo "<td>$SLOT</td><td><a href=\"${BUILD_NAME}_slot${SLOT}_history.txt\">${SYSNAME}</a></td><td><a href=\"${BUILD_NAME}_slot${SLOT}_log.txt\">$BUILD_DATE</a></td><td><img src=\"${IMAGE}\" alt=\"${ALTTEXT}\"></td>" >temp.ssi
 
 UPLOAD_DIR=jmkasunich@linuxcnc.org:compile_farm
 
