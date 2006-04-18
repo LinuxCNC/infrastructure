@@ -107,15 +107,30 @@ else
     MSG "$RESULT: invalid result specified"
     exit -1
 fi
+if [ ! -d $BUILD_DIR  ] ; then
+    MSG "no such directory"
+    exit -1
+fi
+if [ ! -f $BUILD_DIR/history_log ] ; then
+    MSG "history_log: file not found"
+    exit -1
+fi
+BUILD_DATE=`tail -n 1 $BUILD_DIR/history_log | sed s/PASSED// | sed s/FAILED//`
 # create email message
 echo "From: EMC compile farm <jmkasunich@linuxcnc.org>" >list.msg
-#echo "To: emc-commit@lists.sourceforge.net" >>list.msg
-echo "To: jmkasunich@att.net" >>list.msg
+echo "To: emc-commit@lists.sourceforge.net" >>list.msg
 echo "Subject: $RESULT: $BUILD_NAME on $SYSNAME" >>list.msg
 echo "" >>list.msg
-echo "Compile farm build of $BUILD_NAME on $SYSNAME ${RESULT}ED" >>list.msg
-echo "Build log is at http://linuxcnc.org/compile_farm/${BUILD_NAME}_slot${SLOT}_log.txt" >>list.msg
-echo "Complete compile farm results at http://linuxcnc.org/compile_farm/index.shtml" >>list.msg
+echo "Target: $BUILD_NAME" >>list.msg
+echo "System: $SYSNAME" >>list.msg
+echo "Date:   $BUILD_DATE" >>list.msg
+echo "Result: $RESULT" >>list.msg
 echo "" >>list.msg
-
-MAIL list.msg
+echo "Build log:" >>list.msg
+echo "  http://linuxcnc.org/compile_farm/${BUILD_NAME}_slot${SLOT}_log.txt" >>list.msg
+echo "" >>list.msg
+echo "Complete compile farm results:" >>list.msg
+echo "  http://linuxcnc.org/compile_farm/index.shtml" >>list.msg
+echo "" >>list.msg
+# send it
+EMAIL list.msg

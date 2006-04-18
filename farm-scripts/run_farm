@@ -44,9 +44,12 @@ while true ; do
         for TREE in $TREES ; do
             if ./check_cvs $TREE ; then
                 if ./build $TREE ; then
+                    # passed: post on web, don't spam list
                     ./results_web $TREE PASS
                 else
+                    # failed: post on web and list
                     ./results_web $TREE FAIL
+                    ./results_list $TREE FAIL
                 fi
             fi
 	done
