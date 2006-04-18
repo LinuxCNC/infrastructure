@@ -28,6 +28,19 @@ if [ -z $1 ] ; then
     exit -1
 fi
 BUILD_DIR=$1
+BUILD_NAME=`echo $BUILD_DIR | sed s#^.*/##`
+if [ ! -f sysname  ] ; then
+    MSG "sysname: file not found"
+    exit -1
+else
+    SYSNAME="`cat sysname` (`uname -r`)"
+fi
+if [ ! -f slot  ] ; then
+    MSG "slot: file not found"
+    exit -1
+else
+    SLOT=`cat slot`
+fi
 if [ ! -d $BUILD_DIR  ] ; then
     MSG "no such directory"
     exit -1
@@ -41,8 +54,8 @@ fi
 MSG "start build"
 # make a header for the build log
 echo >build_log
-echo "BUILD_DIR : $BUILD_DIR " >>build_log
-echo "SYSTEM:  $SYSTEM (farm slot $SLOT)" >>build_log
+echo "BUILD : $BUILD_NAME " >>build_log
+echo "SYSTEM: $SYSNAME (slot $SLOT)" >>build_log
 echo >>build_log
 date -u +"build started at %F %T" >>build_log
 echo >>build_log
