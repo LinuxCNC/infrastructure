@@ -109,28 +109,28 @@ else
     exit -1
 fi
 # create email message
-echo "From: EMC compile farm <jmkasunich@linuxcnc.org>" >list.msg
-echo "To: cia@cia.navi.cx" >>list.msg
-echo "Content-type: text/xml" >>list.msg
-echo "Subject: DeliverXML" >>list.msg
-echo "" >>list.msg
-echo "<message>" >>list.msg
-echo " <generator>" >>list.msg
-echo "  <name>EMC compile farm CIA script</name>" >>list.msg
-echo "  <version>1.0</version>" >>list.msg
-echo " </generator>" >>list.msg
-echo " <source>" >>list.msg
-echo "  <project>EMC</project>" >>list.msg
-echo "  <module>${BUILD_NAME}</module>" >>list.msg
-echo "  <branch>${SYSNAME}</branch>" >>list.msg
-echo " </source>" >>list.msg
-echo " <body>" >>list.msg
-echo "  <commit>" >>list.msg
-echo "   <author>compile-farm</author>" >>list.msg
-echo "   <log>build ${RESULT}ED ; see http://linuxcnc.org/compile_farm/${BUILD_NAME}_slot${SLOT}_log.txt" >>list.msg
-echo "  </commit>" >>list.msg
-echo " </body>" >>list.msg
-echo "</message>" >>list.msg
-echo "" >>list.msg
+echo "From: EMC compile farm <jmkasunich@linuxcnc.org>" >cia.msg
+echo "To: cia@cia.navi.cx" >>cia.msg
+echo "Content-type: text/xml" >>cia.msg
+echo "Subject: DeliverXML" >>cia.msg
+echo "" >>cia.msg
+echo "<message>" >>cia.msg
+echo " <generator>" >>cia.msg
+echo "  <name>EMC compile farm CIA script</name>" >>cia.msg
+echo "  <version>1.0</version>" >>cia.msg
+echo " </generator>" >>cia.msg
+echo " <source>" >>cia.msg
+echo "  <project>EMC</project>" >>cia.msg
+echo "  <module>${BUILD_NAME}</module>" >>cia.msg
+echo "  <branch>${SYSNAME}</branch>" >>cia.msg
+echo " </source>" >>cia.msg
+echo " <body>" >>cia.msg
+echo "  <commit>" >>cia.msg
+echo "   <author>compile-farm</author>" >>cia.msg
+echo "   <log>build ${RESULT}ED ; see http://linuxcnc.org/compile_farm/${BUILD_NAME}_slot${SLOT}_log.txt</log>" >>cia.msg
+echo "  </commit>" >>cia.msg
+echo " </body>" >>cia.msg
+echo "</message>" >>cia.msg
+echo "" >>cia.msg
 # send it
-EMAIL list.msg
+EMAIL cia.msg
