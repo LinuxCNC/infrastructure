@@ -127,7 +127,11 @@ echo " </source>" >>cia.msg
 echo " <body>" >>cia.msg
 echo "  <commit>" >>cia.msg
 echo "   <author>compile-farm</author>" >>cia.msg
-echo "   <log>build ${RESULT}ED ; see http://linuxcnc.org/compile_farm/${BUILD_NAME}_slot${SLOT}_log.txt</log>" >>cia.msg
+if [ "$RESULT" = "PASS" ] ; then
+    echo "   <log>build PASSED</log>" >>cia.msg
+else
+    echo "   <log>build FAILED ; see http://linuxcnc.org/compile_farm/${BUILD_NAME}_slot${SLOT}_log.txt</log>" >>cia.msg
+fi
 echo "  </commit>" >>cia.msg
 echo " </body>" >>cia.msg
 echo "</message>" >>cia.msg

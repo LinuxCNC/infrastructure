@@ -30,22 +30,20 @@ or another.</p>
  </tbody>
 </table>
 
-<h3>EMC2: TESTING</h3>
-<p>The EMC2 TESTING tree is stable development version.  During the period prior to a
-release it is the release candidate (a tag on the release branch).  After the release
-the TESTING tag moves back to the trunk and becomes the release candidate for the next
-release.</p>
+<h3>EMC2: V2.0 Branch</h3>
+<p>The v2_0_branch is the stable release branch for version 2.0.  At this time it is
+only getting bugfixes, we are getting very close to an official release.</p>
 
 <table border="1" cellpadding="10" cellspacing="0" >
  <tbody>
  <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
- <tr align="center"><!--#include file="emc2testing_slot2.ssi"--></tr>
- <tr align="center"><!--#include file="emc2testing_slot3.ssi"--></tr>
- <tr align="center"><!--#include file="emc2testing_slot4.ssi"--></tr>
- <tr align="center"><!--#include file="emc2testing_slot5.ssi"--></tr>
- <tr align="center"><!--#include file="emc2testing_slot6.ssi"--></tr>
- <tr align="center"><!--#include file="emc2testing_slot7.ssi"--></tr>
- <tr align="center"><!--#include file="emc2testing_slot8.ssi"--></tr>
+ <tr align="center"><!--#include file="v2_0_branch_slot2.ssi"--></tr>
+ <tr align="center"><!--#include file="v2_0_branch_slot3.ssi"--></tr>
+ <tr align="center"><!--#include file="v2_0_branch_slot4.ssi"--></tr>
+ <tr align="center"><!--#include file="v2_0_branch_slot5.ssi"--></tr>
+ <tr align="center"><!--#include file="v2_0_branch_slot6.ssi"--></tr>
+ <tr align="center"><!--#include file="v2_0_branch_slot7.ssi"--></tr>
+ <tr align="center"><!--#include file="v2_0_branch_slot8.ssi"--></tr>
  </tbody>
 </table>
 
