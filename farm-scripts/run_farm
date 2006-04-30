@@ -43,7 +43,7 @@ while true ; do
         TREES=`cat trees`
         for TREE in $TREES ; do
             if ./check_cvs $TREE ; then
-                LAST_RESULT=`tail -n 1 $TREE/history_log | grep -o "....ED"`
+                LAST_RESULT=`tail -n 1 $TREE/history_log | cut -d " " -f 3`
                 if ./build $TREE ; then
                     # passed: post on web
                     ./results_web $TREE PASS
