@@ -43,10 +43,16 @@ while true ; do
         TREES=`cat trees`
         for TREE in $TREES ; do
             if ./check_cvs $TREE ; then
+                LAST_RESULT=`tail -n 1 $TREE/history_log | grep -o "....ED"`
                 if ./build $TREE ; then
-                    # passed: post on web and IRC, don't spam list
+                    # passed: post on web
                     ./results_web $TREE PASS
-                    ./results_cia $TREE PASS
+                    # post on IRC only if previous attempt failed
+                    if [ ! "$LAST_RESULT" = "PASSED" ] ; then
+                        ./results_cia $TREE PASS
+                    fi
+                    # don't spam list
+                    # ./results_list $TREE PASS
                 else
                     # failed: post on web, IRC, and list
                     ./results_web $TREE FAIL
