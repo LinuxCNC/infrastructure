@@ -42,6 +42,7 @@ rcsdiff() {
     ;;
     esac
   done
+  [ $linecount -gt 100 ] && echo "[$(($linecount-100)) more lines of diff suppressed]"
 }
 
 rlog() {
