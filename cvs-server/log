@@ -31,17 +31,13 @@ rcsdiff() {
   linecount=0
   now=no
   echo
-  /bin/rcsdiff -u -r"$1" -r"$2" /cvs/"$3",v 2>&1 |while read line; do
+  /bin/rcsdiff -u -r"$1" -r"$2" /cvs/"$3",v 2>&1 |while IFS= read line; do
     case "$line" in
     diff*)
       now=yes
     ;;
-    +*|-*|@*)
-      [ $now = yes -a $linecount -le 100 ] && echo "$line"
-      linecount=$(($linecount+1))
-    ;;
     *)
-      [ $now = yes -a $linecount -le 100 ] && echo " $line"
+      [ $now = yes -a $linecount -le 100 ] && echo "$line"
       linecount=$(($linecount+1))
     ;;
     esac
