@@ -27,6 +27,27 @@ fi
 
 dir="$1"; shift
 
+rcsdiff() {
+  linecount=0
+  now=no
+  echo
+  /bin/rcsdiff -u -r"$1" -r"$2" /cvs/"$3",v 2>&1 |while read line; do
+    case "$line" in
+    diff*)
+      now=yes
+    ;;
+    +*|-*|@*)
+      [ $now = yes -a $linecount -le 100 ] && echo "$line"
+      linecount=$(($linecount+1))
+    ;;
+    *)
+      [ $now = yes -a $linecount -le 100 ] && echo " $line"
+      linecount=$(($linecount+1))
+    ;;
+    esac
+  done
+}
+
 rlog() {
   now=no
   echo
@@ -73,6 +94,7 @@ for i; do
       echo
       echo Branch: "$tag"
       rlog "$after" "$dir/$file"
+      rcsdiff "$before" "$after" "$dir/$file"
     ;;
   esac
   echo
