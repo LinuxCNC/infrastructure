@@ -31,7 +31,7 @@ rcsdiff() {
   linecount=0
   now=no
   echo
-  /bin/rcsdiff -u -r"$1" -r"$2" /cvs/"$3",v 2>&1 |while IFS= read line; do
+  /bin/rcsdiff -u -r"$1" -r"$2" /cvs/"$3",v 2>&1 |while IFS= read -r line; do
     case "$line" in
     diff*)
       now=yes
@@ -48,7 +48,7 @@ rlog() {
   now=no
   echo
   echo "Log:"
-  /bin/rlog -r"$1" /cvs/"$2",v |while read line; do
+  /bin/rlog -r"$1" /cvs/"$2",v |while IFS= read -r line; do
     case "$line" in 
     ==========*)
     ;;
