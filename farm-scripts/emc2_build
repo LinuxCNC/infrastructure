@@ -11,9 +11,9 @@ echo "changing to src/ directory"
 echo
 cd src
 echo
-echo "running \"./configure\""
+echo "running \"./configure --disable-build-documentation \""
 echo
-if ! ( ./configure ) ; then echo ; echo "configure failed, here is the log:" ; echo ; cat config.log ; exit 1 ; fi
+if ! ( ./configure --disable-build-documentation ) ; then echo ; echo "configure failed, here is the log:" ; echo ; cat config.log ; exit 1 ; fi
 echo
 echo "configure succeeded, here is Makefile.inc"
 echo
