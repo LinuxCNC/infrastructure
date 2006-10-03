@@ -32,7 +32,7 @@ or another.</p>
 
 <h3>EMC2: V2.0 Branch</h3>
 <p>The v2_0_branch is the stable release branch for version 2.0.  At this time it is
-only getting bugfixes, we are getting very close to an official release.</p>
+only getting bugfixes.</p>
 
 <table border="1" cellpadding="10" cellspacing="0" >
  <tbody>
@@ -47,46 +47,10 @@ only getting bugfixes, we are getting very close to an official release.</p>
  </tbody>
 </table>
 
-<h3>RCSLIB</h3>
-<p>The RCSLIB module is used by EMC1. No further development (except for minor
-bugfixes) is anticipated here. This module will remain in the compile farm for
-a while, but may eventualy be removed. Note that the realtime portions of RCSLIB
-do not (and will not) compile under kernel 2.6, so the results reported for 
-BDI-4 systems are for the user space parts of RCSLIB only.
+<h3>RCSLIB / EMC1</h3>
+<p>The RCSLIB module is used by EMC1. No further development is anticipated on
+either EMC1 or RCSLIB, and both have been removed from the compile farm.
 </p>
 
-<table border="1" cellpadding="10" cellspacing="0" >
- <tbody>
- <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
- <tr align="center"><!--#include file="rcslib_slot2.ssi"--></tr>
- <tr align="center"><!--#include file="rcslib_slot3.ssi"--></tr>
- <tr align="center"><!--#include file="rcslib_slot4.ssi"--></tr>
- <tr align="center"><!--#include file="rcslib_slot5.ssi"--></tr>
- <tr align="center"><!--#include file="rcslib_slot6.ssi"--></tr>
- <tr align="center"><!--#include file="rcslib_slot7.ssi"--></tr>
- <tr align="center"><!--#include file="rcslib_slot8.ssi"--></tr>
- </tbody>
-</table>
-
-<h3>EMC (aka EMC1)</h3>
-<p>The EMC module contains EMC1, the original version of EMC. No further
-development (except for minor bugfixes) is anticipated here. This module 
-will remain in the compile farm for a while, but may eventualy be removed.
-Note that the realtime portions of ECM1 do not (and will not) compile under
-kernel 2.6, so the results reported for BDI-4 systems are for the user space
-parts of EMC1 only.</p>
-
-<table border="1" cellpadding="10" cellspacing="0" >
- <tbody>
- <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
- <tr align="center"><!--#include file="emc_slot2.ssi"--></tr>
- <tr align="center"><!--#include file="emc_slot3.ssi"--></tr>
- <tr align="center"><!--#include file="emc_slot4.ssi"--></tr>
- <tr align="center"><!--#include file="emc_slot5.ssi"--></tr>
- <tr align="center"><!--#include file="emc_slot6.ssi"--></tr>
- <tr align="center"><!--#include file="emc_slot7.ssi"--></tr>
- <tr align="center"><!--#include file="emc_slot8.ssi"--></tr>
- </tbody>
-</table>
 
 </body></html>
