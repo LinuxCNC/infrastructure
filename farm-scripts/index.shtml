@@ -5,12 +5,16 @@
 <body>
 
 <!--#config errmsg="<!-- no results for this slot -->"-->
+<h1><a href="http://www.linuxcnc.org">EMC</a> Compile Farm</h1>
 
 <h2>Results of latest automated compile tests</h2>
+
+<h4>Slot 2 died - see NEWS below</h4>
 
 <p>Clicking on the last build date in the tables below will take you to the 
 associated log file so you can see what happened.  Clicking on the system 
 name will show you a history of all builds on that system.</p>
+
 <h3>EMC2: HEAD</h3>
 <p>The EMC2 tree is the focus of new development.  The head of the tree is the mainstream
 version of EMC2.  Other branches are used for experimental work, things that will break the
@@ -47,10 +51,60 @@ only getting bugfixes.</p>
  </tbody>
 </table>
 
-<h3>RCSLIB / EMC1</h3>
-<p>The RCSLIB module is used by EMC1. No further development is anticipated on
-either EMC1 or RCSLIB, and both have been removed from the compile farm.
-</p>
+<p></p>
 
+<h2>Compile Farm News</h3>
+<em>17-Nov-2006</em><br>
+<p>Slot 2 died... the ancient 2G SCSI disk
+started losing blocks.  We're only a few weeks from moving to a new 
+farm using virtual machines, and we have also decided to stop 
+supporting the very old systems, so I'm not going to attempt to 
+rebuild that slot.</p>
+<p>The log file shows 1104 builds of EMC2 on slot 2 since November 2005.
+(Thats when I started logging historical results.)  The farm has actually
+been running since April 2004, and it also built EMC1, RCSLIB, and the
+EMC2.0 branch, so it probably has several thousand builds under its belt.
+Not bad for a system that was already 5 or 6 years old when I literally
+dragged it out of a trash box.</p>
 
+<em>27-Oct-2006</em><br>
+<p>"Slot 7" wasn't really a slot on the rack, it was running on my main
+PC.  I just upgraded to Dapper, so this slot is no longer running.  I
+am planning to move the entire farm to virtual machines running on the
+main PC over the next month or two.  The plan is to have slots for
+Ubuntu Dapper and Breezy, and BDI-4.xx.  I also want to have at least
+one slot building the simulator version on a system with no realtime.
+The older systems (BDI-2, BDI-TNG, and BDI-Live) will no longer be
+supported.<p>
+
+<em>17-Apr-2006</em><br>
+<p>Major revisions to the farm scripts.  In addition to sending the 
+results to the webpage, they now send failure notices to the #emc
+IRC channel, and to the emc-commit mailing list.  The old approach 
+wasn't very effective - sometimes a problem wouldn't be noticed 
+because people weren't regularly checking the webpage, and it would
+become a major task to go back and figure out exactly what change
+broke the build.</p>
+<p>The new scripts are also a lot more modular, and I finally got
+around to writing a README that covers the steps needed to set up
+a farm slot from scratch.  The farm scripts are also now stored
+in a directory on our nice new CVS server.</p>
+<p>Removed EMC and RCSLIB from the farm.  EMC(1) and RCSLIB don't
+work on 2.6 kernels because of the new kbuild system and other
+extensive changes.  We're not doing any new work on EMC(1) anyway,
+and we're certainly not going to spend the time and effort it
+would take to get it running on 2.6 systems.<p>
+<p>Out with the old, in with the new.... along with new scripts,
+we now have a new target.  The farm is now regularly building the
+v2_0_branch, which will eventually be released as version 2.0.0 
+of EMC.</p>
+
+<em>22-Nov-2005</em><br>
+<p>I modified the farm scripts to keep a historical record of the
+pass/fail results from each build.  A single line containing the
+date, time, and result, is appended to a file after each build, and
+the file is accessible from the webpage.<p>
+
+<hr>
+<p><em>The EMC compile farm is maintained by John Kasunich</em></p>
 </body></html>
