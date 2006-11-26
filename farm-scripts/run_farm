@@ -40,6 +40,16 @@ fi
 MSG "START"
 while true ; do
     if ./check_commit ; then
+        # are we supposed to update the clock?
+        if [ -f ntpserver ] ; then
+            # is ntpdate installed?
+            if type ntpdate ; then
+                # set the clock
+                # NOTE: this will hang if sudo needs a password
+                # to run ntpdate.  see README for details
+                sudo ntpdate `cat ntpserver` >/dev/null
+            fi
+        fi
         TREES=`cat trees`
         for TREE in $TREES ; do
             if ./check_cvs $TREE ; then

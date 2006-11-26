@@ -69,6 +69,21 @@ EMAIL sender: esmtp
   account on the linuxcnc.org server (contact SWPadnos for an account).
   Change the permissions on .esmtprc to 600.
 
+Next, install optional applications:
+
+System Clock tool: ntpdate
+  The farm scripts can optionally use ntpdate to keep the system time
+  sychronized with the rest of the world.  Since compile farm reports
+  are timestamped, it gets confusing if the time drifts.  And since 
+  compile farm slots are often left on for a very long time, and aren't
+  used for much of anything else, they can and do drift, sometimes by
+  hours.  Using virtual machines makes it even worse, since a VM can 
+  be suspended and restarted hours or weeks later, causing a huge 
+  clock error.  (Note: the NTP daemon 'ntpd' can also be used to keep
+  a system synced with clock time, but it should not be used on VMs 
+  that might get suspended because it could get very confused when 
+  you resume.)
+
 
 Next, check out the farm scripts:
 
@@ -125,6 +140,27 @@ specific build script, and commit it to the infrastructure/farm-scripts
 tree.  (Note that the need for such a script might be considered a bug, and
 it would be better to solve the problem in a way that lets the same build
 instructions be used for all systems.)
+
+Optional:  only if you want to use ntpdate to keep system time synced
+
+  First: need to be able to run "sudo ntpdate" without it pausing to
+  enter a password.  Add the following line near the end of /etc/sudoers:
+
+    username localhost = NOPASSWD: /usr/sbin/ntpdate
+
+  'username' needs to be changed to the name of the user who will be
+  running the farm scripts, and /usr/sbin/ntpdate may need to be changed
+  to point to wherever ntpdate is installed.
+
+  Second: need to tell the farm scripts to use ntpdate, and what server
+  to use for the time:
+
+    echo pool.ntp.org >ntpserver
+
+  You can (and should) use a local server if you have another system on
+  your local network that is running ntpd.  Just substitute the hostname
+  of your local ntp server for 'pool.ntp.org'.  If you don't want the 
+  scripts to invoke ntpdate, just remove the file 'ntpserver'.
 
 Start the scripts:
 
