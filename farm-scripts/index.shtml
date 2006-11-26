@@ -35,21 +35,39 @@ or another.</p>
  </tbody>
 </table>
 
-<h3>EMC2: V2.0 Branch</h3>
-<p>The v2_0_branch is the stable release branch for version 2.0.  At this time it is
-only getting bugfixes.</p>
+<h3>EMC 2.1 Branch</h3>
+<p>The v2_1_branch is the stable release branch for version 2.1.  At this time it is
+only getting bugfixes, as we prepare for the release of version 2.1.0.</p>
 
 <table border="1" cellpadding="10" cellspacing="0" >
  <tbody>
  <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
- <tr align="center"><!--#include file="v2_0_branch_slot1.ssi"--></tr>
- <tr align="center"><!--#include file="v2_0_branch_slot2.ssi"--></tr>
- <tr align="center"><!--#include file="v2_0_branch_slot3.ssi"--></tr>
- <tr align="center"><!--#include file="v2_0_branch_slot4.ssi"--></tr>
- <tr align="center"><!--#include file="v2_0_branch_slot5.ssi"--></tr>
- <tr align="center"><!--#include file="v2_0_branch_slot6.ssi"--></tr>
- <tr align="center"><!--#include file="v2_0_branch_slot7.ssi"--></tr>
- <tr align="center"><!--#include file="v2_0_branch_slot8.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.1branch_slot1.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.1branch_slot2.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.1branch_slot3.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.1branch_slot4.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.1branch_slot5.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.1branch_slot6.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.1branch_slot7.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.1branch_slot8.ssi"--></tr>
+ </tbody>
+</table>
+
+<h3>EMC 2.0 Branch</h3>
+<p>The v2_0_branch is the stable release branch for version 2.0.x (currently 2.0.4).
+At this time it is only getting bugfixes.</p>
+
+<table border="1" cellpadding="10" cellspacing="0" >
+ <tbody>
+ <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
+ <tr align="center"><!--#include file="emc2.0branch_slot1.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.0branch_slot2.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.0branch_slot3.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.0branch_slot4.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.0branch_slot5.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.0branch_slot6.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.0branch_slot7.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.0branch_slot8.ssi"--></tr>
  </tbody>
 </table>
 
@@ -57,10 +75,18 @@ only getting bugfixes.</p>
 
 <h2>Compile Farm News</h3>
 <em>25-Nov-2006</em><br>
-<p>The first virtual compile farm slot is online.  It is a VMWare
-virtual machine, running on my main PC.  The guest OS is Ubuntu
+<p>The version 2.1 branch has been created, and the new compile farm
+slots are now building it.</p>
+
+<em>25-Nov-2006</em><br>
+<p>The first two virtual compile farm slots are online.  They are VMWare
+virtual machines, running on my main PC.</p>
+<p>Slot 1 is running Ubuntu
 5.10 (breezy), without any realtime patches.  It only builds CVS
-HEAD, because version 2.0.x doesn't support non-realtime simulation.
+HEAD, because version 2.0.x doesn't support non-realtime simulation.</p>
+<p>
+Slot 2 is also running Ubuntu Breezy, but it has the realtime kernel
+and is building a complete EMC, both HEAD and the version 2.0 branch.
 </p>
 
 <em>17-Nov-2006</em><br>

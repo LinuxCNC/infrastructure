@@ -42,7 +42,16 @@ CVS client: cvs
 
 EMAIL sender: esmtp
 
-  Install esmtp (and if needed, libesmtp).
+  Install esmtp.  If a binary esmtp package isn't available:
+     Download libesmtp from http://www.stafford.uklinux.net/libesmtp/download.html
+     Download esmtp from http://sourceforge.net/project/showfiles.php?group_id=63404
+     configure, make, and sudo make install libesmtp first
+     On some systems, you need to set up the shared libesmtp library:
+	after building and installing libesmtp, find libesmtp.so.5
+	(usually in /usr/local/lib)
+	sudo ldconfig <dir-where-libesmtp.so.5-is-installed>
+     Then configure, make, and make install esmtp
+
   Create .esmtprc in your home directory and add the following text:
 
     # Compile farm configuration file for ESMTP.
@@ -73,6 +82,7 @@ Check out the build trees
 
   $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2head emc2
   $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2.0branch -r v2_0_branch emc2
+  $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2.1branch -r v2_1_branch emc2
 
 For some reason, if you are in a cvs directory (the farm directory) and do
 a checkout, CVS wants to add the newly checked out tree to the top level
@@ -84,7 +94,8 @@ some cvs add commands in CVS/Entries.Log:
 
   $ cat CVS/Entries.Log
   A D/emc2head////
-  A D/emc2testing////
+  A D/emc2.0branch////c
+  A D/emc2.1branch////c
 
 The cure is very easy - delete CVS/Entries.Log
 
@@ -97,13 +108,15 @@ Create files with the system name and slot number:
 
 Create a file telling the system what trees to build:
 
-  $ cat emc2head >trees
-  $ cat emc2.0branch >>trees
+  $ echo emc2head >trees
+  $ echo emc2.0branch >>trees
+  $ echo emc2.1branch >>trees
 
 Copy build scripts into the checkout directories:
 
   $ cp emc2_build emc2head/farm_build
   $ cp emc2_build emc2.0branch/farm_build
+  $ cp emc2_build emc2.1branch/farm_build
 
 EMC2 currently has 2 build scripts, one that builds the normal realtime
 version, and one that builds the non-realtime simulator.  If you need
