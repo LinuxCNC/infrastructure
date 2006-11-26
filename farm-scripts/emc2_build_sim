@@ -1,0 +1,32 @@
+# Compile farm build script for EMC2
+#
+# the "echo" commands add whitespace and command info
+# to the log file to make the results easier to read 
+#
+# all make commands are wrapped with "if" so that a
+# failed command will terminate the entire build
+#
+echo
+echo "changing to src/ directory"
+echo
+cd src
+echo
+echo "running \"./configure --enable-simulator --disable-build-documentation \""
+echo
+if ! ( ./configure --enable-simulator --disable-build-documentation ) ; then echo ; echo "configure failed, here is the log:" ; echo ; cat config.log ; exit 1 ; fi
+echo
+echo "configure succeeded, here is Makefile.inc"
+echo
+cat Makefile.inc
+echo
+echo "running \"make clean\""
+echo
+if ! ( make clean ) ; then exit 1 ; fi
+echo
+echo "running \"make\""
+echo
+if ! ( make ) ; then exit 1 ; fi
+echo
+exit 0
+
+

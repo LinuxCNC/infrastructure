@@ -9,7 +9,7 @@
 
 <h2>Results of latest automated compile tests</h2>
 
-<h4>Slot 2 died - see NEWS below</h4>
+<h4>First of the 'new' farm slots is online - see NEWS below</h4>
 
 <p>Clicking on the last build date in the tables below will take you to the 
 associated log file so you can see what happened.  Clicking on the system 
@@ -24,6 +24,7 @@ or another.</p>
 <table border="1" cellpadding="10" cellspacing="0" >
  <tbody>
  <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
+ <tr align="center"><!--#include file="emc2head_slot1.ssi"--></tr>
  <tr align="center"><!--#include file="emc2head_slot2.ssi"--></tr>
  <tr align="center"><!--#include file="emc2head_slot3.ssi"--></tr>
  <tr align="center"><!--#include file="emc2head_slot4.ssi"--></tr>
@@ -41,6 +42,7 @@ only getting bugfixes.</p>
 <table border="1" cellpadding="10" cellspacing="0" >
  <tbody>
  <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
+ <tr align="center"><!--#include file="v2_0_branch_slot1.ssi"--></tr>
  <tr align="center"><!--#include file="v2_0_branch_slot2.ssi"--></tr>
  <tr align="center"><!--#include file="v2_0_branch_slot3.ssi"--></tr>
  <tr align="center"><!--#include file="v2_0_branch_slot4.ssi"--></tr>
@@ -54,6 +56,13 @@ only getting bugfixes.</p>
 <p></p>
 
 <h2>Compile Farm News</h3>
+<em>25-Nov-2006</em><br>
+<p>The first virtual compile farm slot is online.  It is a VMWare
+virtual machine, running on my main PC.  The guest OS is Ubuntu
+5.10 (breezy), without any realtime patches.  It only builds CVS
+HEAD, because version 2.0.x doesn't support non-realtime simulation.
+</p>
+
 <em>17-Nov-2006</em><br>
 <p>Slot 2 died... the ancient 2G SCSI disk
 started losing blocks.  We're only a few weeks from moving to a new 

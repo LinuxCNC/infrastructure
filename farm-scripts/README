@@ -72,7 +72,7 @@ Switch to farm directory
 Check out the build trees
 
   $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2head emc2
-  $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2testing -r TESTING emc2
+  $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2.0branch -r v2_0_branch emc2
 
 For some reason, if you are in a cvs directory (the farm directory) and do
 a checkout, CVS wants to add the newly checked out tree to the top level
@@ -98,16 +98,17 @@ Create files with the system name and slot number:
 Create a file telling the system what trees to build:
 
   $ cat emc2head >trees
-  $ cat emc2testing >>trees
+  $ cat emc2.0branch >>trees
 
 Copy build scripts into the checkout directories:
 
   $ cp emc2_build emc2head/farm_build
-  $ cp emc2_build emc2testing/farm_build
+  $ cp emc2_build emc2.0branch/farm_build
 
-EMC2 currently uses the same build script for all slots.  If you find that a
-system needs special build options (passed to ./configure for example), make
-a slot specific build script, and commit it to the infrastructure/farm-scripts
+EMC2 currently has 2 build scripts, one that builds the normal realtime
+version, and one that builds the non-realtime simulator.  If you need
+special build options (passed to ./configure for example), make a slot
+specific build script, and commit it to the infrastructure/farm-scripts
 tree.  (Note that the need for such a script might be considered a bug, and
 it would be better to solve the problem in a way that lets the same build
 instructions be used for all systems.)
