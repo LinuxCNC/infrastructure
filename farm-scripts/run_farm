@@ -43,7 +43,7 @@ while true ; do
         # are we supposed to update the clock?
         if [ -f ntpserver ] ; then
             # is ntpdate installed?
-            if type ntpdate ; then
+            if type ntpdate >/dev/null ; then
                 # set the clock
                 # NOTE: this will hang if sudo needs a password
                 # to run ntpdate.  see README for details
