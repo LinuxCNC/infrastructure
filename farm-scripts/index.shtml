@@ -9,7 +9,7 @@
 
 <h2>Results of latest automated compile tests</h2>
 
-<h4>First of the 'new' farm slots is online - see NEWS below</h4>
+<h4>All of the 'new' farm slots are online - see NEWS below</h4>
 
 <p>Clicking on the last build date in the tables below will take you to the 
 associated log file so you can see what happened.  Clicking on the system 
@@ -54,7 +54,7 @@ only getting bugfixes, as we prepare for the release of version 2.1.0.</p>
 </table>
 
 <h3>EMC 2.0 Branch</h3>
-<p>The v2_0_branch is the stable release branch for version 2.0.x (currently 2.0.4).
+<p>The v2_0_branch is the stable release branch for version 2.0.x (currently 2.0.5).
 At this time it is only getting bugfixes.</p>
 
 <table border="1" cellpadding="10" cellspacing="0" >
@@ -74,6 +74,20 @@ At this time it is only getting bugfixes.</p>
 <p></p>
 
 <h2>Compile Farm News</h3>
+
+<em>2-Dec-2006</em><br>
+<p>The rest of the new compile farm slots are online.</p>
+<p>Slot 6 is a VMware virtual machine running BDI-4.51.  It requires
+non-standard build scripts, because of various weirdness in the BDI 
+kernel and system configuration (configure needs help to find RTAI).
+</p>
+<p>Slot 7 is not a virtual machine.  It is a dedicated user account on
+my main Ubuntu 6.06 LTS (dapper) machine (which has a realtime kernel).
+</p>
+<p>Slots 3, 4, and 5 are living on borrowed time - I will be shutting
+them down one of these days.
+</p>
+
 <em>25-Nov-2006</em><br>
 <p>The version 2.1 branch has been created, and the new compile farm
 slots are now building it.</p>
