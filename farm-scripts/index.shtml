@@ -55,7 +55,8 @@ only getting bugfixes, as we prepare for the release of version 2.1.0.</p>
 
 <h3>EMC 2.0 Branch</h3>
 <p>The v2_0_branch is the stable release branch for version 2.0.x (currently 2.0.5).
-At this time it is only getting bugfixes.</p>
+At this time it is only getting bugfixes.  Because version 2.0 did not include
+the non-realtime simulator, we don't attempt to build on slot 1.</p>
 
 <table border="1" cellpadding="10" cellspacing="0" >
  <tbody>
@@ -74,6 +75,12 @@ At this time it is only getting bugfixes.</p>
 <p></p>
 
 <h2>Compile Farm News</h3>
+
+<em>3-Dec-2006</em><br>
+<p>Turned off slots 3 thru 5.  My basement is really quiet now.  
+According to the logs, each of those slots compiled CVS head about
+1200 times over the last 13 months or so.
+</p>
 
 <em>2-Dec-2006</em><br>
 <p>The rest of the new compile farm slots are online.</p>
