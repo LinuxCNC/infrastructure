@@ -52,48 +52,46 @@ if [ ! -f farm_build ] ; then
     exit -1
 fi
 # should we do "make clean; make", or just "make" ?
-CLEAN=no
-AGE=$(($(date +%s)-$(cat last_complete)))
-if [ $(($AGE>43200)) -eq 1 ] ; then
-  CLEAN=yes
+BUILD_TYPE=incremental
+if [ ! -f last_complete ] ; then
+  # no record of last complete build, force one
+  BUILD_TYPE=complete
+  MSG "last_complete missing"
+else
+  AGE=$(($(date +%s)-$(cat last_complete)))
+  if [ $(($AGE>43200)) -eq 1 ] ; then
+    BUILD_TYPE=complete
     MSG "12 hours since last complete build"
+  fi
 fi
-if [ $CLEAN = yes ] ; then
+if [ $BUILD_TYPE = complete ] ; then
   # update last complete build timestamp
   date +%s >last_complete
 fi
 # get started
-if [ $CLEAN = yes ] ; then
-  MSG "start complete build"
-else
-  MSG "start incremental build"
-fi
+MSG "start $BUILD_TYPE build"
 # make a header for the build log
 echo >build_log
 echo "BUILD : $BUILD_NAME " >>build_log
 echo "SYSTEM: $SYSNAME (slot $SLOT)" >>build_log
 echo >>build_log
-if [ $CLEAN = yes ] ; then
-  date -u +"complete build started at %F %T" >>build_log
-else
-  date -u +"incremental build started at %F %T" >>build_log
-fi
+date -u +"$BUILD_TYPE build started at %F %T" >>build_log
 echo >>build_log
 # do the build
-if ./farm_build $CLEAN 1>>build_log 2>>build_log; then
+if ./farm_build $BUILD_TYPE 1>>build_log 2>>build_log; then
     # succeeded
     echo >>build_log
-    date -u +"build completed successfully at %F %T" >>build_log
+    date -u +"$BUILD_TYPE build successfull at %F %T" >>build_log
     echo >>build_log
-    date -u +"%F %T PASSED" >>history_log
+    date -u +"%F %T PASSED ($BUILD_TYPE build)" >>history_log
     MSG "succeeded"
     exit 0
 else
     # failed
     echo >>build_log
-    date -u +"build failed at %F %T" >>build_log
+    date -u +"$BUILD_TYPE build failed at %F %T" >>build_log
     echo >>build_log
-    date -u +"%F %T FAILED" >>history_log
+    date -u +"%F %T FAILED ($BUILD_TYPE build)" >>history_log
     MSG "failed"
     exit -1
 fi
