@@ -51,16 +51,36 @@ if [ ! -f farm_build ] ; then
     MSG "farm_build: file not found"
     exit -1
 fi
-MSG "start build"
+# should we do "make clean; make", or just "make" ?
+CLEAN=no
+AGE=$(($(date +%s)-$(cat last_complete)))
+if [ $(($AGE>43200)) -eq 1 ] ; then
+  CLEAN=yes
+    MSG "12 hours since last complete build"
+fi
+if [ $CLEAN = yes ] ; then
+  # update last complete build timestamp
+  date +%s >last_complete
+fi
+# get started
+if [ $CLEAN = yes ] ; then
+  MSG "start complete build"
+else
+  MSG "start incremental build"
+fi
 # make a header for the build log
 echo >build_log
 echo "BUILD : $BUILD_NAME " >>build_log
 echo "SYSTEM: $SYSNAME (slot $SLOT)" >>build_log
 echo >>build_log
-date -u +"build started at %F %T" >>build_log
+if [ $CLEAN = yes ] ; then
+  date -u +"complete build started at %F %T" >>build_log
+else
+  date -u +"incremental build started at %F %T" >>build_log
+fi
 echo >>build_log
 # do the build
-if ./farm_build 1>>build_log 2>>build_log; then
+if ./farm_build $CLEAN 1>>build_log 2>>build_log; then
     # succeeded
     echo >>build_log
     date -u +"build completed successfully at %F %T" >>build_log

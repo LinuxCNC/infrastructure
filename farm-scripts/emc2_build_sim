@@ -19,10 +19,12 @@ echo "configure succeeded, here is Makefile.inc"
 echo
 cat Makefile.inc
 echo
-echo "running \"make clean\""
-echo
-if ! ( make clean ) ; then exit 1 ; fi
-echo
+if [ $1 = yes ] ; then
+  echo "running \"make clean\""
+  echo
+  if ! ( make clean ) ; then exit 1 ; fi
+  echo
+fi
 echo "running \"make\""
 echo
 if ! ( make ) ; then exit 1 ; fi
