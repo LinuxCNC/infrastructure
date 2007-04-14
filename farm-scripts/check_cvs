@@ -45,7 +45,7 @@ while [ $LOOP -gt 0 ] ; do
     # start a subshell, enable job control
     ( set -m
     # start a "watchdog timer" in the background, save its pid
-    sleep 120 & timerpid=$!
+    sleep 180 & timerpid=$!
     # start the cvs update, kill watchdog on completion, run in background
     ( cvs -z5 -q up -dP 1>>cvs_log 2>>cvs_log && echo "CVS_SUCCESS" >>cvs_log ; kill $timerpid ) &
     # wait for timeout (or for cvs to finish and kill the timer, which normally happens)
@@ -59,7 +59,9 @@ while [ $LOOP -gt 0 ] ; do
         break
     fi
     LOOP=$((${LOOP}-1))
-    MSG retry
+    MSG "timed out"
+    sleep 120
+    MSG "retrying"
 done
 if [ $LOOP -eq 0 ] ; then
     MSG "cvs update failed"
