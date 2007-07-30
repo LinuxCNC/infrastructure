@@ -1,0 +1,49 @@
+** Things Chris wants to remember when making releases **
+
+1. Metawork done for all platforms:
+
+Review the diffs since the last version to make sure everything
+makes sense, was intentional, and is relfected in changelog entries.
+Do not screw this up.  If you haven't been paying enough attention to
+commits and the committers to know whether the changes make sense or
+were intentional, reconsider whether you should be making the release
+right now.  Your signing the package means you know what's in it.
+
+Use dch and make sure the changelog entries and time and email
+stamps are right
+
+Update VERSION file and check it and the new debian/changelog in
+
+Tag cvs with the appropriate RELEASE_2_1_x.  Make sure the tags
+match what's going in the binary packages.  Don't screw this up
+either.  Doing support without knowing what code someone is running
+is unnecessarily painful.
+
+2. Actual release building, done separately for each platform:
+
+Rename the source directory to emc2-2.1.x so debuild doesn't complain
+when it builds the source package (sometimes dch does this for you?)
+
+In the source directory, run dh_clean and make sure there's no
+kruft in the debian directory (it should be 1.5MB, not 20MB)
+
+In the debian directory, ./configure 2.6.15-magma
+
+Back in the source directory, run debuild
+
+Stick the two resulting binary packages and the two resulting source
+files into the apt repository in the right place.
+
+Repeat steps starting at #2 for dapper-sim (./configure sim) and breezy
+(./configure 2.6.12-magma).  For breezy you'll have to be on a breezy
+machine or a good approximation of one.
+
+Sign and upload/rsync the apt repository
+
+Update /topic on irc, send an announcement email containing the changelog
+
+If you get bored it's customary to type "build build build" or "upload
+upload upload" as appropriate into irc.
+
+Change VERSION to say pre-2.1.x++ and check it in.
+
