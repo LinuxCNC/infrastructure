@@ -76,6 +76,15 @@ the non-realtime simulator, we don't attempt to build on slot 1.</p>
 
 <h2>Compile Farm News</h3>
 
+<em>17-Jun-2007</em><br>
+<p>The farm is faster now.  I've moved the virtual machines to my new
+computer, a Core2 Duo with 2G of RAM.  The old computer with only 512M
+would get into a serious thrash-fest if multiple builds were going on
+at once, sometimes taking up to 45 minutes to finish.  The new one
+takes 2-3 minutes max.  Mostly thanks to plenty of RAM, but I'm sure
+the CPU helps.
+</p>
+
 <em>3-Dec-2006</em><br>
 <p>Turned off slots 3 thru 5.  My basement is really quiet now.  
 According to the logs, each of those slots compiled CVS head about
