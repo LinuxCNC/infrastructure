@@ -35,9 +35,27 @@ or another.</p>
  </tbody>
 </table>
 
+<h3>EMC 2.2 Branch</h3>
+<p>The v2_2_branch is the stable release branch for version 2.2.  At this time it is
+only getting bugfixes, as we prepare for the release of version 2.3.0.</p>
+
+<table border="1" cellpadding="10" cellspacing="0" >
+ <tbody>
+ <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
+ <tr align="center"><!--#include file="emc2.2branch_slot1.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.2branch_slot2.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.2branch_slot3.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.2branch_slot4.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.2branch_slot5.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.2branch_slot6.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.2branch_slot7.ssi"--></tr>
+ <tr align="center"><!--#include file="emc2.2branch_slot8.ssi"--></tr>
+ </tbody>
+</table>
+
 <h3>EMC 2.1 Branch</h3>
 <p>The v2_1_branch is the stable release branch for version 2.1.  At this time it is
-only getting bugfixes, as we prepare for the release of version 2.1.0.</p>
+only getting major bugfixes, since version 2.2 is now released.</p>
 
 <table border="1" cellpadding="10" cellspacing="0" >
  <tbody>
@@ -75,6 +93,10 @@ the non-realtime simulator, we don't attempt to build on slot 1.</p>
 <p></p>
 
 <h2>Compile Farm News</h3>
+
+<em>11-Nov-2007</em><br>
+<p>Added the EMC-2.2 branch.  I should probably remove EMC-2.0 as well.  Maybe later.
+</p>
 
 <em>17-Jun-2007</em><br>
 <p>The farm is faster now.  I've moved the virtual machines to my new
