@@ -97,16 +97,7 @@ if [ -z $2 ] ; then
     exit -1
 fi
 RESULT=$2
-if [ "$RESULT" = "PASS" ] ; then
-    IMAGE=pass.png
-    ALTTEXT=PASSED
-elif [ "$RESULT" = "FAIL" ] ; then
-    IMAGE=fail.png
-    ALTTEXT=FAILED
-else
-    MSG "$RESULT: invalid result specified"
-    exit -1
-fi
+
 if [ ! -d $BUILD_DIR  ] ; then
     MSG "no such directory"
     exit -1
