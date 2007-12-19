@@ -98,16 +98,6 @@ if [ -z $2 ] ; then
     exit -1
 fi
 RESULT=$2
-if [ "$RESULT" = "PASS" ] ; then
-    IMAGE=pass.png
-    ALTTEXT=PASSED
-elif [ "$RESULT" = "FAIL" ] ; then
-    IMAGE=fail.png
-    ALTTEXT=FAILED
-else
-    MSG "$RESULT: invalid result specified"
-    exit -1
-fi
 # create email message
 echo "From: EMC compile farm <jmkasunich@linuxcnc.org>" >cia.msg
 echo "To: cia@cia.navi.cx" >>cia.msg
