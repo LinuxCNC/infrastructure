@@ -1,0 +1,138 @@
+#AJ-note: written partly from memory, and from the "official" guide from 
+# https://help.ubuntu.com/community/LiveCDCustomization
+
+
+###################
+# 1. Needed tools #
+###################
+
+sudo apt-get install squashfs-tools mkisofs qemu
+sudo modprobe squashfs
+
+#get CD from http://releases.ubuntu.com/
+
+#Note: following with ubuntu-8.04-desktop-i386.iso Desktop CD
+
+mkdir ~/live
+mv ubuntu-8.04-desktop-i386.iso ~/live
+cd ~/live
+
+#################
+# 2. Extract CD #
+#################
+
+mkdir mnt
+sudo mount -o loop ubuntu-8.04-desktop-i386.iso mnt
+
+mkdir extract-cd
+rsync --exclude=/casper/filesystem.squashfs -a mnt/ extract-cd
+
+mkdir squashfs
+sudo mount -t squashfs -o loop mnt/casper/filesystem.squashfs squashfs
+
+mkdir edit
+sudo cp -a squashfs/* edit/
+
+############################
+# 3. Prepare customization #
+############################
+
+sudo cp /etc/resolv.conf edit/etc/
+sudo cp /etc/hosts edit/etc/
+
+sudo chroot edit
+    #indented stuff is inside the chroot
+    mount -t proc none /proc
+    mount -t sysfs none /sys
+    mount -t devpts none /dev/pts
+
+    export HOME=/root
+    export LC_ALL=C
+
+#####################
+# 4. do the changes #
+#####################
+    
+    #debs
+    #====
+    cd /tmp/
+    wget http://www.linuxcnc.org/hardy/emc2-install.sh
+    
+    ./emc2-install.sh #this will pull in emc2, linux-image, rtai, etc
+    
+    #remember to install LUM
+    apt-get install linux-ubuntu-modules-hardy-rtai
+    
+    #remove old kernel (use 'dpkg -l | grep linux' for a complete list) 
+    apt-get remove --purge linux-image-*-generic linux-ubuntu-modules-*-generic
+    #remove meta packages (use 'dpkg -l | grep linux' for a complete list) 
+    apt-get remove --purge linux-image-generic
+    #clean out leftovers (like nvidia-crap)
+    apt-get autoremove
+    #if the CD turns out too big (which it usually does), remove crap from
+    #/var/cache/apt/archives/*
+    #/var/lib/apt/lists/*
+    #/var/lib/dpkg/*-old
+    
+    #special foo
+    #===========
+    apt-get install truetype-tracer
+    
+    #disable desktop-effects by default
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /desktop/gnome/applications/window_manager/default "/usr/bin/metacity"
+    
+    #cleanup
+    #=======
+    apt-get clean
+    rm -rf /tmp/*
+    rm /etc/resolv.conf
+    rm /etc/hosts
+    
+    #we'll need the initrd.gz from inside the chroot
+    mkinitramfs -o /initrd.gz 2.6.24-16-rtai
+    
+    #exit the chroot
+    #===============
+    umount /proc
+    umount /sys
+    umount /dev/pts
+    exit
+    
+#kernel
+#======
+sudo cp /boot/vmlinuz-2.6.24-16-rtai extract-cd/casper/vmlinuz
+sudo mv edit/initrd.gz extract-cd/casper/
+
+###################################
+# 5. putting the CD back together #
+###################################
+
+#regenerate manifest
+#===================
+#I make a copy of extract-cd/casper/filesystem.manifest and filesystem.manifest-desktop
+#create a new filesystem.manifest
+sudo chroot edit dpkg-query -W --showformat='${Package} ${Version}\n' > extract-cd/casper/filesystem.manifest
+#diff the new manifest with the old one
+#and apply the patch to manifest-desktop (this usually needs manual intervention)
+#but ensures that no unneeded packages end up installed
+
+#rebuild squashfs
+#================
+sudo rm extract-cd/casper/filesystem.squashfs
+sudo mksquashfs edit extract-cd/casper/filesystem.squashfs -nolzma
+#this works best with a SMP system, and a SMP kernel (so if you have the uniprocessor -rtai kernel.. grab some lunch)
+
+#change CD name
+#==============
+sudo nano extract-cd/README.diskdefines
+
+#build new md5sum.txt
+#====================
+sudo rm extract-cd/md5sum.txt
+cd extract-cd 
+  find . -type f | egrep -v '(boot.cat|md5sum.txt)' | xargs sudo md5sum | sudo tee md5sum.txt
+
+#build iso
+#=========
+cd extract-cd
+sudo mkisofs -r -V "emc2buntu8.04" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ../ubuntu-8.04-desktop-emc2-i386.iso .
