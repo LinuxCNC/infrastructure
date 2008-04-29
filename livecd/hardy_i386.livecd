@@ -81,6 +81,21 @@ sudo chroot edit
     #disable desktop-effects by default
     gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /desktop/gnome/applications/window_manager/default "/usr/bin/metacity"
     
+    #add generator for ubiquity
+    cd /usr/lib/ubiquity/apt-setup/generators
+    
+    cat > 99emc2.repo <<EOF
+#!/bin/sh
+
+file="$1"
+
+# Ubuntu hardy repo
+echo "deb http://www.linuxcnc.org/hardy hardy base emc2.2" >> $file
+echo "deb-src http://www.linuxcnc.org/hardy hardy base emc2.2" >> $file
+
+exit 0
+EOF
+    
     #cleanup
     #=======
     apt-get clean
