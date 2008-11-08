@@ -140,9 +140,10 @@ instructions be used for all systems.)
 Optional:  only if you want to use ntpdate to keep system time synced
 
   First: need to be able to run "sudo ntpdate" without it pausing to
-  enter a password.  Add the following line near the end of /etc/sudoers:
+  enter a password.  Use visudo to add the following line near the
+  end of /etc/sudoers:
 
-    username localhost = NOPASSWD: /usr/sbin/ntpdate
+    username ALL = NOPASSWD: /usr/sbin/ntpdate
 
   'username' needs to be changed to the name of the user who will be
   running the farm scripts, and /usr/sbin/ntpdate may need to be changed
