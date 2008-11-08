@@ -9,8 +9,6 @@
 
 <h2>Results of latest automated compile tests</h2>
 
-<h4>All of the 'new' farm slots are online - see NEWS below</h4>
-
 <p>Clicking on the last build date in the tables below will take you to the 
 associated log file so you can see what happened.  Clicking on the system 
 name will show you a history of all builds on that system.</p>
@@ -53,46 +51,22 @@ only getting bugfixes, as we prepare for the release of version 2.3.0.</p>
  </tbody>
 </table>
 
-<h3>EMC 2.1 Branch</h3>
-<p>The v2_1_branch is the stable release branch for version 2.1.  At this time it is
-only getting major bugfixes, since version 2.2 is now released.</p>
-
-<table border="1" cellpadding="10" cellspacing="0" >
- <tbody>
- <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
- <tr align="center"><!--#include file="emc2.1branch_slot1.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.1branch_slot2.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.1branch_slot3.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.1branch_slot4.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.1branch_slot5.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.1branch_slot6.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.1branch_slot7.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.1branch_slot8.ssi"--></tr>
- </tbody>
-</table>
-
-<h3>EMC 2.0 Branch</h3>
-<p>The v2_0_branch is the stable release branch for version 2.0.x (currently 2.0.5).
-At this time it is only getting bugfixes.  Because version 2.0 did not include
-the non-realtime simulator, we don't attempt to build on slot 1.</p>
-
-<table border="1" cellpadding="10" cellspacing="0" >
- <tbody>
- <tr align="center"><td>Slot</td><td>System</td><td>Last Build</td><td>Results</td></tr>
- <tr align="center"><!--#include file="emc2.0branch_slot1.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.0branch_slot2.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.0branch_slot3.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.0branch_slot4.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.0branch_slot5.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.0branch_slot6.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.0branch_slot7.ssi"--></tr>
- <tr align="center"><!--#include file="emc2.0branch_slot8.ssi"--></tr>
- </tbody>
-</table>
-
 <p></p>
 
 <h2>Compile Farm News</h3>
+
+<em>8-Nov-2008</em><br>
+<p>Added another 2G of ram to the farm host, and added four new virtual machines.
+The existing Dapper Realtime system has been moved from a real box (that has
+been powered down a lot lately) to one of the VMs.  The other three are now
+running non-realtime Dapper, non-realtime Hardy, and realtime Hardy.
+</p>
+
+<em>8-Nov-2008</em><br>
+<p>Removed the EMC-2.0 and EMC-2.1 branches.  The last commit to either of these
+branches was nearly a year ago, and we don't anticipate any future commits.
+</p>
+
 
 <em>11-Nov-2007</em><br>
 <p>Added the EMC-2.2 branch.  I should probably remove EMC-2.0 as well.  Maybe later.

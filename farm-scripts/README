@@ -96,8 +96,7 @@ Switch to farm directory
 Check out the build trees
 
   $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2head emc2
-  $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2.0branch -r v2_0_branch emc2
-  $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2.1branch -r v2_1_branch emc2
+  $ cvs -z5 -d:ext:anon@cvs.linuxcnc.org:/cvs co -d emc2.2branch -r v2_2_branch emc2
 
 For some reason, if you are in a cvs directory (the farm directory) and do
 a checkout, CVS wants to add the newly checked out tree to the top level
@@ -109,8 +108,7 @@ some cvs add commands in CVS/Entries.Log:
 
   $ cat CVS/Entries.Log
   A D/emc2head////
-  A D/emc2.0branch////c
-  A D/emc2.1branch////c
+  A D/emc2.2branch////c
 
 The cure is very easy - delete CVS/Entries.Log
 
@@ -124,14 +122,12 @@ Create files with the system name and slot number:
 Create a file telling the system what trees to build:
 
   $ echo emc2head >trees
-  $ echo emc2.0branch >>trees
-  $ echo emc2.1branch >>trees
+  $ echo emc2.2branch >>trees
 
 Copy build scripts into the checkout directories:
 
   $ cp emc2_build emc2head/farm_build
-  $ cp emc2_build emc2.0branch/farm_build
-  $ cp emc2_build emc2.1branch/farm_build
+  $ cp emc2_build emc2.2branch/farm_build
 
 EMC2 currently has 2 build scripts, one that builds the normal realtime
 version, and one that builds the non-realtime simulator.  If you need

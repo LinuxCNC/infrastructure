@@ -57,12 +57,11 @@ while true ; do
                 if ./build $TREE ; then
                     # passed: post on web
                     ./results_web $TREE PASS
-                    # post on IRC only if previous attempt failed
+                    # post on IRC and list only if previous attempt failed
                     if [ ! "$LAST_RESULT" = "PASSED" ] ; then
                         ./results_cia $TREE PASS
+                        ./results_list $TREE PASS
                     fi
-                    # don't spam list
-                    # ./results_list $TREE PASS
                 else
                     # failed: post on web, IRC, and list
                     ./results_web $TREE FAIL
