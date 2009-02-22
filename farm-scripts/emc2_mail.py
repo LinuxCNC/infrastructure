@@ -70,6 +70,7 @@ class EMC2MaildirSource(MaildirSource):
         module = ""
         branch = ""
         comments = ""
+        author = ""
         isdir = 0
         lines = list(body_line_iterator(m))
 
@@ -114,7 +115,7 @@ class EMC2MaildirSource(MaildirSource):
                 continue
 
         if module != "emc2":
-            log.msg("email contained no module");
+            log.msg("email was not for the emc2 module, ignoring");
             return None
 
         if not branch:
@@ -130,10 +131,10 @@ class EMC2MaildirSource(MaildirSource):
             return None
 
         log.msg("accepting change from email:");
+        log.msg("    branch = %s" % branch);
         log.msg("    author = %s" % author);
         log.msg("    files = %s" % files);
         log.msg("    comments = %s" % comments);
-        log.msg("    branch = %s" % branch);
 
         # the "branch" value gets used by Buildbot as a CVS Tag, and for TRUNK the proper Tag is None
         if branch == "TRUNK":
