@@ -18,6 +18,15 @@ apt-ftparchive packages dists/hardy/emc2.2/binary-amd64/ | gzip -c > dists/hardy
 apt-ftparchive packages dists/hardy/emc2.2/binary-i386/ | gzip -c > dists/hardy/emc2.2/binary-i386/Packages.gz
 apt-ftparchive sources dists/hardy/emc2.2/source/ | gzip -c > dists/hardy/emc2.2/source/Sources.gz
 
+echo "Build emc2.2-sim layout"
+apt-ftparchive packages dists/hardy/emc2.2-sim/binary-amd64/ > dists/hardy/emc2.2-sim/binary-amd64/Packages
+apt-ftparchive packages dists/hardy/emc2.2-sim/binary-i386/ > dists/hardy/emc2.2-sim/binary-i386/Packages
+apt-ftparchive sources dists/hardy/emc2.2-sim/source/ > dists/hardy/emc2.2-sim/source/Sources
+
+apt-ftparchive packages dists/hardy/emc2.2-sim/binary-amd64/ | gzip -c > dists/hardy/emc2.2-sim/binary-amd64/Packages.gz
+apt-ftparchive packages dists/hardy/emc2.2-sim/binary-i386/ | gzip -c > dists/hardy/emc2.2-sim/binary-i386/Packages.gz
+apt-ftparchive sources dists/hardy/emc2.2-sim/source/ | gzip -c > dists/hardy/emc2.2-sim/source/Sources.gz
+
 echo "Build emc2.3 layout"
 apt-ftparchive packages dists/hardy/emc2.3/binary-amd64/ > dists/hardy/emc2.3/binary-amd64/Packages
 apt-ftparchive packages dists/hardy/emc2.3/binary-i386/ > dists/hardy/emc2.3/binary-i386/Packages
@@ -26,6 +35,15 @@ apt-ftparchive sources dists/hardy/emc2.3/source/ > dists/hardy/emc2.3/source/So
 apt-ftparchive packages dists/hardy/emc2.3/binary-amd64/ | gzip -c > dists/hardy/emc2.3/binary-amd64/Packages.gz
 apt-ftparchive packages dists/hardy/emc2.3/binary-i386/ | gzip -c > dists/hardy/emc2.3/binary-i386/Packages.gz
 apt-ftparchive sources dists/hardy/emc2.3/source/ | gzip -c > dists/hardy/emc2.3/source/Sources.gz
+
+echo "Build emc2.3-sim layout"
+apt-ftparchive packages dists/hardy/emc2.3-sim/binary-amd64/ > dists/hardy/emc2.3-sim/binary-amd64/Packages
+apt-ftparchive packages dists/hardy/emc2.3-sim/binary-i386/ > dists/hardy/emc2.3-sim/binary-i386/Packages
+apt-ftparchive sources dists/hardy/emc2.3-sim/source/ > dists/hardy/emc2.3-sim/source/Sources
+
+apt-ftparchive packages dists/hardy/emc2.3-sim/binary-amd64/ | gzip -c > dists/hardy/emc2.3-sim/binary-amd64/Packages.gz
+apt-ftparchive packages dists/hardy/emc2.3-sim/binary-i386/ | gzip -c > dists/hardy/emc2.3-sim/binary-i386/Packages.gz
+apt-ftparchive sources dists/hardy/emc2.3-sim/source/ | gzip -c > dists/hardy/emc2.3-sim/source/Sources.gz
 
 echo "Generate Release"
 apt-ftparchive -c apt-emc2-custom-release.conf release dists/hardy > dists/hardy/Release
