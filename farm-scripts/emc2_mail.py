@@ -24,8 +24,8 @@ class EMC2MaildirSource(MaildirSource):
     def parse(self, m, prefix):
         """parse email sent by cradek's EMC CVS Script 1.0"""
 
-        log.msg("got an email!")
-        log.msg(m)
+        #log.msg("got an email!")
+        #log.msg(m)
 
         # the From: should look like this:  EMC CVS server <cvs-adm@cvs.linuxcnc.org>
         name, addr = parseaddr(m["from"]);
@@ -76,7 +76,7 @@ class EMC2MaildirSource(MaildirSource):
 
         while lines:
             line = lines.pop(0)
-            log.msg("thinking about line \"%s\"" % line)
+            #log.msg("thinking about line \"%s\"" % line)
 
             if re.search(r"\<module\>emc2", line):
                 module = "emc2"
