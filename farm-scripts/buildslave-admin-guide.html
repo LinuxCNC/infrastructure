@@ -95,13 +95,18 @@ computer</a>.
 
     <li>
 
-        <p>Install buildbot.  It's packaged for most distributions.
-        0.7.6 is too old and doesnt work with Git; 0.7.9 is known to work.
-        Versions between those are unknown.
+        <p>Install a recent version of buildbot.  0.7.6 is too old and
+        doesnt work well with Git; 0.7.9 is known to work.  Versions
+        between those are unknown.
 
-        <p>On most Debian-based distros it's enough to run:
+        <p>The buildbot packages in Ubuntu Intrepid and Debian Lenny
+        are new enough that they Just Work:
 
         <p><tt>apt-get install buildbot</tt>
+
+        <p>Ubuntu Hardy has buildbot 0.7.6, which is too old.  If your
+        buildslave is Hardy or older, you need to install buildbot from
+        somewhere other than the default Ubuntu repository.
 
     </li>
 
