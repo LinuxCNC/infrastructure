@@ -1,0 +1,220 @@
+
+<html>
+
+<head>
+<title>
+EMC2 Buildbot: Buildslave Admin's Guide
+</title>
+</head
+
+
+<body>
+
+<center>
+<h2>
+EMC2 Buildbot: Buildslave Admin's Guide
+</h2>
+</center>
+
+<p>This document describes how to set up a <a
+href="http://buildbot.net">Buildbot</a> buildslave for EMC2.
+
+<p>Running a buildslave requires only a computer that
+can check out and compile the emc2 CVS tree, can run
+<a href="http://twistedmatrix.com/trac/">twisted</a> <a
+href="http://www.python.org/">python</a>, and can make outgoing TCP
+connections to the <a href="http://emc2-buildbot.colorado.edu">buildmaster
+computer</a>.
+
+<hr>
+
+<ol>
+
+    <li>
+
+        <p>Disable the screensaver or set it to only blank the screen
+        (so as not to soak up CPU cycles with useless fancy eye candy).
+
+    </li>
+
+
+    <li>
+
+        <p>Make a user to run the buildslave.  It is not a good idea to
+        run the buildslave as yourself.  I'll refer to the user as just
+        "the buildslave user" in this document.  You can name the user
+        anything you want.  Give this user a sneaky password that only
+        you know.
+
+    </li>
+
+
+    <li>
+
+        <p>Install 'ntp' (so the time will be right), and 'lsb-release'
+        (so the buildslave can describe itself), and 'fakeroot' (so the
+        buildslave can build the debian package):
+
+        <p><tt>apt-get install ntp lsb-release fakeroot</tt>
+
+    </li>
+
+
+    <li>
+
+        <p>Do an anonymous Git checkout as the buildslave user (in a
+        throw-away directory out of the way) to make sure sure you can,
+        and to make sure you have the ssh hostkey of the Git server
+        machine.
+
+        <p><tt>git clone git://git.linuxcnc.org/git/emc2.git emc2-dev</tt>
+
+    </li>
+
+
+    <li>
+
+        <p>Install the emc2 build dependencies:
+
+        <p><tt>apt-get install build-essential</tt>
+
+        <p><tt>cd debian; ./configure sim; cd ..</tt>
+
+        <p><tt>dpkg-checkbuilddeps</tt>
+
+        <p><tt>apt-get install $SIM_REQUIREMENTS</tt>
+
+        <p><tt>cd debian; ./configure -r; cd ..</tt>
+
+        <p><tt>dpkg-checkbuilddeps</tt>
+
+        <p><tt>apt-get install $REALTIME_REQUIREMENTS</tt>
+
+    </li>
+
+
+    <li>
+
+        <p>Install buildbot.  It's packaged for most distributions.
+        0.7.6 is too old and doesnt work with Git; 0.7.9 is known to work.
+        Versions between those are unknown.
+
+        <p>On most Debian-based distros it's enough to run:
+
+        <p><tt>apt-get install buildbot</tt>
+
+    </li>
+
+
+    <li>
+
+        <p>Now we're ready to set up the buildslave itself.  You will
+        need two pieces of information from the buildmaster admin:
+        the slave name and the slave password.  Ask for this on the
+        emc-devel mailing list.
+
+        <p>The slave name is just a unique identifier for your buildslave.
+        It should ideally be descriptive of the environment that you're
+        building on, for example "hardy-rtai-x86".
+
+        <p>The slave password is totally unrelated to the Unix login
+        password of the buildslave user.
+
+        <p><tt>mkdir ~/BuildBot/slave/$SLAVE_NAME</tt>
+
+        <p><tt>buildbot create-slave ~/BuildBot/slave/$SLAVE_NAME emc2-buildbot.colorado.edu:51332 $SLAVE_NAME $SLAVE_PASSWORD</tt>
+
+        <p>(The buildslave directory above is just a suggestion, you can put it anywhere you like.)
+
+        <p>(On older versions of buildbot, such as the one on Dapper, the
+        command above should be "<tt>buildbot slave ...</tt>" instead of
+        "<tt>buildbot create-slave ...</tt>".)
+
+    </li>
+
+
+    <li>
+
+        <p>In your buildslave directory, edit buildbot.tac to include
+        the line "usepty = 0" if it doesnt already have it.
+
+    </li>
+
+
+    <li>
+
+        <p>On Ubuntu Dapper and Hardy, the buildbot package provides an
+        init script that starts the buildslave automatically on system
+        boot.  This script sources /etc/default/buildbot, so you need
+        to fill it out with the particulars of your setup.
+
+    </li>
+
+
+    <li>
+
+        <p>Edit the <tt>info/admin</tt> and <tt>info/host</tt> files in
+        your buildslave directory (<tt>~/BuildBot/slave/$SLAVE_NAME</tt>
+        in the example above).  <tt>admin</tt> should have
+        your name and email address, and <tt>host</tt>
+        should have a brief description of your host.
+        For some examples (minus the email addresses), see the <a
+        href="http://emc2-buildbot.colorado.edu/buildbot/buildslaves">BuildSlave</a>
+        page.
+
+    </li>
+
+
+    <li>
+
+        <p><b>This is the optional final step!</b>
+
+        <p>If you want your buildslave to run the real-time test suite, you need to do two more things:
+
+        <ol>
+
+            <li>
+
+                <p>You must let the buildslave user run a couple of
+                sudo commands without passwords.  The first is "sudo
+                /usr/bin/make setuid" which enables the setuid bit on a
+                couple of helper programs, without this the tests wont be
+                able to load kernel modules.  The second sudo command is
+                "sudo /bin/dmesg -c" which clears the dmesg log, this is
+                done before running the tests so that the dmesg reported
+                after the tests finish contains just the info for this
+                test run.
+
+                <p>Add this line to /etc/sudoers:
+
+                <p><tt>buildslave-user ALL = ALL, NOPASSWD: /usr/bin/make setuid , /bin/dmesg -c</tt>
+
+            </li>
+
+
+            <li>
+
+                <p>You need to allow the buildslave user to lock
+                more memory than the default configuration allows.
+                If you're starting buildbot from the init scripts at
+                system boot, the easiest way to do this is to add this
+                line to /etc/default/buildbot:
+
+                <p><tt>ulimit -l unlimited</tt>
+
+            </li>
+
+        </ol
+
+    </li
+
+</ol>
+
+
+<hr>
+
+<p>That's it!  I can't believe it was so easy!</p>
+
+
+</body>
+</html>
