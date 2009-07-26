@@ -1,0 +1,27 @@
+#!/bin/bash
+set -xe
+if [ $# -eq 0 ]; then echo "Must give version number to build"; exit 1; fi
+TAG=$1
+shift
+
+if [ $# -eq 0 ]; then set -- sim rt; fi
+
+build () {
+(
+mkdir -p $2
+cd $2
+git archive --format=tar --prefix=emc2/ --remote=/usr/src/emc2-dev $TAG | tar xvf -
+VERSION=`cat emc2/VERSION`
+mv emc2 emc2-$VERSION
+(cd emc2-$VERSION
+case $2 in
+sim) debian/configure sim; dest=emc2.3-sim ;;
+rt) debian/configure 2.6.24-16-rtai ; dest=emc2.3 ;;
+*) echo "Flavor unrecognized: $2"; exit 1
+esac
+(cd src; autoconf); dpkg-buildpackage -rfakeroot)
+rm -rf emc2-$VERSION
+)
+}
+
+for i in $*; do build $TAG $i; done
