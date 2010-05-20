@@ -1,9 +1,9 @@
-** Things Chris wants to remember when making releases **
+** Things to remember when making releases **
 
 1. Metawork done for all platforms:
 
 Review the diffs since the last version to make sure everything
-makes sense, was intentional, and is relfected in changelog entries.
+makes sense, was intentional, and is reflected in changelog entries.
 Do not screw this up.  If you haven't been paying enough attention to
 commits and the committers to know whether the changes make sense or
 were intentional, reconsider whether you should be making the release
@@ -12,38 +12,40 @@ right now.  Your signing the package means you know what's in it.
 Use dch and make sure the changelog entries and time and email
 stamps are right
 
-Update VERSION file and check it and the new debian/changelog in
+Update VERSION file and commit it and the new debian/changelog
 
-Tag cvs with the appropriate RELEASE_2_1_x.  Make sure the tags
-match what's going in the binary packages.  Don't screw this up
-either.  Doing support without knowing what code someone is running
-is unnecessarily painful.
+Tag (git tag -s) with the appropriate v2.x.y.  Make sure the tags match
+what's going in the binary packages.  Don't screw this up either.  Doing
+support without knowing what code someone is running is unnecessarily
+painful.
+
+Push the tag.
 
 2. Actual release building, done separately for each platform:
 
-Rename the source directory to emc2-2.1.x so debuild doesn't complain
-when it builds the source package (sometimes dch does this for you?)
+Use the emc2.4-release script to build source and binary packages for
+each supported operating system release.  For different architectures on
+the same operating system release and with the same realtime kernel
+version, use the source package generated from the first architecture
+to build the package for the second architecture (don't build a second
+source package).
 
-In the source directory, run dh_clean and make sure there's no
-kruft in the debian directory (it should be 1.5MB, not 20MB)
-
-In the debian directory, ./configure 2.6.15-magma
-
-Back in the source directory, run debuild
+Use the repo_get script to get changes made by another release manager
+from the package server.
 
 Stick the two resulting binary packages and the two resulting source
 files into the apt repository in the right place.
 
-Repeat steps starting at #2 for dapper-sim (./configure sim) and breezy
-(./configure 2.6.12-magma).  For breezy you'll have to be on a breezy
-machine or a good approximation of one.
+Use the repo_put script to upload the new packages without updated
+metadata.
 
-Sign and upload/rsync the apt repository
+Use the buildrepo script to update and sign the metadata.
 
-Update /topic on irc, send an announcement email containing the changelog
+Use the repo_put script a second time to upload the new metadata.
+The packages are now available.
+
+Update /topic on irc, send an announcement email containing the
+changelog, update the wiki.
 
 If you get bored it's customary to type "build build build" or "upload
 upload upload" as appropriate into irc.
-
-Change VERSION to say pre-2.1.x++ and check it in.
-
