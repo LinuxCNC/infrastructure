@@ -1,0 +1,13 @@
+#!/bin/sh
+set -xe
+cd /usr/src/emc2.4-docbuild
+eval `with-lock build.lock` || exit $?
+git pull 2>&1
+if ! make -C src docs; then
+    # The usual reason for a build failure is that a file was (re)moved and
+    # dependency information is now wrong
+    rm -rf src/depends
+    make -C src docs
+fi
+(cd docs &&
+rsync --delete --bwlimit=20 --exclude="*.xml" -zrtlv *.pdf html linuxcnc.org:docs/2.4/)
