@@ -10,8 +10,6 @@ echo "Build firmware symlinks"
 (cd dists/hardy/base/binary-i386; ln -svf ../binary-all/*_all.deb .)
 (cd dists/hardy/emc2.3/binary-amd64; ln -svf ../binary-all/*_all.deb .)
 (cd dists/hardy/emc2.3/binary-i386; ln -svf ../binary-all/*_all.deb .)
-(cd dists/hardy/emc2.4/binary-amd64; ln -svf ../binary-all/*_all.deb .)
-(cd dists/hardy/emc2.4/binary-i386; ln -svf ../binary-all/*_all.deb .)
 
 echo "Build base layout"
 apt-ftparchive packages dists/hardy/base/binary-amd64/ > dists/hardy/base/binary-amd64/Packages
