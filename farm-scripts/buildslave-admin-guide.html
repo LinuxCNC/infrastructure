@@ -20,7 +20,7 @@ EMC2 Buildbot: Buildslave Admin's Guide
 href="http://buildbot.net">Buildbot</a> buildslave for EMC2.
 
 <p>Running a buildslave requires only a computer that
-can check out and compile the emc2 CVS tree, can run
+can check out and compile the emc2 GIT repo, can run
 <a href="http://twistedmatrix.com/trac/">twisted</a> <a
 href="http://www.python.org/">python</a>, and can make outgoing TCP
 connections to the <a href="http://emc2-buildbot.colorado.edu">buildmaster
@@ -106,7 +106,8 @@ computer</a>.
 
         <p>Ubuntu Hardy has buildbot 0.7.6, which is too old.  If your
         buildslave is Hardy or older, you need to install buildbot from
-        somewhere other than the default Ubuntu repository.
+        somewhere other than the default Ubuntu repository.  The 0.7.9-1
+        buildbot.deb from Intrepid is known to install and work on Hardy.
 
     </li>
 
@@ -131,27 +132,18 @@ computer</a>.
 
         <p>(The buildslave directory above is just a suggestion, you can put it anywhere you like.)
 
-        <p>(On older versions of buildbot, such as the one on Dapper, the
-        command above should be "<tt>buildbot slave ...</tt>" instead of
-        "<tt>buildbot create-slave ...</tt>".)
-
     </li>
 
 
     <li>
 
-        <p>In your buildslave directory, edit buildbot.tac to include
-        the line "usepty = 0" if it doesnt already have it.
+        <p>On Ubuntu releases from Dapper through Lucid, the
+        buildbot package provides an init script that starts the
+        buildslave automatically on system boot.  This script sources
+        /etc/default/buildbot, so you need to fill it out with the
+        particulars of your setup.
 
-    </li>
-
-
-    <li>
-
-        <p>On Ubuntu Dapper and Hardy, the buildbot package provides an
-        init script that starts the buildslave automatically on system
-        boot.  This script sources /etc/default/buildbot, so you need
-        to fill it out with the particulars of your setup.
+        <p>On other distros, buildbot may be started differently.
 
     </li>
 
@@ -172,7 +164,7 @@ computer</a>.
 
     <li>
 
-        <p><b>This is the optional final step!</b>
+        <p><b>This step is optional!</b>
 
         <p>If you want your buildslave to run the real-time test suite, you need to do two more things:
 
@@ -209,9 +201,18 @@ computer</a>.
 
             </li>
 
-        </ol
+        </ol>
 
-    </li
+    </li>
+
+
+    <li>
+
+        <p><b>This step is optional!</b>
+
+        <p>If you want your buildslave to build debs, you need to set up a pbuilder chroot.
+
+    </li>
 
 </ol>
 
