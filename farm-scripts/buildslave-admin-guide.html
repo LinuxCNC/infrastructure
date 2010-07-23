@@ -53,9 +53,10 @@ computer</a>.
 
         <p>Install 'ntp' (so the time will be right), and 'lsb-release'
         (so the buildslave can describe itself), and 'fakeroot' (so the
-        buildslave can build the debian package):
+        buildslave can build the debian package), and build-essential
+        (because it's essential for building):
 
-        <p><tt>apt-get install ntp lsb-release fakeroot</tt>
+        <p><tt>apt-get install ntp lsb-release fakeroot build-essential</tt>
 
     </li>
 
@@ -74,15 +75,18 @@ computer</a>.
 
     <li>
 
-        <p>Install the emc2 build dependencies:
+        <p>Install the emc2 build dependencies, for sim or realtime
+        or both.
 
-        <p><tt>apt-get install build-essential</tt>
+        <p>For sim:
 
         <p><tt>cd debian; ./configure sim; cd ..</tt>
 
         <p><tt>dpkg-checkbuilddeps</tt>
 
         <p><tt>apt-get install $SIM_REQUIREMENTS</tt>
+
+        <p>For realtime:
 
         <p><tt>cd debian; ./configure -r; cd ..</tt>
 
@@ -210,7 +214,26 @@ computer</a>.
 
         <p><b>This step is optional!</b>
 
-        <p>If you want your buildslave to build debs, you need to set up a pbuilder chroot.
+        <p>If you want your buildslave to build debs, you need to set up
+        a pbuilder chroot.  The pbuilder chroot can, just like normal
+        build environments, be set up to build sim only, or to build
+        sim or realtime.
+
+        Setting up a sim-only pbuilder chroot goes something like this:
+
+        <p><tt>sudo pbuilder --create --basetgz $HOME/pbuilder-$DIST-emc2.tgz --distribution $DIST --components 'main universe'</tt></p>
+
+        Alternatively, setting up a sim-or-realtime pbuilder chroot goes like this:
+
+        <p><tt>sudo pbuilder --create --basetgz $HOME/pbuilder-$DIST-emc2.tgz --distribution $DIST --components 'main universe' --othermirror $EMC2_KERNEL_ARCHIVE</tt></p>
+
+        <p>EMC2_KERNEL_ARCHIVE is the debian package archive for the
+        emc2-blessed rtai kernel for your dist.  For example, for hardy
+        this is "<tt>deb http://emc2-buildbot.colorado.edu/~buildmaster
+        hardy master-rt</tt>"
+
+        <p>The pbuilder chroot needs to be located in the buildslave's
+        home directory, and needs to have the name specified above.
 
     </li>
 
