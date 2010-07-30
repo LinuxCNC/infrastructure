@@ -215,25 +215,77 @@ computer</a>.
         <p><b>This step is optional!</b>
 
         <p>If you want your buildslave to build debs, you need to set up
-        a pbuilder chroot.  The pbuilder chroot can, just like normal
-        build environments, be set up to build sim only, or to build
-        sim or realtime.
+        a pbuilder chroot.
 
-        Setting up a sim-only pbuilder chroot goes something like this:
+        <ol>
 
-        <p><tt>sudo pbuilder --create --basetgz $HOME/pbuilder-$DIST-emc2.tgz --distribution $DIST --components 'main universe'</tt></p>
+            <li>
 
-        Alternatively, setting up a sim-or-realtime pbuilder chroot goes like this:
+                <p>The pbuilder chroot, just like normal build
+                environments, can be set up to build sim only, or to
+                build sim or realtime.
 
-        <p><tt>sudo pbuilder --create --basetgz $HOME/pbuilder-$DIST-emc2.tgz --distribution $DIST --components 'main universe' --othermirror $EMC2_KERNEL_ARCHIVE</tt></p>
+                <ul>
 
-        <p>EMC2_KERNEL_ARCHIVE is the debian package archive for the
-        emc2-blessed rtai kernel for your dist.  For example, for hardy
-        this is "<tt>deb http://emc2-buildbot.colorado.edu/~buildmaster
-        hardy master-rt</tt>"
+                    <li>
 
-        <p>The pbuilder chroot needs to be located in the buildslave's
-        home directory, and needs to have the name specified above.
+                        <p>Setting up a sim-only pbuilder chroot goes
+                        something like this:
+
+                        <p><tt>sudo pbuilder --create --basetgz
+                        $HOME/pbuilder-$DIST-emc2.tgz --distribution
+                        $DIST --components 'main universe'</tt></p>
+
+                    <li>
+
+                        <p>Alternatively, setting up a sim-or-realtime
+                        pbuilder chroot goes like this:
+
+                        <p><tt>sudo pbuilder --create --basetgz
+                        $HOME/pbuilder-$DIST-emc2.tgz --distribution
+                        $DIST --components 'main universe' --othermirror
+                        $EMC2_KERNEL_ARCHIVE</tt></p>
+
+                        <p>EMC2_KERNEL_ARCHIVE is the debian package
+                        archive for the emc2-blessed rtai kernel
+                        for your dist.  For example, for Lucid this
+                        is "<tt>deb http://www.linuxcnc.org/lucid
+                        lucid base</tt>" and for Hardy it's "<tt>deb
+                        http://www.linuxcnc.org/hardy hardy base</tt>"
+
+                </ul>
+
+                <p>The pbuilder chroot tarball needs to be located in
+                the buildslave's home directory, and needs to have the
+                name specified above.
+
+
+            <li>
+
+                <p>Give the buildslave user password-less sudo by adding
+                the following line to /etc/sudoers:
+
+                <p><tt>buildslave ALL = ALL, NOPASSWD: /usr/bin/apt-get ,
+                /usr/sbin/pbuilder , /bin/umount</tt>
+
+
+            <li>
+
+                <p>Add the buildmaster's source repo to
+                /etc/apt/sources.list.d/emc2-buildbot.list.
+                The exact form you use here depends on what
+                distribution you're building for, look on the <a
+                href="~buildmaster">buildmaster archive page</a>
+                for specifics.  For Lucid realtime you'd use this:
+
+                <pre>
+deb     http://emc2-buildbot.colorado.edu/~buildmaster lucid master-rt
+deb-src http://emc2-buildbot.colorado.edu/~buildmaster lucid master-rt
+deb     http://emc2-buildbot.colorado.edu/~buildmaster lucid v2.4_branch-rt
+deb-src http://emc2-buildbot.colorado.edu/~buildmaster lucid v2.4_branch-rt
+</pre>
+
+        </ol>
 
     </li>
 
