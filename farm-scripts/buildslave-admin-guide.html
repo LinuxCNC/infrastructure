@@ -75,24 +75,15 @@ computer</a>.
 
     <li>
 
-        <p>Install the emc2 build dependencies, for sim or realtime
-        or both.
+        <p>The buildbot checks for missing build dependencies and
+        automatically installs them on the buildslave computer each
+        time it builds.  In order for this to work, you must give
+        your buildslave user the ability to run "sudo apt-get" without
+        a password.
 
-        <p>For sim:
+        <p>Add this line to /etc/sudoers:
 
-        <p><tt>cd debian; ./configure sim; cd ..</tt>
-
-        <p><tt>dpkg-checkbuilddeps</tt>
-
-        <p><tt>apt-get install $SIM_REQUIREMENTS</tt>
-
-        <p>For realtime:
-
-        <p><tt>cd debian; ./configure -r; cd ..</tt>
-
-        <p><tt>dpkg-checkbuilddeps</tt>
-
-        <p><tt>apt-get install $REALTIME_REQUIREMENTS</tt>
+        <p><tt>buildslave-user ALL = ALL, NOPASSWD: /usr/bin/apt-get</tt>
 
     </li>
 
