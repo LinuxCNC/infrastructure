@@ -23,7 +23,7 @@ href="http://buildbot.net">Buildbot</a> buildslave for EMC2.
 can check out and compile the emc2 GIT repo, can run
 <a href="http://twistedmatrix.com/trac/">twisted</a> <a
 href="http://www.python.org/">python</a>, and can make outgoing TCP
-connections to the <a href="http://emc2-buildbot.colorado.edu">buildmaster
+connections to the <a href="http://buildbot.linuxcnc.org">buildmaster
 computer</a>.
 
 <hr>
@@ -125,7 +125,7 @@ computer</a>.
 
         <p><tt>mkdir ~/BuildBot/slave/$SLAVE_NAME</tt>
 
-        <p><tt>buildbot create-slave ~/BuildBot/slave/$SLAVE_NAME emc2-buildbot.colorado.edu:51332 $SLAVE_NAME $SLAVE_PASSWORD</tt>
+        <p><tt>buildbot create-slave ~/BuildBot/slave/$SLAVE_NAME buildbot.linuxcnc.org:51332 $SLAVE_NAME $SLAVE_PASSWORD</tt>
 
         <p>(The buildslave directory above is just a suggestion, you can put it anywhere you like.)
 
@@ -157,7 +157,7 @@ computer</a>.
         your name and email address, and <tt>host</tt>
         should have a brief description of your host.
         For some examples (minus the email addresses), see the <a
-        href="http://emc2-buildbot.colorado.edu/buildbot/buildslaves">BuildSlave</a>
+        href="http://buildbot.linuxcnc.org/buildbot/buildslaves">BuildSlave</a>
         page.
 
     </li>
@@ -276,10 +276,10 @@ computer</a>.
                 for specifics.  For Lucid realtime you'd use this:
 
                 <pre>
-deb     http://emc2-buildbot.colorado.edu/~buildmaster lucid master-rt
-deb-src http://emc2-buildbot.colorado.edu/~buildmaster lucid master-rt
-deb     http://emc2-buildbot.colorado.edu/~buildmaster lucid v2.4_branch-rt
-deb-src http://emc2-buildbot.colorado.edu/~buildmaster lucid v2.4_branch-rt
+deb     http://buildbot.linuxcnc.org/~buildmaster lucid master-rt
+deb-src http://buildbot.linuxcnc.org/~buildmaster lucid master-rt
+deb     http://buildbot.linuxcnc.org/~buildmaster lucid v2.4_branch-rt
+deb-src http://buildbot.linuxcnc.org/~buildmaster lucid v2.4_branch-rt
 </pre>
 
         </ol>
