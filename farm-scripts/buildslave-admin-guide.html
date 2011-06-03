@@ -212,59 +212,37 @@ computer</a>.
         <p><b>This step is optional!</b>
 
         <p>If you want your buildslave to build debs, you need to set up
-        a pbuilder chroot.
+        a pbuilder chroot:
 
         <ol>
 
             <li>
 
-                <p>The pbuilder chroot, just like normal build
-                environments, can be set up to build sim only, or to
-                build sim or realtime.
+                <p>Create the pbuilder chroot:
 
-                <ul>
+                <p><tt>sudo pbuilder --create --basetgz
+                $HOME/pbuilder-$DIST-emc2.tgz --distribution
+                $DIST --components 'main universe' --othermirror
+                "$LINUXCNC_ARCHIVE|deb http://us.archive.ubuntu.com/ubuntu
+                $DIST-updates main universe"</tt>
 
-                    <li>
-
-                        <p>Setting up a sim-only pbuilder chroot goes
-                        something like this:
-
-                        <p><tt>sudo pbuilder --create --basetgz
-                        $HOME/pbuilder-$DIST-emc2.tgz --distribution
-                        $DIST --components 'main universe'</tt></p>
-
-                    <li>
-
-                        <p>Alternatively, setting up a sim-or-realtime
-                        pbuilder chroot goes like this:
-
-                        <p><tt>sudo pbuilder --create --basetgz
-                        $HOME/pbuilder-$DIST-emc2.tgz --distribution
-                        $DIST --components 'main universe' --othermirror
-                        $EMC2_KERNEL_ARCHIVE</tt></p>
-
-                        <p>EMC2_KERNEL_ARCHIVE is the debian package
-                        archive for the emc2-blessed rtai kernel
-                        for your dist.  For example, for Lucid this
-                        is "<tt>deb http://www.linuxcnc.org/lucid
-                        lucid base</tt>" and for Hardy it's "<tt>deb
-                        http://www.linuxcnc.org/hardy hardy base</tt>"
-
-                </ul>
+                <p>LINUXCNC_ARCHIVE is the LinuxCNC debian package
+                archive for your $DIST.  For example, for Lucid this is
+                "<tt>deb http://www.linuxcnc.org/lucid lucid base</tt>"
+                and for Hardy it's "<tt>deb http://www.linuxcnc.org/hardy
+                hardy base</tt>"
 
                 <p>The pbuilder chroot tarball needs to be located in
                 the buildslave's home directory, and needs to have the
                 name specified above.
-
 
             <li>
 
                 <p>Give the buildslave user password-less sudo by adding
                 the following line to /etc/sudoers:
 
-                <p><tt>buildslave ALL = ALL, NOPASSWD: /usr/bin/apt-get ,
-                /usr/sbin/pbuilder , /bin/umount</tt>
-
+                <p><tt>buildslave ALL = ALL, NOPASSWD: /usr/bin/apt-get,
+                /usr/sbin/pbuilder, /bin/umount</tt>
 
             <li>
 
@@ -272,8 +250,9 @@ computer</a>.
                 /etc/apt/sources.list.d/emc2-buildbot.list.
                 The exact form you use here depends on what
                 distribution you're building for, look at the <a
-                href="http://buildbot.linuxcnc.org">buildbot front page</a>
-                for specifics.  For Lucid realtime you'd use this:
+                href="http://buildbot.linuxcnc.org">buildbot front
+                page</a> for specifics.  For Lucid realtime you'd
+                use this:
 
                 <pre>
 deb     http://buildbot.linuxcnc.org/~buildmaster lucid master-rt
