@@ -90,6 +90,24 @@ computer</a>.
 
     <li>
 
+        <p>At least on Hardy and Lucid, apt automatically updates
+        the package list using a daily cronjob, /etc/cron.daily/apt.
+        The buildbot also tries to update the package lists when it
+        builds, and this can lead to conflict and spurious build failures.
+        Thus you should disable automatic updating of the package lists,
+        and let the buildbot handle it.
+
+        <p>The cronjob is configured by a bunch of APT::Periodic
+        apt-conf variables.  A reasonable way to set these
+        variables is to install the update-notifier-common
+        package, then change /etc/apt/apt.conf.d/10periodic so
+        APT::Periodic::Update-Package-Lists is "0".
+
+    </li>
+
+
+    <li>
+
         <p>Install a recent version of buildbot.  0.7.10 is the oldest
         version known to work.  Versions before 0.7.10 don't work well
         with Git.
