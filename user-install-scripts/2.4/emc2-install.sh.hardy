@@ -1,0 +1,10 @@
+#!/bin/sh
+
+gksudo -m "Enter your password to install EMC2" true
+gpg --keyserver pgpkeys.mit.edu --recv-key 8F374FEF
+gpg -a --export 8F374FEF | sudo apt-key add -
+
+grep -q emc2 /etc/apt/sources.list || sudo sh -c 'echo "deb http://www.linuxcnc.org/hardy hardy base emc2.4" >>/etc/apt/sources.list; echo "deb-src http://www.linuxcnc.org/hardy hardy base emc2.4" >>/etc/apt/sources.list'
+sudo apt-get update
+sudo apt-get -o Apt::Install-Recommends=true install emc2
+
