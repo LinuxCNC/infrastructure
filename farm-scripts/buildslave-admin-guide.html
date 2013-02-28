@@ -193,7 +193,7 @@ computer</a>.
 
                 <p>You must let the buildslave user run a couple of
                 sudo commands without passwords.  The first is "sudo
-                /usr/bin/make setuid" which enables the setuid bit on a
+                /usr/bin/make V=1 setuid" which enables the setuid bit on a
                 couple of helper programs, without this the tests wont be
                 able to load kernel modules.  The second sudo command is
                 "sudo /bin/dmesg -c" which clears the dmesg log, this is
@@ -203,7 +203,7 @@ computer</a>.
 
                 <p>Add this line to /etc/sudoers:
 
-                <p><tt>buildslave-user ALL = ALL, NOPASSWD: /usr/bin/make setuid , /bin/dmesg -c</tt>
+                <p><tt>buildslave-user ALL = ALL, NOPASSWD: /usr/bin/make V=1 setuid , /bin/dmesg -c</tt>
 
             </li>
 
