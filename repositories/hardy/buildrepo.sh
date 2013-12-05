@@ -53,4 +53,4 @@ echo "signing repository"
 rm -f dists/hardy/Release.gpg
 gpg -a -b --default-key='emc-board@linuxcnc.org' -o dists/hardy/Release.gpg dists/hardy/Release
 
-echo "all done -- ./repo-put.sh if all looks good"
+echo "all done -- ./repo_put.sh if all looks good"
