@@ -3,7 +3,7 @@
 
 <head>
 <title>
-EMC2 Buildbot: Buildslave Admin's Guide
+LinuxCNC Buildbot: Buildslave Admin's Guide
 </title>
 </head
 
@@ -12,15 +12,15 @@ EMC2 Buildbot: Buildslave Admin's Guide
 
 <center>
 <h2>
-EMC2 Buildbot: Buildslave Admin's Guide
+LinuxCNC Buildbot: Buildslave Admin's Guide
 </h2>
 </center>
 
 <p>This document describes how to set up a <a
-href="http://buildbot.net">Buildbot</a> buildslave for EMC2.
+href="http://buildbot.net">Buildbot</a> buildslave for LinuxCNC.
 
 <p>Running a buildslave requires only a computer that
-can check out and compile the emc2 GIT repo, can run
+can check out and compile the linuxcnc git repo, can run
 <a href="http://twistedmatrix.com/trac/">twisted</a> <a
 href="http://www.python.org/">python</a>, and can make outgoing TCP
 connections to the <a href="http://buildbot.linuxcnc.org">buildmaster
@@ -68,7 +68,7 @@ computer</a>.
         and to make sure you have the ssh hostkey of the Git server
         machine.
 
-        <p><tt>git clone git://git.linuxcnc.org/git/emc2.git emc2-dev</tt>
+        <p><tt>git clone git://git.linuxcnc.org/git/linuxcnc.git linuxcnc-dev</tt>
 
     </li>
 
@@ -265,7 +265,7 @@ computer</a>.
             <li>
 
                 <p>Add the buildmaster's source repo to
-                /etc/apt/sources.list.d/emc2-buildbot.list.
+                /etc/apt/sources.list.d/linuxcnc-buildbot.list.
                 The exact form you use here depends on what
                 distribution you're building for, look at the <a
                 href="http://buildbot.linuxcnc.org">buildbot front
