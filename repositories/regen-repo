@@ -1,0 +1,28 @@
+#!/bin/bash -xe
+
+cd /usr/local/src/2.5-apt
+rm -f packages-*.db
+rm -rf dists/*/linuxcnc*
+
+cd buildbot.linuxcnc.org/release/dists
+find . -name '*.deb' -o -name '*.tar.gz' -o -name '*.dsc' -o -name '*.changes' |cpio -pdmuvl ../../../dists
+cd -
+
+rm -rf dists/*/v2.4_branch*
+for i in dists/*/v2.5_branch-rt; do mv $i ${i/v2.5_branch-rt/linuxcnc2.5/}; done
+for i in dists/*/v2.5_branch-sim; do mv $i ${i/v2.5_branch-sim/linuxcnc2.5-sim/}; done
+find dists/*/linuxcnc* -name '*emc2*' |xargs rm -f
+find dists/*/linuxcnc* -name '*~pre*' |xargs rm -f
+
+set -- hardy lucid precise
+for i; do
+	apt-ftparchive generate generate-$i.conf
+done
+
+for i; do
+	apt-ftparchive -c release-$i.conf release dists/$i/ >dists/$i/Release
+done
+
+for i; do
+	gpg --sign --default-key=EMC -ba -o dists/$i/Release.gpg dists/$i/Release
+done

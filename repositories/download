@@ -1,0 +1,3 @@
+#!/bin/bash -xe
+cd /usr/local/src/2.5-apt
+wget -e robots=off --mirror --no-parent http://buildbot.linuxcnc.org/release/

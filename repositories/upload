@@ -1,0 +1,3 @@
+#!/bin/bash -xe
+cd /usr/local/src/2.5-apt
+rsync --progress -avz dists emcboard@linuxcnc.org:/home/emcboard/www.linuxcnc.org
