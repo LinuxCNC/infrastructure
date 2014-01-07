@@ -51,12 +51,25 @@ computer</a>.
 
     <li>
 
-        <p>Install 'ntp' (so the time will be right), and 'lsb-release'
-        (so the buildslave can describe itself), and 'fakeroot' (so the
-        buildslave can build the debian package), and build-essential
-        (because it's essential for building):
+        <p>Install the following packages:
 
-        <p><tt>apt-get install ntp lsb-release fakeroot build-essential</tt>
+        <ul>
+
+            <li>'ntp' (so the time will be right)
+
+            <li>'lsb-release' (so the buildslave can describe itself)
+
+            <li>'fakeroot' (so the buildslave can build the debian package)
+
+            <li>'build-essential' (because it's essential for building)
+
+            <li>'tree' (used by some build steps to show what's going on)
+
+            <li>'pbuilder' (used to install build dependencies)
+
+        </ul>
+
+        <p><tt>apt-get install ntp lsb-release fakeroot build-essential tree pbuilder</tt>
 
     </li>
 
@@ -76,14 +89,14 @@ computer</a>.
     <li>
 
         <p>The buildbot checks for missing build dependencies and
-        automatically installs them on the buildslave computer each
-        time it builds.  In order for this to work, you must give
-        your buildslave user the ability to run "sudo apt-get" without
-        a password.
+        automatically installs them on the buildslave computer
+        each time it builds.  In order for this to work, you
+        must give your buildslave user the ability to run "sudo
+        /usr/lib/pbuilder/pbuilder-satisfydepends" without a password.
 
         <p>Add this line to /etc/sudoers:
 
-        <p><tt>buildslave-user ALL = ALL, NOPASSWD: /usr/bin/apt-get</tt>
+        <p><tt>buildslave-user ALL = ALL, NOPASSWD: /usr/lib/pbuilder/pbuilder-satisfydepends</tt>
 
     </li>
 
@@ -272,10 +285,10 @@ computer</a>.
                 use this:
 
                 <pre>
-deb     http://buildbot.linuxcnc.org/~buildmaster lucid master-rt
-deb-src http://buildbot.linuxcnc.org/~buildmaster lucid master-rt
-deb     http://buildbot.linuxcnc.org/~buildmaster lucid v2.4_branch-rt
-deb-src http://buildbot.linuxcnc.org/~buildmaster lucid v2.4_branch-rt
+deb     http://buildbot.linuxcnc.org/ lucid master-rt
+deb-src http://buildbot.linuxcnc.org/ lucid master-rt
+deb     http://buildbot.linuxcnc.org/ lucid v2.5_branch-rt
+deb-src http://buildbot.linuxcnc.org/ lucid v2.5_branch-rt
 </pre>
 
         </ol>
