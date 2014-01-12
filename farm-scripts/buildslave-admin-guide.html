@@ -89,14 +89,14 @@ computer</a>.
     <li>
 
         <p>The buildbot checks for missing build dependencies and
-        automatically installs them on the buildslave computer
-        each time it builds.  In order for this to work, you
-        must give your buildslave user the ability to run "sudo
+        automatically installs them on the buildslave computer each
+        time it builds.  In order for this to work, you must give your
+        buildslave user the ability to run "sudo apt-get" and "sudo
         /usr/lib/pbuilder/pbuilder-satisfydepends" without a password.
 
         <p>Add this line to /etc/sudoers:
 
-        <p><tt>buildslave-user ALL = ALL, NOPASSWD: /usr/lib/pbuilder/pbuilder-satisfydepends</tt>
+        <p><tt>buildslave-user ALL = ALL, NOPASSWD: /usr/bin/apt-get, /usr/lib/pbuilder/pbuilder-satisfydepends</tt>
 
     </li>
 
@@ -156,7 +156,7 @@ computer</a>.
 
         <p><tt>mkdir ~/BuildBot/slave/$SLAVE_NAME</tt>
 
-        <p><tt>buildbot create-slave ~/BuildBot/slave/$SLAVE_NAME buildbot.linuxcnc.org:51332 $SLAVE_NAME $SLAVE_PASSWORD</tt>
+        <p><tt>buildbot create-slave --umask=022 ~/BuildBot/slave/$SLAVE_NAME buildbot.linuxcnc.org:51332 $SLAVE_NAME $SLAVE_PASSWORD</tt>
 
         <p>(The buildslave directory above is just a suggestion, you can put it anywhere you like.)
 
