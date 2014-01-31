@@ -251,11 +251,23 @@ computer</a>.
 
                 <p>Create the pbuilder chroot:
 
-                <p><tt>sudo pbuilder --create --basetgz
-                $HOME/pbuilder-$DIST-emc2.tgz --distribution
-                $DIST --components 'main universe' --othermirror
-                "$LINUXCNC_ARCHIVE|deb http://us.archive.ubuntu.com/ubuntu
-                $DIST-updates main universe"</tt>
+                <ol>
+
+                    <li><p>fetch the linuxcnc.org archive signing key:
+                        <tt><b>gpg --recv-key 8F374FEF</b></tt>
+
+                    <li><p>export the key to a new keyring:
+                        <tt><b>gpg --armor --export 8F374FEF &gt;
+                        linuxcnc-keyring</b></tt>
+
+                    <li><p>create the pbuilder tarball:
+                        <tt><b>sudo pbuilder --create --basetgz
+                        $HOME/pbuilder-$DIST-emc2.tgz --distribution
+                        $DIST --components 'main universe'
+                        --othermirror "$LINUXCNC_ARCHIVE" --keyring
+                        linuxcnc-keyring</b></tt>
+
+                </ol>
 
                 <p>LINUXCNC_ARCHIVE is the LinuxCNC debian package archive
                 for your $DIST.  For example, for Lucid this is "<tt>deb
