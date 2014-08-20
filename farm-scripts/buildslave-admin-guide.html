@@ -88,15 +88,13 @@ computer</a>.
 
     <li>
 
-        <p>The buildbot checks for missing build dependencies and
-        automatically installs them on the buildslave computer each
-        time it builds.  In order for this to work, you must give your
-        buildslave user the ability to run "sudo apt-get" and "sudo
-        /usr/lib/pbuilder/pbuilder-satisfydepends" without a password.
+    <p>Several of the build steps require password-less sudo for the
+        buildslave user.
 
         <p>Add this line to /etc/sudoers:
 
-        <p><tt>buildslave-user ALL = ALL, NOPASSWD: /usr/bin/apt-get, /usr/lib/pbuilder/pbuilder-satisfydepends</tt>
+        <p><tt>buildslave ALL = ALL, NOPASSWD: /usr/bin/apt-get, /usr/lib/pbuilder/pbuilder-satisfydepends, /usr/sbin/pbuilder, /bin/umount, /bin/dmesg -c, /usr/bin/make V=1 setuid</tt>
+
 
     </li>
 
@@ -198,42 +196,13 @@ computer</a>.
 
         <p><b>This step is optional!</b>
 
-        <p>If you want your buildslave to run the real-time test suite, you need to do two more things:
+        <p>If you want your buildslave to run the real-time test suite,
+            you need to allow the buildslave user to lock more memory
+            than the default configuration allows.  If you're starting
+            buildbot from the init scripts at system boot, the easiest
+            way to do this is to add this line to /etc/default/buildbot:
 
-        <ol>
-
-            <li>
-
-                <p>You must let the buildslave user run a couple of
-                sudo commands without passwords.  The first is "sudo
-                /usr/bin/make V=1 setuid" which enables the setuid bit on a
-                couple of helper programs, without this the tests wont be
-                able to load kernel modules.  The second sudo command is
-                "sudo /bin/dmesg -c" which clears the dmesg log, this is
-                done before running the tests so that the dmesg reported
-                after the tests finish contains just the info for this
-                test run.
-
-                <p>Add this line to /etc/sudoers:
-
-                <p><tt>buildslave-user ALL = ALL, NOPASSWD: /usr/bin/make V=1 setuid , /bin/dmesg -c</tt>
-
-            </li>
-
-
-            <li>
-
-                <p>You need to allow the buildslave user to lock
-                more memory than the default configuration allows.
-                If you're starting buildbot from the init scripts at
-                system boot, the easiest way to do this is to add this
-                line to /etc/default/buildbot:
-
-                <p><tt>ulimit -l unlimited</tt>
-
-            </li>
-
-        </ol>
+        <p><tt>ulimit -l unlimited</tt>
 
     </li>
 
@@ -254,7 +223,7 @@ computer</a>.
                 <ol>
 
                     <li><p>fetch the linuxcnc.org archive signing key:
-                        <tt><b>gpg --recv-key 8F374FEF</b></tt>
+                        <tt><b>gpg --keyserver keys.gnupg.net --recv-key 8F374FEF</b></tt>
 
                     <li><p>export the key to a new keyring:
                         <tt><b>gpg --armor --export 8F374FEF &gt;
