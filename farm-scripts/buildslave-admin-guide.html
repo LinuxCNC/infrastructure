@@ -194,6 +194,25 @@ computer</a>.
 
     <li>
 
+        <p>Add the git release tag signing keys to the buildslave's
+        gnupg keyring.  (These have to be long-format key IDs because Jeff
+        Epler's key, used for signing 2.4 release tags, has a collision.
+        But anyway, long key IDs are just a good idea in general.)
+
+        <ul>
+
+            <li>v2.4: 25DD353196935D7D
+            <li>v2.5: 445B1785BC92B87F
+            <li>v2.6: 26ADE41E54621DFA
+        </ul>
+
+        <p><tt><b>gpg --keyserver hkp://keys.gnupg.net --recv-keys 25DD353196935D7D 445B1785BC92B87F 26ADE41E54621DFA</b></tt>
+
+    </li>
+
+
+    <li>
+
         <p><b>This step is optional!</b>
 
         <p>If you want your buildslave to run the real-time test suite,
