@@ -293,6 +293,19 @@ deb     http://buildbot.linuxcnc.org/ lucid scratch-rt
 deb-src http://buildbot.linuxcnc.org/ lucid scratch-rt
 </pre>
 
+            <li>
+
+                <p>Add the linuxcnc debian archive signing key to apt's keyring.
+
+                <ul>
+                    <li>buildbot: EF1B07FEE0EE663E
+                    <li>linuxcnc.org: 3CB9FD148F374FEF
+                </ul>
+
+                <p><tt><b>sudo apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys EF1B07FEE0EE663E 3CB9FD148F374FEF</b></tt>
+
+            </li>
+
         </ol>
 
     </li>
