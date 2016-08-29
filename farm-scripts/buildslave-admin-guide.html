@@ -93,9 +93,10 @@ computer</a>.
     <p>Several of the build steps require password-less sudo for the
         buildslave user.
 
-        <p>Add this line to /etc/sudoers:
+        <p>Add these lines to /etc/sudoers:
 
         <p><tt>buildslave ALL = ALL, NOPASSWD: /usr/bin/apt-get, /usr/lib/pbuilder/pbuilder-satisfydepends, /usr/sbin/pbuilder, /bin/umount, /bin/dmesg -c, /usr/bin/make V=1 setuid</tt>
+        <p><tt>Defaults!/usr/sbin/pbuilder env_keep=DEB_BUILD_OPTIONS</tt>
 
 
     </li>
