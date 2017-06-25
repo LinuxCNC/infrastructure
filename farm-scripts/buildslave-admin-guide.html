@@ -147,6 +147,22 @@ computer</a>.
 
     <li>
 
+        <p>On Debian Stretch and possibly other distros (but not on
+        Debian Jessie and older, and not on Ubuntu Precise and older),
+        you need to set a sysctl variable to allow the buildslave user
+        to run dmesg.
+
+        <p>Add a file named <tt>/etc/sysctl.d/allow-dmesg.conf</tt>,
+        containing the line: <tt>kernel.dmesg_restrict=0</tt>
+
+        <p>Reload sysctl, for example by running <tt>sudo systemctl
+        restart systemd-sysctl</tt>, or by rebooting the machine.
+
+    </li>
+
+
+    <li>
+
         <p>Now we're ready to set up the buildslave itself.  You will
         need two pieces of information from the buildmaster admin:
         the slave name and the slave password.  Ask for this on the
