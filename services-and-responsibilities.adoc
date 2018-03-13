@@ -1,0 +1,139 @@
+= LinuxCNC infrastructure
+
+This file lists the major pieces of project infrastructure and "official"
+roles, and the people who have volunteered to take responsibility
+for them.
+
+== Online Services and Volunteer Responsibilities
+
+[options="header"]
+|====================================================================
+| Service                                      | Provider          | Cost (yearly) | Cost (monthly) | Primary Volunteer | Secondary Volunteer
+| <<_trademark,Trademark>>                     | Linux Foundation  |               |                | Chris Radek       |
+| <<_domain_registration,Domain Registration>> | Network Solutions |        $35.00 |          $2.92 | Chris Radek       |
+| <<_dns,DNS>>                                 | Digital Ocean     |               |                | Jeff Epler        |
+| <<wlo,www.linuxcnc.org>>                     | DreamHost         |       $108.00 |          $9.00 | Steve Padnos      |
+| <<wiki,wiki.linuxcnc.org>>                   | DreamHost         |               |                |                   |
+| <<forum,forum.linuxcnc.org>>                 | Digital Ocean     |       $144.00 |         $12.00 | Jeff Epler        | Seb Kuzminsky
+| forum moderators                             |                   |               |                | (various)         |
+| <<_buildbot,buildbot>>                       | Seb Kuzminsky     |               |                | Seb Kuzminsky     |
+| <<_wlo_builder,wlo-builder>>                 | Seb Kuzminsky     |               |                | Seb Kuzminsky     |
+| <<_wlo_test,wlo-test>>                       | Seb Kuzminsky     |               |                | Seb Kuzminsky     |
+| <<_git_repo,git repo>>                       | github            |               |                | Jeff Epler        | Chris Radek
+| <<_bug_tracker,bug tracker>>                 | github            |               |                | Jeff Epler        | Chris Radek
+| #linuxcnc                                    | freenode          |               |                | Chris Radek       | Seb Kuzminsky
+| #linuxcnc-devel                              | freenode          |               |                | Chris Radek       | Seb Kuzminsky
+| #linuxcnc-board                              | freenode          |               |                | Chris Radek       | Jeff Epler
+| #linuxcnc-meet                               | freenode          |               |                | Chris Radek       |
+| emc-developers list                          | SourceForge       |               |                |                   |
+| emc-users list                               | SourceForge       |               |                |                   |
+| <<_travis_ci,Travis CI>>                     |                   |               |                |                   |
+| <<_debian_archive,debian archive>>           | www.linuxcnc.org  |               |                | Seb Kuzminsky     | Chris Radek
+| 2.7 Release Manager                          |                   |               |                | Seb Kuzminsky     |
+| wlo backups                                  | Chris Radek       |               |                | Chris Radek       |
+| flo backups                                  | Chris Radek       |               |                | Chris Radek       |
+|====================================================================
+
+
+=== Trademark
+
+LinuxCNC has a Linux Sublicense Agreement from the Linux foundation
+(linuxfoundation.org / linuxmark.org).
+
+License number: 20111229-0372
+
+This does not require any registration or maintenance, simply using the
+trademark in public asserts our rights here.
+
+Original sublicense request: link:linux-sublicense-request-orig.txt[]
+
+Original sublicense grant: link:linux-sublicense-grant-orig.txt[]
+
+
+=== Domain Registration
+
+https://whois.icann.org/en/lookUP?name=linuxcnc.org
+
+
+=== DNS
+
+No cost because this service is bundled with <<forum,forum.linuxcnc.org>>
+hosting.
+
+
+[[wlo]]
+=== www.linuxcnc.org
+
+The webserver is hosted at DreamHost.
+
+The actual content is maintained by the developer community.
+It's stored at https://github.com/linuxcnc/wlo and built by the
+<<_wlo_builder,wlo-builder>>.
+
+
+[[wiki]]
+=== wiki.linuxcnc.org
+
+This is an instance of http://www.usemod.com/cgi-bin/wiki.pl[UseModWiki],
+running on the same host as <<wlo,www.linuxcnc.org>>.
+
+
+[[forum]]
+=== forum.linuxcnc.org
+
+This is an instance of https://www.joomla.org/[Joomla].
+
+
+=== buildbot
+
+Builds, tests, packages the software from
+https://github.com/LinuxCNC/linuxcnc, uploads to wlo.  This consists
+of two fairly beefy x86/amd64 hypervisors and a couple of crappy little
+ARM boards.
+
+Running an instance of http://buildbot.net/[buildbot].
+
+
+=== wlo-builder
+
+This is a VM running on the same hardware that runs the buildbot.
+
+It builds the website from https://github.com/LinuxCNC/wlo using Jekyll,
+uploads to wlo (via rsync with a special-purpose ssh key).
+
+We use a github Webhook to poke a
+https://github.com/LinuxCNC/wlo/blob/master/scripts/post-receive.cgi[CGI
+script] on the wlo-builder, which triggers the build.
+
+
+=== wlo-test
+
+This is a webserver at http://wlo-test.highlab.com that publishes
+experimental (non-master) branches of the wlo git repo.
+
+
+=== git repo
+
+Our git repos are hosted on https://github.com[Github], under the
+https://github.com/LinuxCNC[LinuxCNC] organization.
+
+
+=== bug tracker
+
+We use the https://github.com[Github] issue tracker.
+
+
+=== #linuxcnc-board
+
+Defunct
+
+
+===  Travis CI
+
+Should be based off github permissions
+
+
+=== debian archive
+
+Specially managed part of the wlo website.  Includes configuration files
+and a gpg key.

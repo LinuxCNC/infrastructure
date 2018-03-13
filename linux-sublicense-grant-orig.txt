@@ -1,0 +1,45 @@
+From apache@www2.linux-foundation.org Thu Jan 12 19:55:18 2012
+Return-Path: <apache@www2.linux-foundation.org>
+X-Original-To: jepler@unpythonic.net
+Delivered-To: jepler@unpythonic.net
+Received: from smtp2.linuxfoundation.org (smtp2.linuxfoundation.org
+	[140.211.169.14])
+	by unpythonic.net (Postfix) with ESMTP id 14F92114965
+	for <jepler@unpythonic.net>; Thu, 12 Jan 2012 19:55:18 -0600 (CST)
+Received: from www2.linux-foundation.org (www2.linux-foundation.org
+	[172.17.192.72])
+	by smtp2.linuxfoundation.org (Postfix) with ESMTP id 8CCD01DBB7;
+	Fri, 13 Jan 2012 01:55:15 +0000 (UTC)
+Received: from www2.linux-foundation.org (localhost.localdomain [127.0.0.1])
+	by www2.linux-foundation.org (Postfix) with ESMTP id 7F8DF575491
+	for <jepler@unpythonic.net>; Fri, 13 Jan 2012 01:55:15 +0000 (UTC)
+Received: (from apache@localhost)
+	by www2.linux-foundation.org (8.13.8/8.13.8/Submit) id q0D1tF0P031967; 
+	Fri, 13 Jan 2012 01:55:15 GMT
+Date: Fri, 13 Jan 2012 01:55:15 GMT
+Message-Id: <201201130155.q0D1tF0P031967@www2.linux-foundation.org>
+To: jepler@unpythonic.net
+Subject: Linux Mark Sublicense Request Granted for [20111229-0372]
+X-PHP-Originating-Script: 0:emailer.php
+From: Linux Foundation Programs <trademarks@linuxfoundation.org>
+Reply-To: trademarks@linuxfoundation.org
+MIME-Version: 1.0
+Content-type: text/html; charset=iso-8859-1
+X-Spambayes-Classification: ham; 0.03
+X-Spambayes-Evidence: '*H*': 0.94; '*S*': 0.01; 'epler': 0.02;
+	'subject:Linux': 0.04; 'granted!': 0.07; 'jeff': 0.08;
+	'linux': 0.10; 'subject: [': 0.23; 'license:': 0.23;
+	'subject:-': 0.24; 'mark': 0.25; 'comments,': 0.29;
+	'questions,': 0.30; 'subject:Request': 0.31; 'request': 0.31;
+	'skip:2 10': 0.32; 'additional': 0.35; 'license': 0.36;
+	'subject:]': 0.37; 'no.': 0.38; 'header:MIME-Version:1': 0.62;
+	'our': 0.63; 'sender:none': 0.65; 'to:addr:jepler': 0.68;
+	'content-type:text/html': 0.76; 'subject:Mark': 0.93
+Status: O
+Content-Length: 601
+
+<html><body><p style='border: 1px solid #ccc; background: none repeat scroll 0% 0% #eee; padding: 4px;'><b><font color='green'>Notification of Granted License</font></b>: Sublicense has been <b>granted</b></p><br>Thank you, <b>Jeff Epler</b> for your interest in the Linux Foundation Linux Mark Program.<br><br>Your sublicense request has been reviewed by our team. <br><br>License No. <b>20111229-0372</b> has been granted!<br><br>If you have additional questions, or comments, please feel free to contact us at lmi_query@linuxfoundation.org.<br><br>Regards,
+<br>The Linux Foundation</body></html>
+
+
+

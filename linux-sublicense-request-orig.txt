@@ -1,0 +1,62 @@
+From apache@www2.linux-foundation.org Thu Dec 29 10:41:51 2011
+Return-Path: <apache@www2.linux-foundation.org>
+X-Original-To: jepler@unpythonic.net
+Delivered-To: jepler@unpythonic.net
+Received: from smtp2.linuxfoundation.org (smtp2.linuxfoundation.org
+	[140.211.169.14])
+	by unpythonic.net (Postfix) with ESMTP id B964E241105
+	for <jepler@unpythonic.net>; Thu, 29 Dec 2011 10:41:51 -0600 (CST)
+Received: from www2.linux-foundation.org (www2.linux-foundation.org
+	[172.17.192.72])
+	by smtp2.linuxfoundation.org (Postfix) with ESMTP id 81C561DA80;
+	Thu, 29 Dec 2011 16:41:47 +0000 (UTC)
+Received: from www2.linux-foundation.org (localhost.localdomain [127.0.0.1])
+	by www2.linux-foundation.org (Postfix) with ESMTP id 6F9C9575491
+	for <jepler@unpythonic.net>; Thu, 29 Dec 2011 16:41:47 +0000 (UTC)
+Received: (from apache@localhost)
+	by www2.linux-foundation.org (8.13.8/8.13.8/Submit) id pBTGfkg6011696; 
+	Thu, 29 Dec 2011 16:41:46 GMT
+Date: Thu, 29 Dec 2011 16:41:46 GMT
+Message-Id: <201112291641.pBTGfkg6011696@www2.linux-foundation.org>
+To: jepler@unpythonic.net
+Subject: Linux Mark Sublicense Application from [Jeff Epler]
+X-PHP-Originating-Script: 0:emailer.php
+From: Linux Foundation Programs <trademarks@linuxfoundation.org>
+Reply-To: trademarks@linuxfoundation.org
+MIME-Version: 1.0
+Content-type: text/html; charset=iso-8859-1
+X-Spambayes-Classification: ham; 0.01
+X-Spambayes-Evidence: '*H*': 0.99; '*S*': 0.00; 'url:linuxcnc': 0.02;
+	'epler': 0.02; '1666': 0.03; 'burr': 0.04; 'subject:Linux': 0.04;
+	'68502': 0.05; 'cnc': 0.05; 'linuxcnc.org': 0.05; 'http:': 0.07;
+	'linuxcnc': 0.07; 'jeff': 0.08; '318': 0.09; 'linux': 0.10;
+	'lincoln': 0.10; '402': 0.12; '4781': 0.16; 'skip:/ 10': 0.17;
+	'mailing': 0.18; 'subject: [': 0.23; 'source': 0.23;
+	'lists,': 0.24; 'url:org': 0.24; 'mark': 0.25; 'devices': 0.25;
+	'submitted': 0.26; 'comments,': 0.29; 'state:': 0.30;
+	'developers': 0.30; 'code:': 0.30; 'questions,': 0.30;
+	'request': 0.31; 'skip:2 10': 0.32; 'previous': 0.32;
+	'systems,': 0.32; 'runs': 0.33; 'software.': 0.33;
+	'subject:Jeff': 0.33; 'users': 0.33; 'open': 0.33;
+	'control': 0.34; 'additional': 0.35; 'review.': 0.35;
+	'license': 0.36; 'zip': 0.36; 'application': 0.37;
+	'real-time': 0.37; 'subject:]': 0.37; 'australia': 0.38;
+	'support': 0.38; 'email addr:unpythonic.net': 0.38;
+	'number:': 0.39; 'team': 0.40; 'url:': 0.61; 'europe': 0.62;
+	'asia': 0.62; 'header:MIME-Version:1': 0.62; 'postal': 0.62;
+	'united': 0.63; 'our': 0.63; 'company': 0.64;
+	'sender:none': 0.65; 'soon': 0.65; 'phone:': 0.65;
+	'to:addr:jepler': 0.68; 'website,': 0.69; 'email:': 0.70;
+	'country:': 0.71; 'subject:Application': 0.72; 'machinery': 0.73;
+	'content-type:text/html': 0.76; 'africa': 0.76; 'geo': 0.84;
+	'antarctica': 0.93; 'subject:Mark': 0.93; 'success!': 0.98
+Status: O
+Content-Length: 1660
+
+<html><body><div style='border: 1px solid green; padding: 6px; font-color: green; background: #c2ecc9;'>Success! Your application has been submitted to the Linux Mark Team.</div><br>Thank you, <b>Jeff Epler</b> for your interest in the Linux Foundation Linux Mark Program.<br><br>Your request has been sent to our team for review. <br><br>We will respond to you as soon as possible. <br><br>----- Receipt for Your Records -----<br><br><b>License Number</b>: 20111229-0372<br><b>Full Name</b>: Jeff Epler<br><b>Email</b>: jepler@unpythonic.net<br><b>Phone</b>: +1 402 318 4781<br><b>Company Name</b>: linuxcnc.org<br><b>Website</b>: http://www.linuxcnc.org<br><b>Street Address</b>: 1666 Burr Street<br><b>Street Address</b>: <br><b>City</b>: Lincoln<br><b>State</b>: NE<br><b>Zip / Postal Code</b>: 68502<br><b>Country</b>: United States of America<br><b>Previous Sublicense?</b>: 0<br><b>Previous Sublicense No</b>: <br><b>Sublicense Mark</b>: linuxcnc<br><b>Sublicense Mark URL</b>: http:
+ //www.linuxcnc.org/<br><b>Goods</b>: Free and Open Source Software that runs on Linux for the real-time control of CNC machinery and other devices<br><b>Services</b>: Software distribution, documentation, website,  forums, mailing lists, chat systems, and other services in support of users and developers of the software.
+<br><b>Geo Regions</b>:<br><br> North America<br> South America<br> Europe<br> Asia<br> Africa<br> Australia<br> Antarctica<br><br>----- Receipt for Your Records -----<br><br>If you have additional questions, or comments, please feel free to contact us at trademarks@linuxfoundation.org.<br><br>Regards,
+<br>The Linux Foundation</body></html>
+
+
+
