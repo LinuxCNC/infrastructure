@@ -339,6 +339,16 @@ deb-src http://buildbot.linuxcnc.org/ lucid scratch-rt
 
 <hr>
 
+<h3>Updating pbuilder on a buildslave</h3>
+
+<p>Run the same command as when creating the pbuilder tarball, but with instead of <tt>--create</tt> say <tt>--update</tt> and <tt>--override-config</tt>:
+<tt><b>sudo pbuilder --update --basetgz $HOME/pbuilder-$DIST-emc2.tgz
+--override-config --distribution $DIST --components 'main
+universe' --mirror http://archive.debian.org/debian --othermirror
+"$LINUXCNC_ARCHIVE" --keyring linuxcnc-keyring</b></tt>
+
+<hr>
+
 <p>That's it!  I can't believe it was so easy!</p>
 
 
