@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# Update the `Contents`, `Release`, and `Release.gpg` files for one or
+# more distros.  Used to maintain the deb archive at www.linuxcnc.org.
+#
+
+set -e
+set -x
+
+INFRASTRUCTURE=$HOME/linuxcnc-infrastructure
+
+function update_distribution() {
+    DIST=$1
+
+    RELEASE=dists/$DIST/Release
+    RELEASE_GPG=${RELEASE}.gpg
+
+    for D in dists/$DIST/*/binary-{i386,amd64}; do
+        pushd $D
+        for i in $(find ../binary-all -name '*.deb') ; do
+            ln -svf $i .
+        done
+        popd
+    done
+
+    rm -f $(find dists/$DIST/ -name 'Contents*')
+    apt-ftparchive -o APT::FTPArchive::AlwaysStat=True generate $INFRASTRUCTURE/repositories/generate-$DIST.conf
+
+    rm -f $RELEASE
+    apt-ftparchive -o APT::FTPArchive::AlwaysStat=True -c $INFRASTRUCTURE/repositories/release-$DIST.conf release dists/$DIST/ > $RELEASE
+
+    rm -f $RELEASE_GPG
+    gpg --sign --default-key=EMC -ba -o $RELEASE_GPG dists/$DIST/Release
+}
+
+if [ -z "$*" ]; then
+    echo "usage: update DIST [DIST...]"
+    exit 1
+fi
+
+for D in "$@"; do
+    update_distribution $D
+done
+
