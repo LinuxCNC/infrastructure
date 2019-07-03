@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# This script copies the debian archive from a local directory to the
+# LIVE deb archive at www.linuxcnc.org.  This REPLACES whatever's on
+# wlo with whatever you have locally.
+#
+
+rsync --progress -av -e "ssh -C -i $HOME/.ssh/id_dsa" dists emcboard@linuxcnc.org:www.linuxcnc.org/

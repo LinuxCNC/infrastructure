@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# This script copies the debian archive at www.linuxcnc.org to a local
+# directory, in preparation for adding (or removing, i guess) packages.
+#
+
+rsync --progress --max-delete=0 -av -e "ssh -C -i $HOME/.ssh/id_dsa" "$@" emcboard@linuxcnc.org:www.linuxcnc.org/dists/ dists
