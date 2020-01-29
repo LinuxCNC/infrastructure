@@ -4,4 +4,12 @@
 # directory, in preparation for adding (or removing, i guess) packages.
 #
 
-rsync --progress --max-delete=0 -av -e "ssh -C -i $HOME/.ssh/id_rsa" "$@" emcboard@linuxcnc.org:www.linuxcnc.org/dists/ dists
+rsync \
+    --progress \
+    --max-delete=0 \
+    --archive \
+    --verbose \
+    --bwlimit=250k \
+    -e "ssh -C -i $HOME/.ssh/id_rsa" \
+    emcboard@linuxcnc.org:www.linuxcnc.org/dists/ \
+    dists
