@@ -126,14 +126,20 @@ computer</a>.
 
     <li>
 
-        <p>Install a recent version of buildbot.  0.7.10 is the oldest
-        version known to work.  Versions before 0.7.10 don't work well
-        with Git.
+        <p>Install an appropriate version of buildbot.  0.7.10 is the
+        oldest version known to work.  Versions before 0.7.10 don't work
+        well with Git.  0.8 works, 0.9 and newer will not work until I
+        upgrade the buildmaster.
 
         <p>The buildbot package in Ubuntu Lucid is new enough that it
         Just Works:
 
         <p><tt>apt-get install buildbot</tt>
+
+        <p>Debian 10 "Buster" has buildbot 2.0.1, which is too new.
+        The buildbot-slave package from Debian 9 "Stretch" installs and
+        works fine, but make sure you mark it as "hold" so apt won't
+        try to upgrade to the Buster version.
 
         <p>Ubuntu Hardy has buildbot 0.7.6, which is too
         old.  If your buildslave is Hardy or older, you
