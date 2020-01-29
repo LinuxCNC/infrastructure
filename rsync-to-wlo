@@ -5,4 +5,9 @@
 # wlo with whatever you have locally.
 #
 
-rsync --progress -av -e "ssh -C -i $HOME/.ssh/id_rsa" dists emcboard@linuxcnc.org:www.linuxcnc.org/
+rsync \
+    --progress \
+    -av \
+    -e "ssh -C -i $HOME/.ssh/id_rsa" \
+    dists \
+    emcboard@linuxcnc.org:www.linuxcnc.org/
