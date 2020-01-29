@@ -7,7 +7,9 @@
 
 rsync \
     --progress \
-    -av \
+    --archive \
+    --verbose \
+    --bwlimit=250k \
     -e "ssh -C -i $HOME/.ssh/id_rsa" \
     dists \
     emcboard@linuxcnc.org:www.linuxcnc.org/
