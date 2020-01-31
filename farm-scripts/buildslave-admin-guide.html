@@ -271,19 +271,27 @@ computer</a>.
 
                 <ol>
 
-                    <li><p>fetch the linuxcnc.org archive signing key:
-                        <tt><b>gpg --keyserver keys.gnupg.net --recv-key 8F374FEF</b></tt>
+                    <li><p>Fetch the linuxcnc.org archive signing key:
+                        <tt><b>gpg --keyserver keys.gnupg.net --recv-key 3CB9FD148F374FEF</b></tt>
 
-                    <li><p>export the key to a new keyring:
-                        <tt><b>gpg --armor --export 8F374FEF &gt;
-                        linuxcnc-keyring</b></tt>
+                    <li><p>Export the key to a new keyring:
 
-                    <li><p>create the pbuilder tarball:
+                        <ul>
+
+                            <li><p>pre-Buster: <tt><b>gpg --armor --export 3CB9FD148F374FEF &gt;
+                            linuxcnc-keyring.gpg</b></tt>
+
+                            <li><p>post-Buster: <tt><b>gpg --export 3CB9FD148F374FEF &gt;
+                            linuxcnc-keyring.gpg</b></tt>
+
+                        </ul>
+
+                    <li><p>Create the pbuilder tarball:
                         <tt><b>sudo pbuilder --create --basetgz
                         $HOME/pbuilder-$DIST-emc2.tgz --distribution
                         $DIST --components 'main universe'
                         --othermirror "$LINUXCNC_ARCHIVE" --keyring
-                        linuxcnc-keyring</b></tt>
+                        linuxcnc-keyring.gpg</b></tt>
 
                 </ol>
 
