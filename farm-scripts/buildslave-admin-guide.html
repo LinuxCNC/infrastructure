@@ -136,11 +136,6 @@ computer</a>.
 
         <p><tt>apt-get install buildbot</tt>
 
-        <p>Debian 10 "Buster" has buildbot 2.0.1, which is too new.
-        The buildbot-slave package from Debian 9 "Stretch" installs and
-        works fine, but make sure you mark it as "hold" so apt won't
-        try to upgrade to the Buster version.
-
         <p>Ubuntu Hardy has buildbot 0.7.6, which is too
         old.  If your buildslave is Hardy or older, you
         need to install buildbot from somewhere other than
@@ -148,15 +143,23 @@ computer</a>.
         href="https://launchpad.net/~mwhudson/+archive/ppa?field.series_filter=hardy">Michael
         Hudson-Doyle's PPA</a>
 
+        <p>Debian 10 "Buster" has buildbot 2.0.1, which is too new.
+        The buildbot-slave package from Debian 9 "Stretch" installs and
+        works fine, but make sure you mark it as "hold" so apt won't
+        try to upgrade to the Buster version.
+
+        <p><tt>curl -O http://ftp.us.debian.org/debian/pool/main/b/buildbot-slave/buildbot-slave_0.8.12-1_all.deb</tt></p>
+        <p><tt>sudo apt install ./buildbot-slave_0.8.12-1_all.deb</tt></p>
+        <p><tt>sudo apt-mark hold buildbot-slave</tt></p>
+
     </li>
 
 
     <li>
 
-        <p>On Debian Stretch and possibly other distros (but not on
-        Debian Jessie and older, and not on Ubuntu Precise and older),
-        you need to set a sysctl variable to allow the buildslave user
-        to run dmesg.
+        <p>On Debian Stretch and newer distros (but not on Debian Jessie
+        and older, and not on Ubuntu Precise and older), you need to
+        set a sysctl variable to allow the buildslave user to run dmesg.
 
         <p>Add a file named <tt>/etc/sysctl.d/allow-dmesg.conf</tt>,
         containing the line: <tt>kernel.dmesg_restrict=0</tt>
@@ -183,7 +186,7 @@ computer</a>.
 
         <p><tt>mkdir ~/BuildBot/slave/$SLAVE_NAME</tt>
 
-        <p><tt>buildbot create-slave --umask=022 ~/BuildBot/slave/$SLAVE_NAME buildbot.linuxcnc.org:51332 $SLAVE_NAME $SLAVE_PASSWORD</tt>
+        <p><tt>buildslave create-slave --umask=022 ~/BuildBot/slave/$SLAVE_NAME buildbot.linuxcnc.org:5133 $SLAVE_NAME $SLAVE_PASSWORD</tt>
 
         <p>(The buildslave directory above is just a suggestion, you can put it anywhere you like.)
 
@@ -243,7 +246,7 @@ computer</a>.
 
     <li>
 
-        <p><b>This step is optional!</b>
+        <p><b>Note: Debian Stretch (and newer distros?) doesn't need this.</b></p>
 
         <p>If you want your buildslave to run the real-time test suite,
             you need to allow the buildslave user to lock more memory
@@ -281,15 +284,25 @@ computer</a>.
                             <li><p>pre-Buster: <tt><b>gpg --armor --export 3CB9FD148F374FEF &gt;
                             linuxcnc-keyring.gpg</b></tt>
 
-                            <li><p>post-Buster: <tt><b>gpg --export 3CB9FD148F374FEF &gt;
+                            <li><p>Buster and newer (pbuilder 0.230.4): <tt><b>gpg --export 3CB9FD148F374FEF &gt;
                             linuxcnc-keyring.gpg</b></tt>
 
                         </ul>
 
+                        <li><p><b>On Raspbian only</b>, override root's pbuilder config: <tt><b>cat > /root/.pbuilderrc<br>
+                            <pre>
+                                    DEBOOTSTRAPOPTS=(
+                                        '--variant=buildd'
+                                        '--keyring' '/etc/apt/trusted.gpg'
+                                    )
+                            </pre>
+                            </b></tt>
+
+
                     <li><p>Create the pbuilder tarball:
                         <tt><b>sudo pbuilder --create --basetgz
                         $HOME/pbuilder-$DIST-emc2.tgz --distribution
-                        $DIST --components 'main universe'
+                        $DIST --components 'main'
                         --othermirror "$LINUXCNC_ARCHIVE" --keyring
                         linuxcnc-keyring.gpg</b></tt>
 
@@ -307,7 +320,8 @@ computer</a>.
             <li>
 
                 <p>Give the buildslave user password-less sudo by adding
-                the following line to /etc/sudoers:
+                the following line to /etc/sudoers (already done in the
+                sudo step above):
 
                 <p><tt>buildslave ALL = ALL, NOPASSWD: /usr/bin/apt-get,
                 /usr/sbin/pbuilder, /bin/umount</tt>
