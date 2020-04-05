@@ -14,6 +14,7 @@ function update_distribution() {
 
     RELEASE=dists/$DIST/Release
     RELEASE_GPG=${RELEASE}.gpg
+    INRELEASE=dists/$DIST/InRelease
 
     for D in dists/$DIST/*/binary-{i386,amd64}; do
         pushd $D
@@ -30,7 +31,10 @@ function update_distribution() {
     apt-ftparchive -o APT::FTPArchive::AlwaysStat=True -c $INFRASTRUCTURE/repositories/release-$DIST.conf release dists/$DIST/ > $RELEASE
 
     rm -f $RELEASE_GPG
-    gpg --sign --default-key=EMC -ba -o $RELEASE_GPG dists/$DIST/Release
+    gpg --default-key=EMC --detach-sign --armor -o ${RELEASE_GPG} ${RELEASE}
+
+    rm -f $INRELEASE
+    gpg --default-key=EMC --clear-sign --armor -o ${INRELEASE} ${RELEASE}
 }
 
 if [ -z "$*" ]; then
