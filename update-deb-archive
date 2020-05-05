@@ -34,7 +34,7 @@ function update_distribution() {
     gpg --default-key=EMC --detach-sign --armor -o ${RELEASE_GPG} ${RELEASE}
 
     rm -f $INRELEASE
-    gpg --default-key=EMC --clear-sign --armor -o ${INRELEASE} ${RELEASE}
+    gpg --default-key=EMC --clear-sign --digest-algo SHA256 --armor -o ${INRELEASE} ${RELEASE}
 }
 
 if [ -z "$*" ]; then
