@@ -7,7 +7,7 @@
 set -e
 set -x
 
-INFRASTRUCTURE=$HOME/linuxcnc-infrastructure
+INFRASTRUCTURE=$HOME/infrastructure
 
 function update_distribution() {
     DIST=$1
