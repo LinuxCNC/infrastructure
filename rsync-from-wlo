@@ -9,7 +9,6 @@ rsync \
     --max-delete=0 \
     --archive \
     --verbose \
-    --bwlimit=250k \
     -e "ssh -C -i $HOME/.ssh/id_rsa" \
     emcboard@linuxcnc.org:www.linuxcnc.org/dists/ \
     dists
