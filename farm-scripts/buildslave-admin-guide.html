@@ -274,10 +274,25 @@ computer</a>.  A buildslave machine can run comfortably on a 20 GB disk.
 
                 <ol>
 
-                    <li><p>Fetch the linuxcnc.org archive signing key:
-                        <tt><b>gpg --keyserver keys.openpgp.org --recv-key 3CB9FD148F374FEF</b></tt>
+                    <li><p>Get the LinuxCNC debian package archive signing
+                    key.  Because of widespread disruption of the PKI,
+                    the easiest way is to get it from the linuxcnc git
+                    archive (branch 2.9 or later).
 
-                    <li><p>Export the key to a new keyring:
+                        <p>Export the key to a new keyring:
+
+                        <ul>
+                            <li><p>pre-Buster: <tt><b>gpg --homedir=${LINUXCNC_DEV}/gnupg --armor --export 3CB9FD148F374FEF &gt; linuxcnc-keyring.gpg</b></tt>
+                            <li><p>Buster and newer (pbuilder 0.230.4): <tt><b>gpg --homedir=${LINUXCNC_DEV}/gnupg --export 3CB9FD148F374FEF &gt; linuxcnc-keyring.gpg</b></tt>
+                        </ul>
+
+                    <li><p>Alternatively, you can try to fetch the
+                    linuxcnc.org archive signing key from the PKI
+                    (keys.opengpg.org, keyserver.ubuntu.com):
+
+                        <p><tt><b>gpg --keyserver keys.openpgp.org --recv-key 3CB9FD148F374FEF</b></tt>
+
+                        <p>Export the key to a new keyring:
 
                         <ul>
 
