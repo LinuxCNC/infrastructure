@@ -390,6 +390,14 @@ deb-src http://buildbot.linuxcnc.org/ lucid scratch-rt
 universe' --mirror http://archive.debian.org/debian --othermirror
 "$LINUXCNC_ARCHIVE" --keyring linuxcnc-keyring</b></tt>
 
+<h3>If the debian archive signing key has expired</h3>
+
+<p>We support really old, End-Of-Lifed releases of Debian.  When the
+archive signing key has expired the only way I know to get apt to run
+is to turn of key expiration checking:
+<br><tt><b>sudo pbuilder --login --save-after-login --basetgz $HOME/pbuilder-$DIST-emc2.tgz</b></tt>
+<br><tt><b>echo 'APT::Acquire::Check-Valid-Until "false";' >> /etc/apt/apt.conf.d/15pbuilder</b></tt>
+
 <hr>
 
 <p>That's it!  I can't believe it was so easy!</p>
