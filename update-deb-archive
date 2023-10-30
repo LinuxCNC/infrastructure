@@ -16,7 +16,7 @@ function update_distribution() {
     RELEASE_GPG=${RELEASE}.gpg
     INRELEASE=dists/$DIST/InRelease
 
-    for D in dists/$DIST/*/binary-{i386,amd64}; do
+    for D in dists/$DIST/*/binary-{i386,amd64,armhf,arm64}; do
         pushd $D
         for i in $(find ../binary-all -name '*.deb') ; do
             ln -svf $i .
