@@ -38,8 +38,12 @@ def die(msg):
 
 
 def token():
-    return (os.environ.get("GITHUB_TOKEN")
-            or open(TOKEN_FILE).read().strip())
+    t = os.environ.get("GITHUB_TOKEN")
+    if t:
+        return t
+    if os.stat(TOKEN_FILE).st_mode & 0o077:
+        die("token file %s is group/other-accessible; chmod 600 it" % TOKEN_FILE)
+    return open(TOKEN_FILE).read().strip()
 
 
 def auth_headers(tok):
